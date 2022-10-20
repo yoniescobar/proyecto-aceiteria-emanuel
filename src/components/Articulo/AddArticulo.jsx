@@ -22,7 +22,7 @@ const AddArticulo = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://blooming-inlet-46702.herokuapp.com/api/categoria", categoria);
+    await axios.post("https://blooming-inlet-46702.herokuapp.com/api/categoria", categoria);
     navigate("/tblCategoria");
   };
 

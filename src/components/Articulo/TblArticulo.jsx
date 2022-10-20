@@ -22,7 +22,7 @@ const TblArticulo = () => {
 
   const cargarArticulo = async () => {
 
-    const response = await axios.get("http://blooming-inlet-46702.herokuapp.com/api/Persona/all")
+    const response = await axios.get("https://blooming-inlet-46702.herokuapp.com/api/Persona/all")
     setArticulo(response.data.data)
     setFilteredArticulo(response.data.data)
 
