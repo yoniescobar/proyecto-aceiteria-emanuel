@@ -94,7 +94,7 @@ const AddArticulo = () => {
 
             </div>
         
-            <button type="submit" className="btn btn-outline-primary">Guardar</button>
+            <button type="submit" className="btn btn-outline-primary">Guardar Articulo</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>
         </div>
