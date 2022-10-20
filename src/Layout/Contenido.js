@@ -11,6 +11,10 @@ import TblArticulo from '../components/Articulo/TblArticulo'
 import Menu from './Menu'
 import Tablero from './Tablero'
 import AddArticulo from '../components/Articulo/AddArticulo'
+import TblUsuario from '../components/Usuario/TblUsuario'
+import AddUsuario from '../components/Usuario/AddUsuario'
+import EditUsuario from '../components/Usuario/EditUsuario'
+import ReactPdfPrintUsuario from '../components/Usuario/ReactPdfPrintUsuario'
 
 
 
@@ -38,16 +42,31 @@ export default class Contenido extends Component {
             <div className='container-fluid'>
           
                <Routes>
-              <Route exact path='/' element={<Tablero/>}/>
+               <Route exact path='/' element={<Tablero/>}/>
+               <Route exact path='/tablero' element={<Tablero/>}></Route>
+
+
                <Route exact path='/tblCategoria' element={<TblCategoria/>}></Route>
                <Route exact path='/addCategoria' element={<AddCategoria/>}></Route>
                <Route exact path='/editCategoria/:id' element={<EditCategoria/>}></Route>
-               <Route exact path='/tablero' element={<Tablero/>}></Route>
-               <Route exact path='/reporteCategoria' element={<ReactPdfPrint/>}></Route>
 
 
                <Route exact path='/tblArticulo' element={<TblArticulo/>}></Route>
                <Route exact path='/addArticulo' element={<AddArticulo/>}></Route>
+               
+
+               <Route exact path='/tblUsuario' element={<TblUsuario/>}></Route>
+               <Route exact path='/addUsuario' element={<AddUsuario/>}></Route>
+               <Route exact path='/editUsuario/:id' element={<EditUsuario/>}></Route>
+
+              
+               
+               <Route exact path='/reporteCategoria' element={<ReactPdfPrint/>}></Route>
+               <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario/>}></Route>
+
+
+               
+               
 
 
             </Routes>
