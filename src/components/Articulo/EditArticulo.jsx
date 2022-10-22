@@ -64,7 +64,7 @@ const EditArticulo = () => {
               name="condicion" value={condicion} onChange={(e) => onInputChange(e)}/>
             </div>
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
-            <Link className="btn btn-outline-danger mx-2" to="/tblCategoria">Cancelar</Link>
+            <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>
         </div>
       </div>
