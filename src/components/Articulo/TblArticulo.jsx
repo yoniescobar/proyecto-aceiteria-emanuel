@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import { CSVLink } from 'react-csv'
 
 
-//const baseUrl = process.env.REACT_APP_BASE_URL
+const baseUrl = process.env.REACT_APP_BASE_URL
 
 
 
@@ -22,60 +22,83 @@ const TblArticulo = () => {
 
   const cargarArticulo = async () => {
 
-    const response = await axios.get("https://blooming-inlet-46702.herokuapp.com/api/Persona/all")
+    const response = await axios.get(`${baseUrl}/Articulo/all`)
     setArticulo(response.data.data)
     setFilteredArticulo(response.data.data)
 
   }
 
 
-  // const deleteArticulo = async (id) => {
-  //   await axios.delete(`${baseUrl}/Articulo/${id}`)
-  //   cargarArticulo()
-  // }
+  const deleteArticulo = async (id) => {
+    await axios.delete(`${baseUrl}/Articulo/${id}`)
+    cargarArticulo()
+  }
 
-  // function confirmar(id,nombre) {
-  //   Swal.fire({
-  //     title: '¿Confirma eliminar el registro: ' + nombre + '?',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#d33',
-  //     cancelButtonColor: '#6c757d',
-  //     confirmButtonText: 'Confirmar'
+  function confirmar(id, nombre) {
+    Swal.fire({
+      title: '¿Confirma eliminar el registro: ' + nombre + '?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Confirmar'
 
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       deleteArticulo(id)
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteArticulo(id)
 
-  //     }
-  //   });
-  // };
+      }
+    });
+  };
 
 
   const columns = [
-    {
-      name: 'Código',
-      selector: (row) => row.id,
-      sortable: true,
-    },
+    
     {
       name: 'Nombre',
       selector: (row) => row.nombre,
       sortable: true,
-
-
+    },
+    {
+      name: 'Categoría',
+      selector: (row) => row.categoria.nombre,
+    },
+    {
+      name: 'Código',
+      selector: (row) => row.codigo,
+      sortable: true,
     },
     {
       name: 'Existencia',
-      selector: (row) => row.descripcion,
-
-
-    }
-
+      selector: (row) => row.existencia,
+    },
+   
+    {
+      name: 'Imagen',
+      selector: (row) => <img width={50} height={50} src={row.imagen} />,
+    },
+    {
+      name: 'Estado',
+      selector: (row) => row.categoria.condicion,
+    },
+    {
+      name: 'Opciones',
+      cell: (row) => [
+        <Link
+          className="btn btn-outline-primary mx-1"
+          to={`/editCategoria/${row.id}`}
+        >
+          <span className="fa-solid fa-pen-to-square"></span>
+        </Link>,
+        <button
+          className="btn btn-danger mx-1"
+          onClick={() => confirmar(row.id,row.nombre)}>
+          <span className="fa-regular fa-trash-can"></span>
+        </button>,
+      ],
+    },
 
   ]
-
-
 
   useEffect(() => {
     const result = Articulo.filter((country) => {
@@ -90,14 +113,12 @@ const TblArticulo = () => {
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
         title="Listado de Articulo"
-        theme='custom'
         columns={columns}
         data={filteredArticulo}
         pagination
         sortIcon={<i className="fa-solid fa-sort"></i>}
         fixedHeader
         fixedHeaderScrollHeight="450px"
-        // selectableRows
         selectableRowsHighlight
         highlightOnHover
         actions={[
@@ -110,16 +131,12 @@ const TblArticulo = () => {
           <input
             type="text"
             placeholder="Buscar Articulo"
-
-            // className="form-control"
             className="w-25 form-control"
-
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         }
       />
-
     </div>
   )
 }
