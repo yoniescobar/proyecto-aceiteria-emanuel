@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -10,41 +9,47 @@ const EditArticulo = () => {
 
   const { id } = useParams()
 
-  const [categoria, setcategoria] = useState({
+  const [articulo, setArticulo] = useState({
+    codigo: "",
     nombre: "",
+    existencia: "",
     descripcion: "",
-    condicion: "",
+    imagen: "",
+    estado: "",
+    //categoria: "",
   })
 
-  const { nombre, descripcion, condicion } = categoria;
+  const { codigo, nombre, existencia, descripcion, imagen, estado } = articulo;
 
   const onInputChange = (e) => {
-    setcategoria({ ...categoria, [e.target.name]: e.target.value });
+    setArticulo({ ...articulo, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    cargarcategoria()
+    cargarArticulo()
   }, []);
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`${baseUrl}/categoria`, categoria);
-    navigate("/tblCategoria");
+    await axios.put(`${baseUrl}/articulo/id`, articulo);
+    navigate("/tblArticulo");
   };
 
-
-  const cargarcategoria = async () => {
-    const response = await axios.get(`${baseUrl}/categoria/${id}`)
-    console.log(response.data.data[0])
-    setcategoria(response.data.data[0])
+  const cargarArticulo = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/Articulo/id/${id}`)
+      console.log(response.data.data[0])
+      setArticulo(response.data.data[0])
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">Editar categoria</h2>
+          <h2 className="text-center m-4">Editar articulo</h2>
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="mb-3">
               <label htmlFor="Nombre" className="form-label">Nombre</label>
@@ -53,15 +58,15 @@ const EditArticulo = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="Descripcion" className="form-label">Descripcion</label>
+              <label htmlFor="existencia" className="form-label">Existencia</label>
               <input type={"text"} className="form-control" 
-              name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)} 
+              name="existencia" value={existencia} onChange={(e) => onInputChange(e)} 
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="condicion" className="form-label">condicion</label>
+              <label htmlFor="descripcion" className="form-label">Descripcion</label>
               <input type={"text"} className="form-control" 
-              name="condicion" value={condicion} onChange={(e) => onInputChange(e)}/>
+              name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)}/>
             </div>
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
