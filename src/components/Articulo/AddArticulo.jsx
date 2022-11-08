@@ -10,7 +10,6 @@ const AddArticulo = () => {
   let navigate = useNavigate();
 
   const [Articulo, setArticulo] = useState({
-   
     nombre: "",
     categoria:{
       id:0
@@ -19,12 +18,9 @@ const AddArticulo = () => {
     descripcion: "",
     imagen: "",
     codigo: "",
-   
   })
 
-
   const { nombre, categoria:{id},existencia,descripcion,imagen,codigo } = Articulo;
-
 
   const onInputChange = (e) => {
     console.log(e.target.name)
@@ -38,7 +34,6 @@ const AddArticulo = () => {
     alert("Datos Guardados Exitosamente")
     navigate("/tblArticulo");
   };
-
 
   const options = [
     {
@@ -67,9 +62,7 @@ const AddArticulo = () => {
           <section className />
           <div className="clas " />
           <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
-
             <div className="form-row mb-4">
-
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
                 <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto" 
@@ -107,8 +100,6 @@ const AddArticulo = () => {
                 <input type="number" name="codigo" id="codigo" className="form-control"
                 value={codigo} onChange={(e)=>onInputChange(e)}/>
               </div>
-
-
             </div>
 
             <button type="submit" className="btn btn-outline-primary">Guardar Articulo</button>
@@ -117,7 +108,6 @@ const AddArticulo = () => {
         </div>
       </div>
     </div>
-
   );
 }
 

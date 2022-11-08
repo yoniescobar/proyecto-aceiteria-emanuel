@@ -17,21 +17,19 @@ const TblArticulo = () => {
   const [filteredArticulo, setFilteredArticulo] = useState([])
 
   useEffect(() => {
-    cargarArticulo();
+    cargarArticulos();
   }, []);
 
-  const cargarArticulo = async () => {
-
+  const cargarArticulos = async () => {
     const response = await axios.get(`${baseUrl}/Articulo/all`)
     setArticulo(response.data.data)
     setFilteredArticulo(response.data.data)
 
   }
 
-
-  const deleteArticulo = async (id) => {
+  const eliminarArticulo = async (id) => {
     await axios.delete(`${baseUrl}/Articulo/${id}`)
-    cargarArticulo()
+    cargarArticulos()
   }
 
   function confirmar(id, nombre) {
@@ -45,7 +43,7 @@ const TblArticulo = () => {
 
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteArticulo(id)
+        eliminarArticulo(id)
 
       }
     });
@@ -86,7 +84,7 @@ const TblArticulo = () => {
       cell: (row) => [
         <Link
           className="btn btn-outline-primary mx-1"
-          to={`/editCategoria/${row.id}`}
+          to={`/editArticulo/${row.id}`}
         >
           <span className="fa-solid fa-pen-to-square"></span>
         </Link>,
