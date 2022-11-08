@@ -8,7 +8,8 @@ const EditArticulo = () => {
   let navigate = useNavigate();
 
   const { id } = useParams()
-
+  const [Categoria, setCategoria] = useState([])
+  
   const [articulo, setArticulo] = useState({
     codigo: "",
     nombre: "",
@@ -27,6 +28,7 @@ const EditArticulo = () => {
 
   useEffect(() => {
     cargarArticulo()
+    consultarCategorias()
   }, []);
 
   const onSubmit = async (e) => {
@@ -38,8 +40,16 @@ const EditArticulo = () => {
   const cargarArticulo = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Articulo/id/${id}`)
-      console.log(response.data.data[0])
       setArticulo(response.data.data[0])
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const consultarCategorias = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/all`)
+      setCategoria(response.data.data)
     } catch (error) {
       console.log(error);
     }
@@ -51,23 +61,39 @@ const EditArticulo = () => {
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">Editar articulo</h2>
           <form onSubmit={(e) => onSubmit(e)}>
-            <div className="mb-3">
-              <label htmlFor="Nombre" className="form-label">Nombre</label>
-              <input type={"text"} className="form-control" 
-                name="nombre" value={nombre} onChange={(e) => onInputChange(e)} 
-              />
+            <div className="form-row mb-4">
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="nombre">Nombre(*):</label>
+                <input type={"text"} className="form-control" name="nombre" value={nombre} onChange={(e) => onInputChange(e)} />
+              </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="categoria">Categoria(*):</label>
+                <select className="form-select appSelect" id="exampleFormControlSelect1">
+                  <option value="-1" onChange={(e)=>onInputChange(e)}>Seleccione una opcion</option>
+                  {Categoria.map((option) => (
+                    <option value={option.id} onChange={(e)=>onInputChange(e)}>{option.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="existencia">Existencia(*):</label>
+                <input type={"text"} className="form-control" name="existencia" value={existencia} onChange={(e) => onInputChange(e)} />
+              </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="descripcion">Descripción(*):</label>
+                <input type={"text"} className="form-control" name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)}/>
+              </div>
+              {/* <div className="form-group col-12 col-sm-6">
+                <label htmlFor="imagen">Imagen:</label>
+                <label class="form-label" for="customFile"></label>
+                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => onInputChange(e)} />
+              </div> */}
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="codigo">Código de Barra:</label>
+                <input type="number" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="existencia" className="form-label">Existencia</label>
-              <input type={"text"} className="form-control" 
-              name="existencia" value={existencia} onChange={(e) => onInputChange(e)} 
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="descripcion" className="form-label">Descripcion</label>
-              <input type={"text"} className="form-control" 
-              name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)}/>
-            </div>
+
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>

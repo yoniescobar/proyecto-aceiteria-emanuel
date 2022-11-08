@@ -1,14 +1,13 @@
-
-import axios from "axios";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const AddArticulo = () => {
-
   let navigate = useNavigate();
-
+  const [Categoria, setCategoria] = useState([])
+  
   const [Articulo, setArticulo] = useState({
     nombre: "",
     categoria:{
@@ -20,11 +19,22 @@ const AddArticulo = () => {
     codigo: "",
   })
 
-  const { nombre, categoria:{id},existencia,descripcion,imagen,codigo } = Articulo;
+  const { nombre, categoria:{id}, existencia, descripcion, imagen, codigo } = Articulo;
+
+  useEffect(() => {
+    consultarCategorias();
+  }, []);
+
+  const consultarCategorias = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/all`)
+      setCategoria(response.data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const onInputChange = (e) => {
-    console.log(e.target.name)
-    console.log(e.target.value)
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
   };
 
@@ -34,25 +44,6 @@ const AddArticulo = () => {
     alert("Datos Guardados Exitosamente")
     navigate("/tblArticulo");
   };
-
-  const options = [
-    {
-      label: "Aceite Liquido",
-      value: "aceite",
-    },
-    {
-      label: "Freno de Motor",
-      value: "freno",
-    },
-    {
-      label: "Compresor Aire",
-      value: "compresor",
-    },
-    {
-      label: "Agua anticongelante",
-      value: "agua",
-    },
-  ];
 
   return (
     <div className="container">
@@ -70,13 +61,12 @@ const AddArticulo = () => {
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <input type="number" name="categoria" id="categoria" className="form-control" placeholder="Nombre de Producto" 
-                value={id} onChange={(e)=>onInputChange(e)}/>
-                {/* <select className="form-select appSelect" id="exampleFormControlSelect1">
-                  {options.map((option) => (
-                    <option value={option.value} onChange={(e)=>onInputChange(e)}>{option.label}</option>
+                <select className="form-select appSelect" id="exampleFormControlSelect1">
+                  <option value="-1" onChange={(e)=>onInputChange(e)}>Seleccione una opcion</option>
+                  {Categoria.map((option) => (
+                    <option value={option.id} onChange={(e)=>onInputChange(e)}>{option.nombre}</option>
                   ))}
-                </select> */}
+                </select>
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="existencia">Existencia(*):</label>
