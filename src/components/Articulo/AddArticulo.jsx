@@ -36,15 +36,16 @@ const AddArticulo = () => {
 
   const onInputChange = (e) => {
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
-    console.log(Articulo)
   };
 
   const cargarImagen = (e) => {
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
-    console.log(e.target.files[0]);
     setImg(e.target.files[0]);
   }
 
+  const handleChange = event => {
+    setArticulo({ ...Articulo, ["categoria"]: {id : parseInt(event.target.value)} });
+  };
   
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -69,10 +70,10 @@ const AddArticulo = () => {
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <select className="form-select appSelect" id="exampleFormControlSelect1">
+                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
                   <option value="-1">Seleccione una opcion</option>
                   {Categoria.map((option) => (
-                    <option value={option.id} onChange={(e)=>onInputChange(e)}>{option.nombre}</option>
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
               </div>
