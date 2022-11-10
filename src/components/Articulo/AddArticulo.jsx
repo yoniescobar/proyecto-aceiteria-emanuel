@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 import { Link, useNavigate } from "react-router-dom"
 
 const baseUrl = process.env.REACT_APP_BASE_URL
@@ -49,12 +50,22 @@ const AddArticulo = () => {
   
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${baseUrl}/Articulo`, Articulo);
-    Swal.fire(
-      'Articulo creado con exito!',
-      '',
-      'success'
-    )
+    const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
+    
+    if(resultado){
+      Swal.fire(
+        'Articulo creado con exito!',
+        '',
+        'success'
+      )
+    } else{
+      Swal.fire(
+        'Ocurrio un error al intentar crear el articulo!',
+        '',
+        'warning'
+      )
+    }
+
     navigate("/tblArticulo");
   };
 

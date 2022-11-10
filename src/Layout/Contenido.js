@@ -56,7 +56,7 @@ export default class Contenido extends Component {
 
                <Route exact path='/tblArticulo' element={<TblArticulo/>}></Route>
                <Route exact path='/addArticulo' element={<AddArticulo/>}></Route>
-               <Route exact path='/EditArticulo/:id' element={<EditArticulo/>}></Route>
+               <Route exact path='/EditArticulo/:idArticulo' element={<EditArticulo/>}></Route>
                
 
                <Route exact path='/tblUsuario' element={<TblUsuario/>}></Route>

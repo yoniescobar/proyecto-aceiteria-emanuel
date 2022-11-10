@@ -33,7 +33,7 @@ const TblArticulo = () => {
 
     if(resultado){
       Swal.fire(
-        'Articulo creado con exito!',
+        'Articulo eliminado con exito!',
         '',
         'success'
       )
@@ -41,7 +41,7 @@ const TblArticulo = () => {
       cargarArticulos()
     } else{
       Swal.fire(
-        'Ocurrio un error al intentar crear el articulos!',
+        'Ocurrio un error al intentar eliminar el articulo!',
         '',
         'warning'
       )
