@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from 'sweetalert2'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
@@ -18,8 +19,7 @@ const EditArticulo = () => {
     categoria:{},
     existencia: "",
     descripcion: "",
-    imagen: "",
-    estado: "",
+    imagen: ""
   })
 
   const { id, codigo, nombre, categoria:{id: int}, existencia, descripcion, imagen } = articulo;
@@ -35,10 +35,24 @@ const EditArticulo = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`${baseUrl}/articulo`, articulo);
+    setArticulo({ ...articulo, ["id"]: idArticulo });
+    const resultado = await axios.put(`${baseUrl}/articulo/`, articulo);
+
+    if(resultado){
+      Swal.fire(
+        'Se actualizo existosamente el articulo!',
+        '',
+        'success'
+      )
+    } else{
+      Swal.fire(
+        'Ocurrio un error al intentar actualizar el articulo!',
+        '',
+        'warning'
+      )
+    }
     navigate("/tblArticulo");
   };
-
   const cargarArticulo = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Articulo/id/${idArticulo}`)
@@ -93,9 +107,9 @@ const EditArticulo = () => {
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                {/* <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>cargarImagen(e)}/> */}
+                {/* <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>cargarImagen(e)}/>
                 <br></br>
-                {/* {imgArticulo && (
+                {imgArticulo && (
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)}/>
                 )} */}
               </div>
