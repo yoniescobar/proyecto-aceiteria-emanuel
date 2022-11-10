@@ -7,7 +7,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 const AddArticulo = () => {
   let navigate = useNavigate();
   const [Categoria, setCategoria] = useState([])
-  
+  const [imgArticulo, setImg] = useState();
   const [Articulo, setArticulo] = useState({
     nombre: "",
     categoria:{
@@ -20,7 +20,7 @@ const AddArticulo = () => {
   })
 
   const { nombre, categoria:{id}, existencia, descripcion, imagen, codigo } = Articulo;
-
+  
   useEffect(() => {
     consultarCategorias();
   }, []);
@@ -36,8 +36,16 @@ const AddArticulo = () => {
 
   const onInputChange = (e) => {
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+    console.log(Articulo)
   };
 
+  const cargarImagen = (e) => {
+    setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+    console.log(e.target.files[0]);
+    setImg(e.target.files[0]);
+  }
+
+  
   const onSubmit = async (e) => {
     e.preventDefault();
     await axios.post(`${baseUrl}/Articulo`, Articulo);
@@ -62,7 +70,7 @@ const AddArticulo = () => {
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
                 <select className="form-select appSelect" id="exampleFormControlSelect1">
-                  <option value="-1" onChange={(e)=>onInputChange(e)}>Seleccione una opcion</option>
+                  <option value="-1">Seleccione una opcion</option>
                   {Categoria.map((option) => (
                     <option value={option.id} onChange={(e)=>onInputChange(e)}>{option.nombre}</option>
                   ))}
@@ -81,9 +89,11 @@ const AddArticulo = () => {
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" 
-                value={imagen} onChange={(e)=>onInputChange(e)}/>
-                {/* <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Ejem: Juan Manuel..." /> */}
+                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>cargarImagen(e)}/>
+                <br></br>
+                {imgArticulo && (
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)}/>
+                )}
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>

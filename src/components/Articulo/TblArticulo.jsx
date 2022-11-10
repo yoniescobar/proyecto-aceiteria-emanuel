@@ -14,6 +14,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 const TblArticulo = () => {
   const [search, setSearch] = useState('')
   const [Articulo, setArticulo] = useState([])
+  const [imgArticulo, setImg] = useState();
   const [filteredArticulo, setFilteredArticulo] = useState([])
 
   useEffect(() => {

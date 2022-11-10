@@ -9,6 +9,7 @@ const EditArticulo = () => {
 
   const { id } = useParams()
   const [Categoria, setCategoria] = useState([])
+  const [imgArticulo, setImg] = useState();
   
   const [articulo, setArticulo] = useState({
     codigo: "",
@@ -55,6 +56,11 @@ const EditArticulo = () => {
     }
   }
 
+  const cargarImagen = (e) => {
+    setArticulo({ ...articulo, [e.target.name]: e.target.value });
+    //setImg(e.target.files[0]);
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -86,7 +92,11 @@ const EditArticulo = () => {
               {/* <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => onInputChange(e)} />
+                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>onInputChange(e)}/>
+                <br></br>
+                {imgArticulo && (
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)}/>
+                )}
               </div> */}
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
