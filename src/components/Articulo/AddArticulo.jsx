@@ -50,7 +50,11 @@ const AddArticulo = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     await axios.post(`${baseUrl}/Articulo`, Articulo);
-    alert("Datos Guardados Exitosamente")
+    Swal.fire(
+      'Articulo creado con exito!',
+      '',
+      'success'
+    )
     navigate("/tblArticulo");
   };
 

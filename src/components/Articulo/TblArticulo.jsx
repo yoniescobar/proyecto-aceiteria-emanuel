@@ -29,8 +29,23 @@ const TblArticulo = () => {
   }
 
   const eliminarArticulo = async (id) => {
-    await axios.delete(`${baseUrl}/Articulo/${id}`)
-    cargarArticulos()
+    const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
+
+    if(resultado){
+      Swal.fire(
+        'Articulo creado con exito!',
+        '',
+        'success'
+      )
+
+      cargarArticulos()
+    } else{
+      Swal.fire(
+        'Ocurrio un error al intentar crear el articulos!',
+        '',
+        'warning'
+      )
+    }
   }
 
   function confirmar(id, nombre) {
@@ -45,7 +60,6 @@ const TblArticulo = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         eliminarArticulo(id)
-
       }
     });
   };
