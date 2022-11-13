@@ -11,18 +11,18 @@ const EditArticulo = () => {
   const { idArticulo } = useParams()
   const [Categoria, setCategoria] = useState([])
   const [imgArticulo, setImg] = useState();
-  
+
   const [articulo, setArticulo] = useState({
-    id:"",
+    id: "",
     codigo: "",
     nombre: "",
-    categoria:{},
+    categoria: {},
     existencia: "",
     descripcion: "",
     imagen: ""
   })
 
-  const { id, codigo, nombre, categoria:{id: int}, existencia, descripcion, imagen } = articulo;
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen } = articulo;
 
   const onInputChange = (e) => {
     setArticulo({ ...articulo, [e.target.name]: e.target.value });
@@ -36,23 +36,18 @@ const EditArticulo = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setArticulo({ ...articulo, ["id"]: idArticulo });
-    const resultado = await axios.put(`${baseUrl}/articulo/`, articulo);
+    console.log(articulo);
+    const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
 
-    if(resultado){
-      Swal.fire(
-        'Se actualizo existosamente el articulo!',
-        '',
-        'success'
-      )
-    } else{
-      Swal.fire(
-        'Ocurrio un error al intentar actualizar el articulo!',
-        '',
-        'warning'
-      )
+    if (resultado) {
+      mesajeResultado('Se actualizo existosamente el articulo!', 'success');
+    } else {
+      mesajeResultado('Ocurrio un error al intentar actualizar el articulo!', 'warning');
     }
+
     navigate("/tblArticulo");
   };
+
   const cargarArticulo = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Articulo/id/${idArticulo}`)
@@ -71,9 +66,21 @@ const EditArticulo = () => {
     }
   }
 
+  const handleChange = event => {
+    setArticulo({ ...articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+  };
+
   const cargarImagen = (e) => {
     setArticulo({ ...articulo, [e.target.name]: e.target.value });
     setImg(e.target.files[0]);
+  }
+
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+      mensaje,
+      '',
+      clase
+    )
   }
 
   return (
@@ -89,10 +96,10 @@ const EditArticulo = () => {
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <select className="form-select appSelect" id="exampleFormControlSelect1">
-                  <option value="-1" onChange={(e)=>onInputChange(e)}>Seleccione una opcion</option>
+                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
+                  <option value="-1">Seleccione una opcion</option>
                   {Categoria.map((option) => (
-                    <option value={option.id} onChange={(e)=>onInputChange(e)}>{option.nombre}</option>
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
               </div>
@@ -102,16 +109,16 @@ const EditArticulo = () => {
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
-                <input type={"text"} className="form-control" name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)}/>
+                <input type={"text"} className="form-control" name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                {/* <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>cargarImagen(e)}/>
+                <input type="file" className="form-control" name="imagen" id="imagen" onChange={(e) => cargarImagen(e)} />
                 <br></br>
                 {imgArticulo && (
-                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)}/>
-                )} */}
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
+                )}
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>

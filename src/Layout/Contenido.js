@@ -7,7 +7,7 @@ import TblCategoria from '../components/Categoria/TblCategoria'
 
 import AddArticulo from '../components/Articulo/AddArticulo'
 import EditArticulo from '../components/Articulo/EditArticulo'
-import ReactPdfPrintArt from '../components/Articulo/ReactPdfPrint'
+import ReactPdfPrintArticulo from '../components/Articulo/ReactPdfPrintArticulo'
 import TblArticulo from '../components/Articulo/TblArticulo'
 
 
@@ -67,6 +67,7 @@ export default class Contenido extends Component {
                
                <Route exact path='/reporteCategoria' element={<ReactPdfPrint/>}></Route>
                <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario/>}></Route>
+               <Route exact path='/reporteArticulo' element={<ReactPdfPrintArticulo/>}></Route>
 
 
                

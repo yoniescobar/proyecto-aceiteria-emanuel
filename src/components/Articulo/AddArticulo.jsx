@@ -11,8 +11,8 @@ const AddArticulo = () => {
   const [imgArticulo, setImg] = useState();
   const [Articulo, setArticulo] = useState({
     nombre: "",
-    categoria:{
-      id:0
+    categoria: {
+      id: 0
     },
     existencia: "",
     descripcion: "",
@@ -20,8 +20,8 @@ const AddArticulo = () => {
     codigo: "",
   })
 
-  const { nombre, categoria:{id}, existencia, descripcion, imagen, codigo } = Articulo;
-  
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo } = Articulo;
+
   useEffect(() => {
     consultarCategorias();
   }, []);
@@ -45,24 +45,24 @@ const AddArticulo = () => {
   }
 
   const handleChange = event => {
-    setArticulo({ ...Articulo, ["categoria"]: {id : parseInt(event.target.value)} });
+    setArticulo({ ...Articulo, ["categoria"]: { id: parseInt(event.target.value) } });
   };
-  
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
-    
-    if(resultado){
+
+    if (resultado) {
+      mesajeResultado('Articulo creado con exito!', 'success');
+    } else {
+      mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
+    }
+
+    const mesajeResultado = (mensaje, clase) => {
       Swal.fire(
-        'Articulo creado con exito!',
+        mensaje,
         '',
-        'success'
-      )
-    } else{
-      Swal.fire(
-        'Ocurrio un error al intentar crear el articulo!',
-        '',
-        'warning'
+        clase
       )
     }
 
@@ -80,8 +80,8 @@ const AddArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
-                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto" 
-                value={nombre} onChange={(e)=>onInputChange(e)}/>
+                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
+                  value={nombre} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
@@ -94,27 +94,27 @@ const AddArticulo = () => {
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="existencia">Existencia(*):</label>
-                <input type="number" name="existencia" id="existencia" className="form-control" 
-                value={existencia} onChange={(e)=>onInputChange(e)}/>
+                <input type="number" name="existencia" id="existencia" className="form-control"
+                  value={existencia} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
-                <input type="text" name="descripcion" id="descripcion" className="form-control" 
-                value={descripcion} onChange={(e)=>onInputChange(e)}/>
+                <input type="text" name="descripcion" id="descripcion" className="form-control"
+                  value={descripcion} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e)=>cargarImagen(e)}/>
+                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => cargarImagen(e)} />
                 <br></br>
                 {imgArticulo && (
-                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)}/>
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
                 <input type="number" name="codigo" id="codigo" className="form-control"
-                value={codigo} onChange={(e)=>onInputChange(e)}/>
+                  value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
             </div>
 
