@@ -31,7 +31,7 @@ const AddArticulo = () => {
       const response = await axios.get(`${baseUrl}/all`)
       setCategoria(response.data.data)
     } catch (error) {
-      console.log(error);
+      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
     }
   }
 
@@ -50,24 +50,29 @@ const AddArticulo = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
 
-    if (resultado) {
-      mesajeResultado('Articulo creado con exito!', 'success');
-    } else {
-      mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
+    try {
+      const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
+
+      if (resultado) {
+        mesajeResultado('Articulo creado con exito!', 'success');
+      } else {
+        mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
+      }
+
+      navigate("/tblArticulo");
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
-
-    const mesajeResultado = (mensaje, clase) => {
-      Swal.fire(
-        mensaje,
-        '',
-        clase
-      )
-    }
-
-    navigate("/tblArticulo");
   };
+
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+      mensaje,
+      '',
+      clase
+    )
+  }
 
   return (
     <div className="container">

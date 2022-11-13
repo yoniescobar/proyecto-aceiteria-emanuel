@@ -35,17 +35,20 @@ const EditArticulo = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setArticulo({ ...articulo, ["id"]: idArticulo });
-    console.log(articulo);
-    const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
-
-    if (resultado) {
-      mesajeResultado('Se actualizo existosamente el articulo!', 'success');
-    } else {
-      mesajeResultado('Ocurrio un error al intentar actualizar el articulo!', 'warning');
+    try {
+      setArticulo({ ...articulo, ["id"]: idArticulo });
+      const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
+  
+      if (resultado) {
+        mesajeResultado('Se actualizo existosamente el articulo!', 'success');
+      } else {
+        mesajeResultado('Ocurrio un error al intentar actualizar el articulo!', 'warning');
+      }
+  
+      navigate("/tblArticulo");
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
-
-    navigate("/tblArticulo");
   };
 
   const cargarArticulo = async () => {
@@ -53,7 +56,7 @@ const EditArticulo = () => {
       const response = await axios.get(`${baseUrl}/Articulo/id/${idArticulo}`)
       setArticulo(response.data.data[0])
     } catch (error) {
-      console.log(error);
+      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
     }
   }
 
@@ -62,7 +65,7 @@ const EditArticulo = () => {
       const response = await axios.get(`${baseUrl}/all`)
       setCategoria(response.data.data)
     } catch (error) {
-      console.log(error);
+      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
     }
   }
 

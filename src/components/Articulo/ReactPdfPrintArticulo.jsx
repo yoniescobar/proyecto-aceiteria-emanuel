@@ -18,10 +18,22 @@ const ReactPdfPrint = () => {
     const [Articulo, setArticulo] = useState([])
 
     const cargarArticulo = async () => {
-        const response = await axios.get(`${baseUrl}/Articulo/all`)
-        // console.log(response.data.data.categoria);
-        setArticulo(response.data.data);
+        try {
+            const response = await axios.get(`${baseUrl}/Articulo/all`)
+            setArticulo(response.data.data);
+        } catch (error) {
+          mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+        }
     }
+
+    const mesajeResultado = (mensaje, clase) => {
+        Swal.fire(
+          mensaje,
+          '',
+          clase
+        )
+      }
+      
     useEffect(() => {
         cargarArticulo();
     }, []);

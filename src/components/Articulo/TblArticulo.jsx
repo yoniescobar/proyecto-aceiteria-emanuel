@@ -21,19 +21,26 @@ const TblArticulo = () => {
   }, []);
 
   const cargarArticulos = async () => {
-    const response = await axios.get(`${baseUrl}/Articulo/all`)
-    setArticulo(response.data.data)
-    setFilteredArticulo(response.data.data)
-
+    try {
+      const response = await axios.get(`${baseUrl}/Articulo/all`)
+      setArticulo(response.data.data)
+      setFilteredArticulo(response.data.data)
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+    }
   }
 
   const eliminarArticulo = async (id) => {
-    const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
+    try {
+      const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
 
-    if (resultado) {
-      mesajeResultado('Articulo eliminado con exito!', 'success');
-      cargarArticulos()
-    } else {
+      if (resultado) {
+        mesajeResultado('Articulo eliminado con exito!', 'success');
+        cargarArticulos()
+      } else {
+        mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
+      }
+    } catch (error) {
       mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
     }
   }
