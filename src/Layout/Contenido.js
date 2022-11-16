@@ -15,7 +15,7 @@ import TblUsuario from '../components/Usuario/TblUsuario'
 import AddUsuario from '../components/Usuario/AddUsuario'
 import EditUsuario from '../components/Usuario/EditUsuario'
 import ReactPdfPrintUsuario from '../components/Usuario/ReactPdfPrintUsuario'
-
+import Venta from '../components/Venta/Venta'
 
 
 
@@ -65,7 +65,7 @@ export default class Contenido extends Component {
                <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario/>}></Route>
 
 
-               
+               <Route exact path='/ventas' element={<Venta/>}></Route>
                
 
 
