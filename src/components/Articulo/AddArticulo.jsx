@@ -1,101 +1,78 @@
-
-import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Select from 'react-select';
-import storage from "../../firebaseConfig.js";
-import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
+import axios from "axios"
+import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
+import { Link, useNavigate } from "react-router-dom"
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const AddArticulo = () => {
-  const [categorias, setCategorias] = useState([]);
-    // State to store uploaded file
-    const [file, setFile] = useState("");    
-    // progress
-    const [percent, setPercent] = useState(0);
-    // Handle file upload event and update state
-    function handleChange(event) {
-      setFile(event.target.files[0]);
-      //handleUpload();
-    }        
-    const handleUpload = () => {
-      if (!file) {
-          alert("Please upload an image first!");
-      }
-
-      const storageRef = ref(storage, `/files/${file.name}`);
-
-      // progress can be paused and resumed. It also exposes progress updates.
-      // Receives the storage reference and the file to upload.
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-              const percent = Math.round(
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-              );
-
-              // update progress
-              setPercent(percent);
-          },
-          (err) => console.log(err),
-          () => {
-              // download url
-              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                  Articulo.imagen=url;
-              });
-          }
-      );
-    };
-
   let navigate = useNavigate();
-  useEffect(() => {
-    cargarCategoria();
-  }, []);
+  const [Categoria, setCategoria] = useState([])
+  const [imgArticulo, setImg] = useState();
   const [Articulo, setArticulo] = useState({
     nombre: "",
-    categoria:{
-      id:0
+    categoria: {
+      id: 0
     },
     existencia: "",
     descripcion: "",
     imagen: "",
     codigo: "",
-   
   })
 
-  function logChange(val) {
-    Articulo.categoria.id = val.id;
-  }
-  const { nombre, categoria,existencia,descripcion,imagen,codigo } = Articulo;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo } = Articulo;
 
+  useEffect(() => {
+    consultarCategorias();
+  }, []);
+
+  const consultarCategorias = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/all`)
+      setCategoria(response.data.data)
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
+    }
+  }
 
   const onInputChange = (e) => {
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
   };
 
-  const onSubmitt = async (e) => {
+  const cargarImagen = (e) => {
+    setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+    setImg(e.target.files[0]);
+  }
+
+  const handleChange = event => {
+    setArticulo({ ...Articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if(Articulo.nombre!="" && Articulo.codigo!="" || Articulo.categoria.id!=0){
-      await axios.post(`${baseUrl}/Articulo`, Articulo);
+
+    try {
+      const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
+
+      if (resultado) {
+        mesajeResultado('Articulo creado con exito!', 'success');
+      } else {
+        mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
+      }
+
       navigate("/tblArticulo");
-    }else{
-      alert("Ingresar campos obligatorios");
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 
-
-
-  const cargarCategoria = async () => {
-    const response = await axios.get(`${baseUrl}/all`);
-    response.data.data.forEach(element => {element.value=element.id; element.label=element.nombre});
-    setCategorias(response.data.data);
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+      mensaje,
+      '',
+      clase
+    )
   }
-
-
 
   return (
     <div className="container">
@@ -104,44 +81,48 @@ const AddArticulo = () => {
         <div className="col-12 col-lg-9">
           <section className />
           <div className="clas " />
-          <form action className="bg-light my-3 p-3 border rounded" onSubmit={e => e.preventDefault()}>
+          <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
-                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto" 
-                value={nombre} onChange={(e)=>onInputChange(e)}/>
+                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
+                  value={nombre} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <Select
-                  options={categorias}
-                  onChange={logChange}
-                />
+                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
+                  <option value="-1">Seleccione una opcion</option>
+                  {Categoria.map((option) => (
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="existencia">Existencia(*):</label>
-                <input type="number" name="existencia" id="existencia" className="form-control" 
-                value={existencia} onChange={(e)=>onInputChange(e)}/>
+                <input type="number" name="existencia" id="existencia" className="form-control"
+                  value={existencia} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
-                <input type="text" name="descripcion" id="descripcion" className="form-control" 
-                value={descripcion} onChange={(e)=>onInputChange(e)}/>
+                <input type="text" name="descripcion" id="descripcion" className="form-control"
+                  value={descripcion} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
-                <div>
-                    <input type="file" onChange={handleChange} accept="/image/*" />
-                    <button onClick={handleUpload}>Guardar imagen</button>
-                    <p>{percent} "% Listo!"</p>
-                </div>                
+                <label htmlFor="imagen">Imagen:</label>
+                <label class="form-label" for="customFile"></label>
+                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => cargarImagen(e)} />
+                <br></br>
+                {imgArticulo && (
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
+                )}
               </div>
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
                 <input type="number" name="codigo" id="codigo" className="form-control"
-                value={codigo} onChange={(e)=>onInputChange(e)}/>
+                  value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
             </div>
-            <button onClick={onSubmitt} className="btn btn-outline-primary">Guardar Articulo</button>
+            <button onClick={onSubmit} className="btn btn-outline-primary">Guardar Articulo</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>
         </div>

@@ -3,14 +3,17 @@ import { Route, Routes } from 'react-router-dom'
 import AddCategoria from '../components/Categoria/AddCategoria'
 import EditCategoria from '../components/Categoria/EditCategoria'
 import ReactPdfPrint from '../components/Categoria/ReactPdfPrint'
-
 import TblCategoria from '../components/Categoria/TblCategoria'
+import TblProveedor from '../components/Proveedor/tblProveedor'
+import AddArticulo from '../components/Articulo/AddArticulo'
+import EditArticulo from '../components/Articulo/EditArticulo'
+import ReactPdfPrintArticulo from '../components/Articulo/ReactPdfPrintArticulo'
 import TblArticulo from '../components/Articulo/TblArticulo'
 
 
 import Menu from './Menu'
 import Tablero from './Tablero'
-import AddArticulo from '../components/Articulo/AddArticulo'
+
 import TblUsuario from '../components/Usuario/TblUsuario'
 import AddUsuario from '../components/Usuario/AddUsuario'
 import EditUsuario from '../components/Usuario/EditUsuario'
@@ -52,7 +55,9 @@ export default class Contenido extends Component {
 
 
                <Route exact path='/tblArticulo' element={<TblArticulo/>}></Route>
+               <Route exact path='/tblProveedor' element={<TblProveedor/>}></Route>
                <Route exact path='/addArticulo' element={<AddArticulo/>}></Route>
+               <Route exact path='/EditArticulo/:idArticulo' element={<EditArticulo/>}></Route>
                
 
                <Route exact path='/tblUsuario' element={<TblUsuario/>}></Route>
@@ -63,6 +68,7 @@ export default class Contenido extends Component {
                
                <Route exact path='/reporteCategoria' element={<ReactPdfPrint/>}></Route>
                <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario/>}></Route>
+               <Route exact path='/reporteArticulo' element={<ReactPdfPrintArticulo/>}></Route>
 
 
                <Route exact path='/ventas' element={<Venta/>}></Route>

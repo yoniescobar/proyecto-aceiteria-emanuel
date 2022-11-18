@@ -17,21 +17,40 @@ const TblArticulo = () => {
   const [filteredArticulo, setFilteredArticulo] = useState([])
 
   useEffect(() => {
-    cargarArticulo();
+    cargarArticulos();
   }, []);
 
-  const cargarArticulo = async () => {
-
-    const response = await axios.get(`${baseUrl}/Articulo/all`)
-    setArticulo(response.data.data)
-    setFilteredArticulo(response.data.data)
-
+  const cargarArticulos = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/Articulo/all`)
+      setArticulo(response.data.data)
+      setFilteredArticulo(response.data.data)
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+    }
   }
 
+  const eliminarArticulo = async (id) => {
+    try {
+      const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
 
-  const deleteArticulo = async (id) => {
-    await axios.delete(`${baseUrl}/Articulo/${id}`)
-    cargarArticulo()
+      if (resultado) {
+        mesajeResultado('Articulo eliminado con exito!', 'success');
+        cargarArticulos()
+      } else {
+        mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
+      }
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
+    }
+  }
+
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+      mensaje,
+      '',
+      clase
+    )
   }
 
   function confirmar(id, nombre) {
@@ -45,15 +64,14 @@ const TblArticulo = () => {
 
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteArticulo(id)
-
+        eliminarArticulo(id)
       }
     });
   };
 
 
   const columns = [
-    
+
     {
       name: 'Nombre',
       selector: (row) => row.nombre,
@@ -72,7 +90,7 @@ const TblArticulo = () => {
       name: 'Existencia',
       selector: (row) => row.existencia,
     },
-   
+
     {
       name: 'Imagen',
       selector: (row) => <img width={50} height={50} src={row.imagen} />,
@@ -86,13 +104,13 @@ const TblArticulo = () => {
       cell: (row) => [
         <Link
           className="btn btn-outline-primary mx-1"
-          to={`/editCategoria/${row.id}`}
+          to={`/editArticulo/${row.id}`}
         >
           <span className="fa-solid fa-pen-to-square"></span>
         </Link>,
         <button
           className="btn btn-danger mx-1"
-          onClick={() => confirmar(row.id,row.nombre)}>
+          onClick={() => confirmar(row.id, row.nombre)}>
           <span className="fa-regular fa-trash-can"></span>
         </button>,
       ],
