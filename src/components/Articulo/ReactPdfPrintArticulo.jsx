@@ -1,4 +1,4 @@
-
+import Swal from 'sweetalert2'
 import React, { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
