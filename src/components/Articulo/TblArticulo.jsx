@@ -82,11 +82,6 @@ const TblArticulo = () => {
       selector: (row) => row.categoria.nombre,
     },
     {
-      name: 'Código',
-      selector: (row) => row.codigo,
-      sortable: true,
-    },
-    {
       name: 'Existencia',
       selector: (row) => row.existencia,
     },

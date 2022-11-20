@@ -8,6 +8,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 const AddArticulo = () => {
   let navigate = useNavigate();
   const [Categoria, setCategoria] = useState([])
+  const [Presentacion, setPresentacion] = useState([])
   const [imgArticulo, setImg] = useState();
   const [Articulo, setArticulo] = useState({
     nombre: "",
@@ -18,18 +19,31 @@ const AddArticulo = () => {
     descripcion: "",
     imagen: "",
     codigo: "",
+    stockMinimo: "",
+    marca:"",
+    modelo:"",
   })
 
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo } = Articulo;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo } = Articulo;
 
   useEffect(() => {
     consultarCategorias();
+    consultarPresentacion();
   }, []);
 
   const consultarCategorias = async () => {
     try {
       const response = await axios.get(`${baseUrl}/all`)
       setCategoria(response.data.data)
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
+    }
+  }
+
+  const consultarPresentacion = async () => {
+    try {
+      const response = await axios.get(`${baseUrl}/all`)
+      setPresentacion(response.data.data)
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
     }
@@ -84,6 +98,12 @@ const AddArticulo = () => {
           <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
+                <label htmlFor="codigo">Código de Barra(*):</label>
+                <input type="number" name="codigo" id="codigo" className="form-control"
+                  value={codigo} onChange={(e) => onInputChange(e)} />
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
                 <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
                   value={nombre} onChange={(e) => onInputChange(e)} />
@@ -108,6 +128,21 @@ const AddArticulo = () => {
                   value={descripcion} onChange={(e) => onInputChange(e)} />
               </div>
               <div className="form-group col-12 col-sm-6">
+                <label htmlFor="stockMinimo">Stock minimo(*):</label>
+                <input type="number" name="stockMinimo" id="stockMinimo" className="form-control"
+                  value={stockMinimo} onChange={(e) => onInputChange(e)} />
+              </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="marca">Marca(*):</label>
+                <input type="text" name="marca" id="marca" className="form-control"
+                  value={marca} onChange={(e) => onInputChange(e)} />
+              </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="modelo">Modelo(*):</label>
+                <input type="text" name="modelo" id="modelo" className="form-control"
+                  value={modelo} onChange={(e) => onInputChange(e)} />
+              </div>
+              <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
                 <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => cargarImagen(e)} />
@@ -117,9 +152,13 @@ const AddArticulo = () => {
                 )}
               </div>
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="codigo">Código de Barra:</label>
-                <input type="number" name="codigo" id="codigo" className="form-control"
-                  value={codigo} onChange={(e) => onInputChange(e)} />
+                <label htmlFor="presentacion">Presentacion(*):</label>
+                <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
+                  <option value="-1">Seleccione una opcion</option>
+                  {Presentacion.map((option) => (
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
