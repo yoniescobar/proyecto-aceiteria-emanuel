@@ -10,17 +10,12 @@ import {BrowserRouter as Router, Routes} from 'react-router-dom'
 function App() {
   return (
     <div className="wrapper">
-        
        <Router>
           <Header/>
           <Menu/>
           <Contenido/>
           <Footer/>
-  
        </Router>
-            
-       
-        
     </div>
   );
 }

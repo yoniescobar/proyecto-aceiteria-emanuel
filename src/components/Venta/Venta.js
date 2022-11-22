@@ -10,10 +10,9 @@ const Venta = () => (
     </div>
     <div>
       <Link to="/venta/agregar">
-      <button type="button" class="btn btn-large btn-block btn-primary">Agregar venta</button>
+        <button type="button" class="btn btn-large btn-block btn-primary">Agregar venta</button>
       </Link>
     </div> 
-
   </div>
 );
 
