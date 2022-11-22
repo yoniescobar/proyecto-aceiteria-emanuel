@@ -32,8 +32,6 @@ export default class Contenido extends Component {
       <div className="container-fluid">
         <div className="row mb-2">
           <div className="col-md-12">
-            <h5 className="m-0 text-dark">Contenido Principal</h5>
-
             <div className="col-sm-12">
             <ol className="breadcrumb float-sm-right ">
               <li className="breadcrumb-item"><a href="#">Home</a></li>
