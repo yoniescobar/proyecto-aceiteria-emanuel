@@ -106,10 +106,10 @@ export default class Menu extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="/ventas" className="nav-link">
+                      <Link to={'venta/add'} className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Ingreso</p>
-                      </a>
+                        <p>Ingreso</p>  
+                      </Link>                        
                     </li>
                   </ul>
                   <ul className="nav nav-treeview">

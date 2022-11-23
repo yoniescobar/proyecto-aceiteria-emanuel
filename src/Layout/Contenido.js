@@ -26,10 +26,6 @@ export default class Contenido extends Component {
     render() {
         return (
             <>
-  <div className="content-wrapper">
-    {/* Content Header (Page header) */}
-    <div className="content-header">
-      <div className="container-fluid">
         <div className="row mb-2">
           <div className="col-md-12">
             <h5 className="m-0 text-dark">Contenido Principal</h5>
@@ -43,8 +39,7 @@ export default class Contenido extends Component {
             
             <div className='my-5'></div>
             <div className='container-fluid'>
-          
-               <Routes>
+            <Routes>
                <Route exact path='/' element={<Tablero/>}/>
                <Route exact path='/tablero' element={<Tablero/>}></Route>
 
@@ -77,22 +72,11 @@ export default class Contenido extends Component {
 
             </Routes>
 
-
-               
-              
-
             </div>
             
           </div>{/* /.col */}
           
         </div>{/* /.row */}
-      </div>{/* /.container-fluid */}
-    </div>
-    {/* /.content-header */}
- 
-    
-
-  </div>
 </>
 
         )
