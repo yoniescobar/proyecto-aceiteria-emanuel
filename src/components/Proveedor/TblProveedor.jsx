@@ -4,41 +4,40 @@ import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { Link, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { CSVLink } from 'react-csv'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const TblProveedor = () => {
   const [search, setSearch] = useState('')
-  const [Articulo, setArticulo] = useState([])
-  const [filteredArticulo, setFilteredArticulo] = useState([])
+  const [Proveedor, setProveedor] = useState([])
+  const [filteredProveedor, setFilteredProveedor] = useState([])
 
   useEffect(() => {
-    cargarArticulos();
+    cargarProveedores();
   }, []);
 
-  const cargarArticulos = async () => {
+  const cargarProveedores = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/Articulo/all`)
-      setArticulo(response.data.data)
-      setFilteredArticulo(response.data.data)
+      const response = await axios.get(`${baseUrl}/Persona/all`)
+      setProveedor(response.data.data.filter(x => x.tipo_persona == 2));
+      setFilteredProveedor(response.data.data.filter(x => x.tipo_persona == 2));
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+      mesajeResultado('Ocurrio un error al intentar consultar los proveedores, intenta mas tarde.', 'warning')
     }
   }
 
-  const eliminarArticulo = async (id) => {
+  const eliminarProveedor = async (id) => {
     try {
-      const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
+      const resultado = await axios.delete(`${baseUrl}/Persona/id/${id}`)
 
       if (resultado) {
-        mesajeResultado('Articulo eliminado con exito!', 'success');
-        cargarArticulos()
+        mesajeResultado('Proveedor eliminado con exito!', 'success');
+        cargarProveedores()
       } else {
-        mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
+        mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
       }
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
+      mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
     }
   }
 
@@ -61,7 +60,7 @@ const TblProveedor = () => {
 
     }).then((result) => {
       if (result.isConfirmed) {
-        eliminarArticulo(id)
+        eliminarProveedor(id)
       }
     });
   };
@@ -74,34 +73,38 @@ const TblProveedor = () => {
     },
     {
       name: 'Telefono',
-      selector: (row) => row.categoria.nombre,
+      selector: (row) => row.telefono,
     },
     {
       name: 'Correo',
-      selector: (row) => row.existencia,
+      selector: (row) => row.direccion,
     },
     {
-      name: 'Estado',
-      selector: (row) => row.categoria.condicion,
-      sortable: true,
-      grow:0.5,
-      conditionalCellStyles:[
-        {
-            when: row => row.categoria.condicion === 'Activo',
-            classNames: ['badge badge-pill badge-success m-3 mb-3'],
-        },
-        {
-          when: row => row.categoria.condicion !== 'Activo',
-            classNames: ['badge badge-pill badge-danger  m-3 mb-3']
-        }
-      ]
+      name: 'Correo',
+      selector: (row) => row.correo,
     },
+    // {
+    //   name: 'Estado',
+    //   selector: (row) => row.categoria.condicion,
+    //   sortable: true,
+    //   grow:0.5,
+    //   conditionalCellStyles:[
+    //     {
+    //         when: row => row.categoria.condicion === 'Activo',
+    //         classNames: ['badge badge-pill badge-success m-3 mb-3'],
+    //     },
+    //     {
+    //       when: row => row.categoria.condicion !== 'Activo',
+    //         classNames: ['badge badge-pill badge-danger  m-3 mb-3']
+    //     }
+    //   ]
+    // },
     {
       name: 'Opciones',
       cell: (row) => [
         <Link
           className="btn btn-outline-primary mx-1"
-          to={`/editArticulo/${row.id}`}
+          to={`/editProveedor/${row.id}`}
         >
           <span className="fa-solid fa-pen-to-square"></span>
         </Link>,
@@ -116,12 +119,12 @@ const TblProveedor = () => {
   ]
 
   useEffect(() => {
-    const result = Articulo.filter((country) => {
+    const result = Proveedor.filter((country) => {
       return country.nombre.toLowerCase().match(search.toLowerCase())
     })
 
-    setFilteredArticulo(result)
-  }, [Articulo, search])
+    setFilteredProveedor(result)
+  }, [Proveedor, search])
 
   return (
     <div className='container-fluid ' >
@@ -129,7 +132,7 @@ const TblProveedor = () => {
         defaultSortField="idTablaData"
         title="Listado de proveedores"
         columns={columns}
-        data={filteredArticulo}
+        data={filteredProveedor}
         pagination
         sortIcon={<i className="fa-solid fa-sort"></i>}
         fixedHeader
@@ -143,7 +146,7 @@ const TblProveedor = () => {
         subHeaderComponent={
           <input
             type="text"
-            placeholder="Buscar Articulo"
+            placeholder="Buscar Proveedor"
             className="w-25 form-control"
             value={search}
             onChange={(e) => setSearch(e.target.value)}

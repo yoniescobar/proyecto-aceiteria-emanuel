@@ -7,74 +7,39 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 
 const AddProveedor = () => {
     let navigate = useNavigate();
-    const [Categoria, setCategoria] = useState([])
-    const [Presentacion, setPresentacion] = useState([])
-    const [imgArticulo, setImg] = useState();
-    const [Articulo, setArticulo] = useState({
+    const [Proveedor, setProveedor] = useState({
+        tipo_persona: 2,
+        tipo_documento: 0,
+        no_documento: "",
         nombre: "",
-        categoria: {
-            id: 0
-        },
-        existencia: "",
-        descripcion: "",
-        imagen: "",
-        codigo: "",
-        stockMinimo: "",
-        marca: "",
-        modelo: "",
+        direccion: "",
+        telefono: "",
+        correo: ""
     })
 
-    const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo } = Articulo;
-
-    useEffect(() => {
-        consultarCategorias();
-        consultarPresentacion();
-    }, []);
-
-    const consultarCategorias = async () => {
-        try {
-            const response = await axios.get(`${baseUrl}/all`)
-            setCategoria(response.data.data)
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
-        }
-    }
-
-    const consultarPresentacion = async () => {
-        try {
-            const response = await axios.get(`${baseUrl}/all`)
-            setPresentacion(response.data.data)
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
-        }
-    }
+    const { tipo_persona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
 
     const onInputChange = (e) => {
-        setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+        setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
     };
 
-    const cargarImagen = (e) => {
-        setArticulo({ ...Articulo, [e.target.name]: e.target.value });
-        setImg(e.target.files[0]);
-    }
-
     const handleChange = event => {
-        setArticulo({ ...Articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+        setProveedor({ ...Proveedor, ["tipo_documento"]: parseInt(event.target.value) });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
+            const resultado = await axios.post(`${baseUrl}/Persona`, Proveedor);
 
             if (resultado) {
-                mesajeResultado('Articulo creado con exito!', 'success');
+                mesajeResultado('Proveedor creado con exito!', 'success');
             } else {
-                mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
+                mesajeResultado('Ocurrio un error al intentar crear el proveedor!', 'warning');
             }
 
-            navigate("/tblArticulo");
+            navigate("/tblProveedor");
         } catch (error) {
             mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
@@ -98,59 +63,42 @@ const AddProveedor = () => {
                     <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
                         <div className="form-row mb-4">
                             <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="tipoDocumento">Tipo de documento(*):</label>
-                                <select id="tipoDocumento" nombre="tipoDocumento" className="form-select appSelect" onChange={handleChange}>
-                                    <option value="-1">Seleccione una opcion</option>
-                                    {Categoria.map((option) => (
+                                <label htmlFor="tipo_documento">Tipo de documento(*):</label>
+                                <select id="tipo_documento" nombre="tipo_documento" className="form-select appSelect" onChange={handleChange}>
+                                    {TipoDocumento.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
                                 </select>
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="numeroDocumento">Numero de documento(*):</label>
-                                <input type="text" name="numeroDocumento" id="numeroDocumento" className="form-control"
-                                    value={codigo} onChange={(e) => onInputChange(e)} />
+                                <label htmlFor="no_documento">Numero de documento(*):</label>
+                                <input type="text" name="no_documento" id="no_documento" className="form-control"
+                                    value={no_documento} onChange={(e) => onInputChange(e)} />
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="nombre">Nombre(*):</label>
-                                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
+                                <input type="text" name="nombre" id="nombre" className="form-control"
                                     value={nombre} onChange={(e) => onInputChange(e)} />
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="direccion">Direccion(*):</label>
                                 <input type="text" name="direccion" id="direccion" className="form-control"
-                                    value={existencia} onChange={(e) => onInputChange(e)} />
-                            </div>
-
-                            <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="encargado">Nombre del encargado(*):</label>
-                                <input type="text" name="encargado" id="encargado" className="form-control"
-                                    value={descripcion} onChange={(e) => onInputChange(e)} />
+                                    value={direccion} onChange={(e) => onInputChange(e)} />
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="telefono">Telefono(*):</label>
                                 <input type="number" name="telefono" id="telefono" className="form-control"
-                                    value={stockMinimo} onChange={(e) => onInputChange(e)} />
+                                    value={telefono} onChange={(e) => onInputChange(e)} />
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="correo">Correo(*):</label>
                                 <input type="text" name="correo" id="correo" className="form-control"
-                                    value={marca} onChange={(e) => onInputChange(e)} />
-                            </div>
-
-                            <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="estado">Estado(*):</label>
-                                <select id="estado" nombre="estado" className="form-select appSelect" onChange={handleChange}>
-                                    <option value="-1">Seleccione una opcion</option>
-                                    {Presentacion.map((option) => (
-                                        <option key={option.id} value={option.id} >{option.nombre}</option>
-                                    ))}
-                                </select>
+                                    value={correo} onChange={(e) => onInputChange(e)} />
                             </div>
                         </div>
 
@@ -162,5 +110,11 @@ const AddProveedor = () => {
         </div>
     );
 }
+
+const TipoDocumento = [
+    { id: -1, nombre: 'Seleccione una opcion' },
+    { id: 1, nombre: 'NIT' },
+    { id: 2, nombre: 'DPI' }
+];
 
 export default AddProveedor
