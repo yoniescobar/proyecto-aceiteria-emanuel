@@ -12,7 +12,7 @@ const EditProveedor = () => {
 
   const [Proveedor, setProveedor] = useState({
     id: "",
-    tipo_persona: 2,
+    tipopersona: 2,
     tipo_documento: 0,
     no_documento: "",
     nombre: "",
@@ -21,7 +21,7 @@ const EditProveedor = () => {
     correo: ""
   })
 
-  const { id, tipo_persona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
+  const { id, tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
 
   const onInputChange = (e) => {
     setProveedor({ ...Proveedor, [e.target.name]: e.target.value });

@@ -19,8 +19,8 @@ const TblProveedor = () => {
   const cargarProveedores = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Persona/all`)
-      setProveedor(response.data.data.filter(x => x.tipo_persona == 2));
-      setFilteredProveedor(response.data.data.filter(x => x.tipo_persona == 2));
+      setProveedor(response.data.data.filter(x => x.tipopersona == 2));
+      setFilteredProveedor(response.data.data.filter(x => x.tipopersona == 2));
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar los proveedores, intenta mas tarde.', 'warning')
     }

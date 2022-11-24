@@ -8,7 +8,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 const AddProveedor = () => {
     let navigate = useNavigate();
     const [Proveedor, setProveedor] = useState({
-        tipo_persona: 2,
+        tipopersona: 2,
         tipo_documento: 0,
         no_documento: "",
         nombre: "",
@@ -17,7 +17,7 @@ const AddProveedor = () => {
         correo: ""
     })
 
-    const { tipo_persona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
+    const { tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
 
     const onInputChange = (e) => {
         setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
