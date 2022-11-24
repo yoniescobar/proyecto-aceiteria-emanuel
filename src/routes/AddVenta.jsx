@@ -1,19 +1,19 @@
-import { Form } from "react-router-dom";
+import BuscadorPorCodigo from "../components/Articulo/BuscadorPorCodigo";
+import { CarritoCompra } from "../components/Articulo/CarritoCompra";
+import { useState } from 'react';
 
 export default function AddVenta() {
+  const [articulo, setArticulo] = useState({});
+
+  const handleAdd = data => {
+    setArticulo(data);
+  };
   return (
     <>
     <div className="container">
-      <Form method="post" className="form-inline">
-        <label for="codigo">Código:   </label>
-        <input 
-          type="text" 
-          className="form-control mb-2 mr-sm-2" 
-          id="codigo" 
-          name="codigo"
-          placeholder="Código" />
-        <button type="button" className="btn btn-primary mb-2">Buscar</button>
-      </Form>
+      <BuscadorPorCodigo handleAdd={handleAdd} />
+      <hr />
+      <CarritoCompra handleAdd={articulo}/>
     </div>
     </>
   )
