@@ -8,75 +8,59 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 const EditProveedor = () => {
   let navigate = useNavigate();
 
-  const { idArticulo } = useParams()
-  const [Categoria, setCategoria] = useState([])
-  const [imgArticulo, setImg] = useState();
+  const { idProveedor } = useParams()
 
-  const [articulo, setArticulo] = useState({
+  const [Proveedor, setProveedor] = useState({
     id: "",
-    codigo: "",
+    tipo_persona: 2,
+    tipo_documento: 0,
+    no_documento: "",
     nombre: "",
-    categoria: {},
-    existencia: "",
-    descripcion: "",
-    imagen: ""
+    direccion: "",
+    telefono: "",
+    correo: ""
   })
 
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen } = articulo;
+  const { id, tipo_persona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
 
   const onInputChange = (e) => {
-    setArticulo({ ...articulo, [e.target.name]: e.target.value });
+    setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-    cargarArticulo()
-    consultarCategorias()
+    cargarProveedor()
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      setArticulo({ ...articulo, ["id"]: idArticulo });
-      const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
-  
+      setProveedor({ ...Proveedor, ["id"]: idProveedor });
+      const resultado = await axios.put(`${baseUrl}/Persona/`, Proveedor);
+
       if (resultado) {
-        mesajeResultado('Se actualizo existosamente el articulo!', 'success');
+        mesajeResultado('Los datos fueron actualizados con exito!', 'success');
       } else {
-        mesajeResultado('Ocurrio un error al intentar actualizar el articulo!', 'warning');
+        mesajeResultado('Ocurrio un error al intentar actualizar el proveedor!', 'warning');
       }
-  
-      navigate("/tblArticulo");
+
+      navigate("/tblProveedor");
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 
-  const cargarArticulo = async () => {
+  const cargarProveedor = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/Articulo/id/${idArticulo}`)
-      setArticulo(response.data.data[0])
+      const response = await axios.get(`${baseUrl}/Persona/id/${idProveedor}`)
+      setProveedor(response.data.data[0])
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
-    }
-  }
-
-  const consultarCategorias = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/all`)
-      setCategoria(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
+      mesajeResultado('Ocurrio un error al intentar consultar los datos del proveedor, intenta mas tarde.', 'warning')
     }
   }
 
   const handleChange = event => {
-    setArticulo({ ...articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+    setProveedor({ ...Proveedor, ["tipo_documento"]: parseInt(event.target.value) });
   };
-
-  const cargarImagen = (e) => {
-    setArticulo({ ...articulo, [e.target.name]: e.target.value });
-    setImg(e.target.files[0]);
-  }
 
   const mesajeResultado = (mensaje, clase) => {
     Swal.fire(
@@ -88,54 +72,66 @@ const EditProveedor = () => {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">Editar articulo</h2>
-          <form onSubmit={(e) => onSubmit(e)}>
+      <div className="row justify-content-center">
+        <h2 className="text-center m-4">Editar proveedor</h2>
+        <div className="col-12 col-lg-9">
+          <section className />
+          <div className="clas " />
+          <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="nombre">Nombre(*):</label>
-                <input type={"text"} className="form-control" name="nombre" value={nombre} onChange={(e) => onInputChange(e)} />
-              </div>
-              <div className="form-group col-12 col-sm-6">
-                <label htmlFor="categoria">Categoria(*):</label>
-                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
-                  <option value="-1">Seleccione una opcion</option>
-                  {Categoria.map((option) => (
+                <label htmlFor="tipo_documento">Tipo de documento(*):</label>
+                <select id="tipo_documento" nombre="tipo_documento" className="form-select appSelect" onChange={handleChange}>
+                  {TipoDocumento.map((option) => (
                     <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
               </div>
+
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="existencia">Existencia(*):</label>
-                <input type={"text"} className="form-control" name="existencia" value={existencia} onChange={(e) => onInputChange(e)} />
+                <label htmlFor="no_documento">Numero de documento(*):</label>
+                <input type="text" name="no_documento" id="no_documento" className="form-control"
+                  value={no_documento} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="descripcion">Descripción(*):</label>
-                <input type={"text"} className="form-control" name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)} />
+                <label htmlFor="nombre">Nombre(*):</label>
+                <input type="text" name="nombre" id="nombre" className="form-control"
+                  value={nombre} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="imagen">Imagen:</label>
-                <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" onChange={(e) => cargarImagen(e)} />
-                <br></br>
-                {imgArticulo && (
-                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
-                )}
+                <label htmlFor="direccion">Direccion(*):</label>
+                <input type="text" name="direccion" id="direccion" className="form-control"
+                  value={direccion} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="codigo">Código de Barra:</label>
-                <input type="number" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
+                <label htmlFor="telefono">Telefono(*):</label>
+                <input type="number" name="telefono" id="telefono" className="form-control"
+                  value={telefono} onChange={(e) => onInputChange(e)} />
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="correo">Correo(*):</label>
+                <input type="text" name="correo" id="correo" className="form-control"
+                  value={correo} onChange={(e) => onInputChange(e)} />
               </div>
             </div>
 
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
-            <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
+            <Link className="btn btn-outline-danger mx-2" to="/tblProveedor">Cancelar</Link>
           </form>
         </div>
       </div>
     </div>
   );
 }
+
+const TipoDocumento = [
+  { id: -1, nombre: 'Seleccione una opcion' },
+  { id: 1, nombre: 'NIT' },
+  { id: 2, nombre: 'DPI' }
+];
 
 export default EditProveedor
