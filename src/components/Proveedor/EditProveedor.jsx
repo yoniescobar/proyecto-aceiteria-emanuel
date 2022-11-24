@@ -21,7 +21,7 @@ const EditProveedor = () => {
     correo: ""
   })
 
-  const { id, tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
+  const { id, tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo, estado } = Proveedor;
 
   const onInputChange = (e) => {
     setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
@@ -59,7 +59,7 @@ const EditProveedor = () => {
   }
 
   const handleChange = event => {
-    setProveedor({ ...Proveedor, ["tipo_documento"]: parseInt(event.target.value) });
+    setProveedor({ ...Proveedor, [event.target.name]: parseInt(event.target.value) });
   };
 
   const mesajeResultado = (mensaje, clase) => {
@@ -81,8 +81,8 @@ const EditProveedor = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="tipo_documento">Tipo de documento(*):</label>
-                <select id="tipo_documento" nombre="tipo_documento" className="form-select appSelect" onChange={handleChange}>
-                  {TipoDocumento.map((option) => (
+                <select id="tipo_documento" name="tipo_documento" className="form-select appSelect" onChange={handleChange}>
+                  {ListaTipoDocumento.map((option) => (
                     <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
@@ -117,6 +117,15 @@ const EditProveedor = () => {
                 <input type="text" name="correo" id="correo" className="form-control"
                   value={correo} onChange={(e) => onInputChange(e)} />
               </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="tipo_documento">Estado(*):</label>
+                <select id="tipo_documento" name="estado" className="form-select appSelect" onChange={handleChange}>
+                  {ListaEstado.map((option) => (
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
@@ -128,10 +137,16 @@ const EditProveedor = () => {
   );
 }
 
-const TipoDocumento = [
+const ListaTipoDocumento = [
   { id: -1, nombre: 'Seleccione una opcion' },
   { id: 1, nombre: 'NIT' },
   { id: 2, nombre: 'DPI' }
+];
+
+const ListaEstado = [
+  { id: -1, nombre: 'Seleccione una opcion' },
+  { id: 1, nombre: 'Activo' },
+  { id: 2, nombre: 'No activo' }
 ];
 
 export default EditProveedor

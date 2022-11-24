@@ -24,7 +24,7 @@ const AddProveedor = () => {
     };
 
     const handleChange = event => {
-        setProveedor({ ...Proveedor, ["tipo_documento"]: parseInt(event.target.value) });
+        setProveedor({ ...Proveedor, [event.target.name]: parseInt(event.target.value) });
     };
 
     const onSubmit = async (e) => {
@@ -64,8 +64,8 @@ const AddProveedor = () => {
                         <div className="form-row mb-4">
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="tipo_documento">Tipo de documento(*):</label>
-                                <select id="tipo_documento" nombre="tipo_documento" className="form-select appSelect" onChange={handleChange}>
-                                    {TipoDocumento.map((option) => (
+                                <select id="tipo_documento" name="tipo_documento" className="form-select appSelect" onChange={handleChange}>
+                                    {ListaTipoDocumento.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
                                 </select>
@@ -100,6 +100,15 @@ const AddProveedor = () => {
                                 <input type="text" name="correo" id="correo" className="form-control"
                                     value={correo} onChange={(e) => onInputChange(e)} />
                             </div>
+
+                            <div className="form-group col-12 col-sm-6">
+                                <label htmlFor="tipo_documento">Estado(*):</label>
+                                <select id="tipo_documento" name="estado" className="form-select appSelect" onChange={handleChange}>
+                                    {ListaEstado.map((option) => (
+                                        <option key={option.id} value={option.id} >{option.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
 
                         <button type="submit" className="btn btn-outline-primary">Guardar</button>
@@ -111,10 +120,16 @@ const AddProveedor = () => {
     );
 }
 
-const TipoDocumento = [
+const ListaTipoDocumento = [
     { id: -1, nombre: 'Seleccione una opcion' },
     { id: 1, nombre: 'NIT' },
     { id: 2, nombre: 'DPI' }
+];
+
+const ListaEstado = [
+    { id: -1, nombre: 'Seleccione una opcion' },
+    { id: 1, nombre: 'Activo' },
+    { id: 2, nombre: 'No activo' }
 ];
 
 export default AddProveedor
