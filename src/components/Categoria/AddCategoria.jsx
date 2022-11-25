@@ -2,8 +2,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import Swal from 'sweetalert2'
 const baseUrl = process.env.REACT_APP_BASE_URL
+
+const dataEstado = [
+  { id: 1, estado: "Activo" },
+  { id: 2, estado: "No Activo" },
+]
 
 const AddCategoria = () => {
 
@@ -12,7 +17,7 @@ const AddCategoria = () => {
   const [categoria, setcategoria] = useState({
     nombre: "",
     descripcion: "",
-    condicion: "",
+    condicion:""
   })
 
   const { nombre, descripcion, condicion } = categoria;
@@ -21,13 +26,37 @@ const AddCategoria = () => {
     setcategoria({ ...categoria, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    await axios.post(`${baseUrl}/categoria`, categoria);
-    navigate("/tblCategoria");
+  const handleChange = event => {
+    setcategoria({ ...categoria, ["condicion"]: event.target.value  });
   };
 
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const resultado = await axios.post(`${baseUrl}/categoria`, categoria);
+      if(resultado){
+        mesajeResultado('Categoria creado con exito!', 'success');
+        navigate("/categoria");
+      }else{
+        mesajeResultado('Ocurrio un error al intentar crear la Categoria!', 'warning');
+      }
+    } catch (error) {
+      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde', 'warning');
+    }
+
+    navigate("/tblCategoria");
+    
+  };
+
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+      mensaje,
+      '',
+      clase
+    )
+  }
   return (
     <div className="container">
       <div className="row">
@@ -49,18 +78,15 @@ const AddCategoria = () => {
             </div>
 
             <div className="mb-3">
-              <label for="exampleFormControlSelect1" htmlFor="Condicion" className="form-label">condicion</label>
-              <input type={"text"} className="form-control" placeholder="condicion"
-                name="condicion" value={condicion} onChange={(e) => onInputChange(e)}
-              />
-
-              {/* <select className="form-select appSelect" id="exampleFormControlSelect1"  
-                  name="condicion" value={condicion} onChange={(e) => onInputChange(e)}  >
-                <option selected>Activo</option>
-                <option>Desactivado</option>
-              </select> */}
+              <label htmlFor="categoria">Estado(*):</label>
+              <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
+                <option value="-1">Seleccione una opcion</option>
+                {dataEstado.map((option) => (
+                  <option key={option.id} value={option.estado} >{option.estado}</option>
+                ))}
+              </select>
             </div>
-
+            
             <button type="submit" className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblCategoria">Cancelar</Link>
 

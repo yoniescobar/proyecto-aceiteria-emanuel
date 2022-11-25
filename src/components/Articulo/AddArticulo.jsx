@@ -108,6 +108,14 @@ const AddArticulo = () => {
                 <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
                   value={nombre} onChange={(e) => onInputChange(e)} />
               </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="nombre">Nombre(*):</label>
+                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
+                  value={nombre} onChange={(e) => onInputChange(e)} />
+              </div>
+              
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
                 <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
