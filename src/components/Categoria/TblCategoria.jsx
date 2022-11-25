@@ -53,13 +53,7 @@ const TblCategoria = () => {
 
 
   const columns = [
-    {
-      name: 'Código',
-      selector: (row) => row.id,
-      sortable: true,
-
-
-    },
+   
     {
       name: 'Nombre',
       selector: (row) => row.nombre,
@@ -127,7 +121,7 @@ const TblCategoria = () => {
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
         title="Listado de Categoría"
-        theme='custom'
+        
         columns={columns}
         data={filteredCategoria}
         pagination

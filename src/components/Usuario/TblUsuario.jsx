@@ -54,22 +54,6 @@ const TblUsuario = () => {
 
   const columns = [
     {
-      name: 'Código',
-      selector: (row) => row.id,
-      sortable: true,
-    },
-    {
-      name: 'Tipo Persona',
-      selector: (row) => row.tipo_persona,
-      sortable: true,
-    },
-    {
-      name: 'Tipo Documento',
-      selector: (row) => row.tipo_documento,
-      sortable: true,
-
-    },
-    {
       name: 'Nombre',
       selector: (row) => row.nombre,
       sortable: true,
