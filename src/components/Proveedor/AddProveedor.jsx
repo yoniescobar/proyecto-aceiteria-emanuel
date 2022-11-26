@@ -102,7 +102,7 @@ const AddProveedor = () => {
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="tipo_documento">Estado(*):</label>
+                                <label htmlFor="estado">Estado(*):</label>
                                 <select id="estado" name="estado" className="form-select appSelect" onChange={handleChange}>
                                     {ListaEstado.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
