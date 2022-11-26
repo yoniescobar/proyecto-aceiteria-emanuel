@@ -6,15 +6,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
-
 const dataEstado = [
   { id: 1, estado: "Activo" },
   { id: 2, estado: "No Activo" },
 ]
 
-
-
 const EditCategoria = () => {
+
   let navigate = useNavigate();
 
   const { id } = useParams()
@@ -48,8 +46,6 @@ const EditCategoria = () => {
     }catch (error) {
       mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
-
-    
     navigate("/tblCategoria");
   };
 

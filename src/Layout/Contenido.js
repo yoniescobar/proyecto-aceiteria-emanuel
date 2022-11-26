@@ -57,7 +57,7 @@ export default class Contenido extends Component {
 
                       <Route exact path='/tblUsuario' element={<TblUsuario />}></Route>
                       <Route exact path='/addUsuario' element={<AddUsuario />}></Route>
-                      <Route exact path='/editUsuario/:id' element={<EditUsuario />}></Route>
+                      <Route exact path='/editUsuario/:idUsuario' element={<EditUsuario />}></Route>
 
                       <Route exact path='/reporteCategoria' element={<ReactPdfPrint />}></Route>
                       <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario />}></Route>
