@@ -22,7 +22,7 @@ const TblUsuario = () => {
 
   const cargarUsuario = async () => {
 
-    const response = await axios.get(`${baseUrl}/Persona/all`)
+    const response = await axios.get(`${baseUrl}/Usuario/all`)
     setUsuario(response.data.data)
     setFilteredUsuario(response.data.data)
 
@@ -30,7 +30,7 @@ const TblUsuario = () => {
 
 
   const deleteUsuario = async (id) => {
-    await axios.delete(`${baseUrl}/Persona/id/${id}`)
+    await axios.delete(`${baseUrl}/Usuario/id/${id}`)
     cargarUsuario()
   }
 
@@ -59,19 +59,26 @@ const TblUsuario = () => {
       sortable: true,
     },
     {
-      name: 'Dirección',
-      selector: (row) => row.direccion,
+      name: 'Usuario',
+      selector: (row) => row.usuario,
       sortable: true,
     },
+
     {
-      name: 'Telefono',
-      selector: (row) => row.telefono,
+      name: 'Condicion',
+      selector: (row) => row.id_estado === '1' ? 'Activo' : 'No activo',
       sortable: true,
-    },
-    {
-      name: 'Correo',
-      selector: (row) => row.correo,
-      sortable: true,
+      grow: 0.5,
+      conditionalCellStyles: [
+        {
+          when: row => row.id_estado === '1',
+          classNames: ['badge badge-pill badge-success m-3 mb-3'],
+        },
+        {
+          when: row => row.id_estado !== '1',
+          classNames: ['badge badge-pill badge-danger  m-3 mb-3']
+        }
+      ]
     },
 
 
