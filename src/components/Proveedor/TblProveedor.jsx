@@ -127,7 +127,7 @@ const TblProveedor = () => {
   }, [Proveedor, search])
 
   return (
-    <div className='container-fluid ' >
+    <div className='container-fluid' >
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
         title="Listado de proveedores"

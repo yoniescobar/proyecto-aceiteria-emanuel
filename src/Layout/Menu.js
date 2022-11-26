@@ -15,7 +15,6 @@ export default class Menu extends Component {
           </Link>
           {/* Sidebar */}
           <div className="sidebar">
-
             {
         /* Sidebar Menu */}
             <nav className="mt-2">
@@ -28,9 +27,6 @@ export default class Menu extends Component {
                     <p>Escritorio</p>
                   </Link>
                 </li>
-
-                
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fas fa-desktop" />
@@ -47,9 +43,6 @@ export default class Menu extends Component {
                       </Link>
                     </li>
                   </ul>
-
-                    
-
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
                       <Link to="/tblArticulo" className="nav-link">
@@ -58,9 +51,7 @@ export default class Menu extends Component {
                       </Link>
                     </li>
                   </ul>
-                  
                 </li>
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-truck" />
@@ -83,12 +74,9 @@ export default class Menu extends Component {
                         <i className="far fa-circle nav-icon" />
                         <p>Proveedores</p>
                       </Link>
-
                     </li>
                   </ul>
-                  
                 </li>
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-cart-plus" />
@@ -99,10 +87,10 @@ export default class Menu extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="!#" className="nav-link">
+                      <Link to="/tblVentas" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Ingreso</p>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                   <ul className="nav nav-treeview">
@@ -113,9 +101,7 @@ export default class Menu extends Component {
                       </a>
                     </li>
                   </ul>
-                  
                 </li>
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-chart-line" />
@@ -140,9 +126,7 @@ export default class Menu extends Component {
                       </a>
                     </li>
                   </ul>
-                  
                 </li>
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-user" />
@@ -167,9 +151,7 @@ export default class Menu extends Component {
                       </a>
                     </li>
                   </ul>
-                  
                 </li>
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-chart-line" />
@@ -194,17 +176,7 @@ export default class Menu extends Component {
                       </a>
                     </li>
                   </ul>
-                  
                 </li>
-                
-                
-
-            
-
-
-
-
-
                 <li className="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li className="nav-item">
                   <a href="#" className="nav-link">
