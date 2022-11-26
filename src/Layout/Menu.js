@@ -21,12 +21,15 @@ export default class Menu extends Component {
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 {/* Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library */}
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/tablero" className="nav-link">
                     <i className="nav-icon fas  fas fa-server" />
                     <p>Escritorio</p>
                   </Link>
-                </li>
+                </li> */}
+
+                
+
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fas fa-desktop" />
@@ -95,10 +98,11 @@ export default class Menu extends Component {
                   </ul>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="!#" className="nav-link">
+                    <Link to="/tblCliente" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Proveedores</p>
-                      </a>
+                        <p>Clientes</p>
+                      </Link>
+
                     </li>
                   </ul>
                 </li>

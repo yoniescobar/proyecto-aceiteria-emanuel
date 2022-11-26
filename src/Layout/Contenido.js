@@ -22,6 +22,9 @@ import AddProveedor from '../components/Proveedor/AddProveedor'
 import EditProveedor from '../components/Proveedor/EditProveedor'
 import TblProveedor from '../components/Proveedor/TblProveedor'
 
+import AddCliente from '../components/Cliente/AddCliente'
+import EditCliente from '../components/Cliente/EditCliente'
+import TblCliente from '../components/Cliente/TblCliente'
 
 export default class Contenido extends Component {
   render() {
@@ -66,6 +69,11 @@ export default class Contenido extends Component {
                       <Route exact path='/addProveedor' element={<AddProveedor />}></Route>
                       <Route exact path='/editProveedor/:idProveedor' element={<EditProveedor />}></Route>
                       <Route exact path='/tblProveedor' element={<TblProveedor />}></Route>
+
+                      <Route exact path='/addCliente' element={<AddCliente />}></Route>
+                      <Route exact path='/editCliente/:idCliente' element={<EditCliente />}></Route>
+                      <Route exact path='/tblCliente' element={<TblCliente />}></Route>
+
                     </Routes>
                   </div>
                 </div>{/* /.col */}

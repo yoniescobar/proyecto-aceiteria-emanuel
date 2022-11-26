@@ -76,7 +76,7 @@ const TblProveedor = () => {
       selector: (row) => row.telefono,
     },
     {
-      name: 'Correo',
+      name: 'Direccion',
       selector: (row) => row.direccion,
     },
     {
