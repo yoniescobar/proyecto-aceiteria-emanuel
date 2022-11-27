@@ -16,7 +16,7 @@ import Tablero from './Tablero'
 import TblUsuario from '../components/Usuario/TblUsuario'
 import AddUsuario from '../components/Usuario/AddUsuario'
 import EditUsuario from '../components/Usuario/EditUsuario'
-import ReactPdfPrintUsuario from '../components/Usuario/ReactPdfPrintUsuario'
+
 
 import AddProveedor from '../components/Proveedor/AddProveedor'
 import EditProveedor from '../components/Proveedor/EditProveedor'
@@ -60,7 +60,6 @@ export default class Contenido extends Component {
                       <Route exact path='/editUsuario/:idUsuario' element={<EditUsuario />}></Route>
 
                       <Route exact path='/reporteCategoria' element={<ReactPdfPrint />}></Route>
-                      <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario />}></Route>
                       <Route exact path='/reporteArticulo' element={<ReactPdfPrintArticulo />}></Route>
 
                       <Route exact path='/addProveedor' element={<AddProveedor />}></Route>

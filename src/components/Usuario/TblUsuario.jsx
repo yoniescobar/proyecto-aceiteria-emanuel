@@ -130,8 +130,8 @@ const TblUsuario = () => {
         highlightOnHover
         actions={[
           <Link className="btn btn-sm btn-primary px-5" to="/addUsuario"> Agregar Usuario</Link>,
-          <Link className="btn btn-sm btn-outline-secondary px-3" to="/reporteUsuario"> PDF</Link>,
-          <CSVLink data={filteredUsuario} filename={"Tabla de Usuario.csv"}><button className="btn btn-sm btn-outline-secondary px-3"> CSV</button></CSVLink>,
+         
+          
         ]}
         subHeader
         subHeaderComponent={
