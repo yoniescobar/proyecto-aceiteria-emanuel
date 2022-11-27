@@ -5,10 +5,10 @@ import { Link, useNavigate } from "react-router-dom"
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
-const AddProveedor = () => {
+const AddCliente = () => {
     let navigate = useNavigate();
-    const [Proveedor, setProveedor] = useState({
-        tipopersona: 2,
+    const [Cliente, setCliente] = useState({
+        tipopersona: 1,
         tipo_documento: 0,
         no_documento: "",
         nombre: "",
@@ -17,29 +17,29 @@ const AddProveedor = () => {
         correo: ""
     })
 
-    const { tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Proveedor;
+    const { tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Cliente;
 
     const onInputChange = (e) => {
-        setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
+        setCliente({ ...Cliente, [e.target.name]: e.target.value });
     };
 
     const handleChange = event => {
-        setProveedor({ ...Proveedor, [event.target.name]: parseInt(event.target.value) });
+        setCliente({ ...Cliente, [event.target.name]: parseInt(event.target.value) });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const resultado = await axios.post(`${baseUrl}/Persona`, Proveedor);
+            const resultado = await axios.post(`${baseUrl}/Persona`, Cliente);
 
             if (resultado) {
-                mesajeResultado('Proveedor creado con exito!', 'success');
+                mesajeResultado('Cliente creado con exito!', 'success');
             } else {
-                mesajeResultado('Ocurrio un error al intentar crear el proveedor!', 'warning');
+                mesajeResultado('Ocurrio un error al intentar crear el cliente!', 'warning');
             }
 
-            navigate("/tblProveedor");
+            navigate("/tblCliente");
         } catch (error) {
             mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
@@ -56,7 +56,7 @@ const AddProveedor = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <h2 className="text-center m-4">Registro de proveedor</h2>
+                <h2 className="text-center m-4">Registro de Cliente</h2>
                 <div className="col-12 col-lg-9">
                     <section className />
                     <div className="clas " />
@@ -112,7 +112,7 @@ const AddProveedor = () => {
                         </div>
 
                         <button type="submit" className="btn btn-outline-primary">Guardar</button>
-                        <Link className="btn btn-outline-danger mx-2" to="/tblProveedor">Cancelar</Link>
+                        <Link className="btn btn-outline-danger mx-2" to="/tblCliente">Cancelar</Link>
                     </form>
                 </div>
             </div>
@@ -132,4 +132,4 @@ const ListaEstado = [
     { id: 2, nombre: 'No activo' }
 ];
 
-export default AddProveedor
+export default AddCliente

@@ -7,37 +7,37 @@ import Swal from 'sweetalert2'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
-const TblProveedor = () => {
+const TblCliente = () => {
   const [search, setSearch] = useState('')
-  const [Proveedor, setProveedor] = useState([])
-  const [filteredProveedor, setFilteredProveedor] = useState([])
+  const [Cliente, setCliente] = useState([])
+  const [filteredCliente, setFilteredCliente] = useState([])
 
   useEffect(() => {
-    cargarProveedores();
+    cargarClientes();
   }, []);
 
-  const cargarProveedores = async () => {
+  const cargarClientes = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Persona/all`)
-      setProveedor(response.data.data.filter(x => x.tipopersona == 2));
-      setFilteredProveedor(response.data.data.filter(x => x.tipopersona == 2));
+      setCliente(response.data.data.filter(x => x.tipopersona == 1));
+      setFilteredCliente(response.data.data.filter(x => x.tipopersona == 1));
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los proveedores, intenta mas tarde.', 'warning')
+      mesajeResultado('Ocurrio un error al intentar consultar los Clientes, intenta mas tarde.', 'warning')
     }
   }
 
-  const eliminarProveedor = async (id) => {
+  const eliminarCliente = async (id) => {
     try {
       const resultado = await axios.delete(`${baseUrl}/Persona/id/${id}`)
 
       if (resultado) {
-        mesajeResultado('Proveedor eliminado con exito!', 'success');
-        cargarProveedores()
+        mesajeResultado('Cliente eliminado con exito!', 'success');
+        cargarClientes()
       } else {
-        mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
+        mesajeResultado('Ocurrio un error al intentar eliminar el cliente!', 'warning');
       }
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
+      mesajeResultado('Ocurrio un error al intentar eliminar el cliente!', 'warning');
     }
   }
 
@@ -60,7 +60,7 @@ const TblProveedor = () => {
 
     }).then((result) => {
       if (result.isConfirmed) {
-        eliminarProveedor(id)
+        eliminarCliente(id)
       }
     });
   };
@@ -104,7 +104,7 @@ const TblProveedor = () => {
       cell: (row) => [
         <Link
           className="btn btn-outline-primary mx-1"
-          to={`/editProveedor/${row.id}`}
+          to={`/editCliente/${row.id}`}
         >
           <span className="fa-solid fa-pen-to-square"></span>
         </Link>,
@@ -119,20 +119,20 @@ const TblProveedor = () => {
   ]
 
   useEffect(() => {
-    const result = Proveedor.filter((country) => {
+    const result = Cliente.filter((country) => {
       return country.nombre.toLowerCase().match(search.toLowerCase())
     })
 
-    setFilteredProveedor(result)
-  }, [Proveedor, search])
+    setFilteredCliente(result)
+  }, [Cliente, search])
 
   return (
     <div className='container-fluid ' >
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
-        title="Listado de proveedores"
+        title="Listado de Clientes"
         columns={columns}
-        data={filteredProveedor}
+        data={filteredCliente}
         pagination
         sortIcon={<i className="fa-solid fa-sort"></i>}
         fixedHeader
@@ -140,13 +140,13 @@ const TblProveedor = () => {
         selectableRowsHighlight
         highlightOnHover
         actions={[
-          <Link className="btn btn-sm btn-primary px-5" to="/addProveedor"> Agregar proveedor</Link>,
+          <Link className="btn btn-sm btn-primary px-5" to="/addCliente"> Agregar Cliente</Link>,
         ]}
         subHeader
         subHeaderComponent={
           <input
             type="text"
-            placeholder="Buscar Proveedor"
+            placeholder="Buscar Cliente"
             className="w-25 form-control"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -156,4 +156,4 @@ const TblProveedor = () => {
     </div>
   )
 }
-export default TblProveedor
+export default TblCliente
