@@ -141,12 +141,13 @@ const AddArticulo = () => {
                 <input type="text" name="marca" id="marca" className="form-control"
                   value={marca} onChange={(e) => onInputChange(e)} />
               </div>
-              
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="modelo">Modelo(*):</label>
                 <input type="text" name="modelo" id="modelo" className="form-control"
                   value={modelo} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
@@ -156,6 +157,7 @@ const AddArticulo = () => {
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
               </div>
+              
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
                 <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
