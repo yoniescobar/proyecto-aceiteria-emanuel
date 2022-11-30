@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
+import Swal from 'sweetalert2';
+import axios from "axios";
+import { setUserSession } from "../utils/token";
 
+const baseUrl = process.env.REACT_APP_BASE_URL
 
 const Login = () => {
     const [error, setError] = useState(null);
@@ -18,9 +22,32 @@ const Login = () => {
           ...form,
           [name]: value,
         });
-      };
+    };
+    
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        console.log(form);
+
+        try {
+            const response = await axios.get(`${baseUrl}/Usuario/all`)
+            const usuario = response.data.data.find(x => x.usuario === form.username 
+                && x.password == form.password
+                && x.estado === "1");
+            setUserSession(usuario.usuario, usuario.usuario, usuario.id);
+            console.log(usuario);
+        } catch (error) {
+            mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+        }
+    }
     
 
+    const mesajeResultado = (mensaje, clase) => {
+        Swal.fire(
+          mensaje,
+          '',
+          clase
+        )
+    }
 
   return (
     <div>
@@ -74,7 +101,7 @@ const Login = () => {
                     )}
                     <div className="d-grid">
                       <Button
-                        onClick={()=> {alert('Hello world')}}
+                        onClick={onSubmit}
                         style={{
                           backgroundColor: "#213158",
                         }}

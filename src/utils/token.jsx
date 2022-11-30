@@ -9,8 +9,7 @@ export const getUser = () => {
   };
   
   export const getToken = () => {
-    //TODO: descomentar return sessionStorage.getItem("token");
-    return "";
+    return sessionStorage.getItem("token");
   };
   
   export const setUserSession = (token, user, idusuario) => {
