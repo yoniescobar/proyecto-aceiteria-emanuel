@@ -26,15 +26,18 @@ const Login = () => {
     
     const onSubmit = async (event) => {
         event.preventDefault();
-        console.log(form);
 
         try {
             const response = await axios.get(`${baseUrl}/Usuario/all`)
             const usuario = response.data.data.find(x => x.usuario === form.username 
                 && x.password == form.password
                 && x.estado === "1");
-            setUserSession(usuario.usuario, usuario.usuario, usuario.id);
-            console.log(usuario);
+
+            if (usuario) {
+                setUserSession(usuario.usuario, usuario.usuario, usuario.id);
+            } else {
+                mesajeResultado('Datos no encontrados, verifique sus credenciales.', 'warning')
+            }
         } catch (error) {
             mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
         }
