@@ -25,7 +25,7 @@ import TblProveedor from '../components/Proveedor/TblProveedor'
 import AddCliente from '../components/Cliente/AddCliente'
 import EditCliente from '../components/Cliente/EditCliente'
 import TblCliente from '../components/Cliente/TblCliente'
-
+import TblVentas from '../components/ventas/TblVentas'
 export default class Contenido extends Component {
   render() {
     return (
@@ -73,6 +73,9 @@ export default class Contenido extends Component {
                       <Route exact path='/addCliente' element={<AddCliente />}></Route>
                       <Route exact path='/editCliente/:idCliente' element={<EditCliente />}></Route>
                       <Route exact path='/tblCliente' element={<TblCliente />}></Route>
+
+                      {/* VENTAS */}
+                      <Route exact path='/Ventas' element={<TblVentas />}></Route>
 
                     </Routes>
                   </div>

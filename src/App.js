@@ -2,7 +2,7 @@ import Menu from './Layout/Menu';
 import Footer from './Layout/Footer';
 import Header from './Layout/Header';
 import Contenido from './Layout/Contenido'
-import {BrowserRouter as Router, Routes} from 'react-router-dom'
+import {BrowserRouter as Router} from 'react-router-dom'
 
 
 
