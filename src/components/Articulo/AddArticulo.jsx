@@ -110,13 +110,6 @@ const AddArticulo = () => {
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="nombre">Nombre(*):</label>
-                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
-                  value={nombre} onChange={(e) => onInputChange(e)} />
-              </div>
-              
-
-              <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
                 <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
                   <option value="-1">Seleccione una opcion</option>
@@ -130,26 +123,31 @@ const AddArticulo = () => {
                 <input type="number" name="existencia" id="existencia" className="form-control"
                   value={existencia} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
                 <input type="text" name="descripcion" id="descripcion" className="form-control"
                   value={descripcion} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="stockMinimo">Stock minimo(*):</label>
                 <input type="number" name="stockMinimo" id="stockMinimo" className="form-control"
                   value={stockMinimo} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="marca">Marca(*):</label>
                 <input type="text" name="marca" id="marca" className="form-control"
                   value={marca} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="modelo">Modelo(*):</label>
                 <input type="text" name="modelo" id="modelo" className="form-control"
                   value={modelo} onChange={(e) => onInputChange(e)} />
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
@@ -159,6 +157,7 @@ const AddArticulo = () => {
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
               </div>
+              
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
                 <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
