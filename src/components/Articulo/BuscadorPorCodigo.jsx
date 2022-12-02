@@ -12,7 +12,7 @@ const initialState = {
     serie_doc: null,
     numero_doc: null,
     fecha_doc: "2022-12-01",
-    impuesto: "0.5",
+    impuesto: 0,
     total_egreso: "total",
     estado: 1,
     persona: {
@@ -141,6 +141,7 @@ const BuscadorPorCodigo = () => {
     const handleMakeSale = () => {
         const tempItem = { ...item };
         tempItem.items = articulos;
+        tempItem.total_egreso=total;
         if(tempItem.items.length > 0){
             if(tempItem.persona.id > 0 && (tempItem.serie_doc != '' && tempItem.serie_doc != null) && (tempItem.numero_doc != '' && tempItem.numero_doc != null)){
                 setEgreso(tempItem).then(
