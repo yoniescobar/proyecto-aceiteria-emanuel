@@ -185,17 +185,6 @@ export default class Menu extends Component {
                   </ul>
                 </li>
                 <li className="nav-header">MULTI LEVEL EXAMPLE</li>
-
-
-                
-
-
-
-
-
-
-
-                <li className="nav-header">REPORTES</li>
                 <li className="nav-item">
                   <Link to="/reporteVenta" href="!#" className="nav-link">
                   <i className="fa-solid fa-file-pdf" />
