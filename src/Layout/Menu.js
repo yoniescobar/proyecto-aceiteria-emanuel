@@ -28,7 +28,7 @@ export default class Menu extends Component {
                   </Link>
                 </li> */}
 
-                
+
 
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
@@ -46,6 +46,9 @@ export default class Menu extends Component {
                       </Link>
                     </li>
                   </ul>
+
+
+
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
                       <Link to="/tblArticulo" className="nav-link">
@@ -73,7 +76,7 @@ export default class Menu extends Component {
                   </ul>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                    <Link to="/tblProveedor" className="nav-link">
+                      <Link to="/tblProveedor" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Proveedores</p>
                       </Link>
@@ -98,7 +101,7 @@ export default class Menu extends Component {
                   </ul>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                    <Link to="/tblCliente" className="nav-link">
+                      <Link to="/tblCliente" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Clientes</p>
                       </Link>
@@ -182,11 +185,22 @@ export default class Menu extends Component {
                   </ul>
                 </li>
                 <li className="nav-header">MULTI LEVEL EXAMPLE</li>
+
+
+                
+
+
+
+
+
+
+
+                <li className="nav-header">REPORTES</li>
                 <li className="nav-item">
-                  <a href="#" className="nav-link">
-                    <i className="fas fa-circle nav-icon" />
-                    <p>Level 1</p>
-                  </a>
+                  <Link to="/reporteVenta" href="!#" className="nav-link">
+                  <i className="fa-solid fa-file-pdf" />
+                    <p className='px-2'>Reporte de Ventas</p>
+                  </Link>
                 </li>
               </ul>
             </nav>

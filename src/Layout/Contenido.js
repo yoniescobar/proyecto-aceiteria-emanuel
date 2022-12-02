@@ -16,7 +16,7 @@ import Tablero from './Tablero'
 import TblUsuario from '../components/Usuario/TblUsuario'
 import AddUsuario from '../components/Usuario/AddUsuario'
 import EditUsuario from '../components/Usuario/EditUsuario'
-import ReactPdfPrintUsuario from '../components/Usuario/ReactPdfPrintUsuario'
+
 
 import AddProveedor from '../components/Proveedor/AddProveedor'
 import EditProveedor from '../components/Proveedor/EditProveedor'
@@ -26,6 +26,9 @@ import AddCliente from '../components/Cliente/AddCliente'
 import EditCliente from '../components/Cliente/EditCliente'
 import TblCliente from '../components/Cliente/TblCliente'
 import TblVentas from '../components/ventas/TblVentas'
+import ReporteVenta from '../components/Reportes/ReporteVenta'
+import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
+
 export default class Contenido extends Component {
   render() {
     return (
@@ -60,10 +63,9 @@ export default class Contenido extends Component {
 
                       <Route exact path='/tblUsuario' element={<TblUsuario />}></Route>
                       <Route exact path='/addUsuario' element={<AddUsuario />}></Route>
-                      <Route exact path='/editUsuario/:id' element={<EditUsuario />}></Route>
+                      <Route exact path='/editUsuario/:idUsuario' element={<EditUsuario />}></Route>
 
                       <Route exact path='/reporteCategoria' element={<ReactPdfPrint />}></Route>
-                      <Route exact path='/reporteUsuario' element={<ReactPdfPrintUsuario />}></Route>
                       <Route exact path='/reporteArticulo' element={<ReactPdfPrintArticulo />}></Route>
 
                       <Route exact path='/addProveedor' element={<AddProveedor />}></Route>
@@ -76,6 +78,11 @@ export default class Contenido extends Component {
 
                       {/* VENTAS */}
                       <Route exact path='/Ventas' element={<TblVentas />}></Route>
+                      {/* //route reportes */}
+
+                      <Route exact path='/reporteVenta' element={<ReporteVenta />} />
+                      <Route exact path='/reporteVentaPdf' element={<ReporteVentaPdf />} />
+
 
                     </Routes>
                   </div>
