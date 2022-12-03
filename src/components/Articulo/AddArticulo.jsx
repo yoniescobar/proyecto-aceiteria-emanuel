@@ -16,6 +16,9 @@ const AddArticulo = () => {
     categoria: {
       id: 0
     },
+    presentacion: {
+      id: 0
+    },
     existencia: "",
     descripcion: "",
     imagen: "",
@@ -25,7 +28,7 @@ const AddArticulo = () => {
     modelo:"",
   })
 
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo } = Articulo;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion } = Articulo;
 
   useEffect(() => {
     consultarCategorias();
@@ -60,13 +63,14 @@ const AddArticulo = () => {
   }
 
   const handleChange = event => {
-    setArticulo({ ...Articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+    setArticulo({ ...Articulo, [event.target.name]: { id: parseInt(event.target.value) } });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      console.log(Articulo);
       const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
 
       if (resultado) {
@@ -112,7 +116,7 @@ const AddArticulo = () => {
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
+                <select id="categoria" name="categoria" className="form-select appSelect" onChange={handleChange}>
                   <option value="-1">Seleccione una opcion</option>
                   {Categoria.map((option) => (
                     <option key={option.id} value={option.id} >{option.nombre}</option>
@@ -161,7 +165,7 @@ const AddArticulo = () => {
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
-                <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
+                <select id="presentacion" name="presentacion" className="form-select appSelect" onChange={handleChange}>
                   <option value="-1">Seleccione una opcion</option>
                   {Presentacion.map((option) => (
                     <option key={option.id} value={option.id} >{option.presentacion}</option>

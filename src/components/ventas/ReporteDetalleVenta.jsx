@@ -19,12 +19,24 @@ const ReporteDetalleVenta = () => {
         //onAfterPrint:()=>alert('Print success')
     })
 
-    const [DataVentaRealizada, setDataVentaRealizada] = useState([])
+    const [DataVentaRealizada, setDataVentaRealizada] = useState([{
+        fecha_doc: "",
+        serie_doc: "",
+        numero_doc: "",
+        nombre: "",
+        persona:{nombre:""},
+        item:{
+            id:"",
+            cantidad: 0,
+            precio_venta: 0,
+            articulo:{ nombre:""}
+        }
+    }])
 
     const cargarDataVentaRealizada = async () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
+        console.log(response.data.data);
         if(response.data.data.length > 0){
-            console.log(response.data.data[0])
             setDataVentaRealizada(response.data.data)
         }
         

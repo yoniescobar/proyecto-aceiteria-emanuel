@@ -22,9 +22,15 @@ const TblCategoria = () => {
 
   const cargarCategoria = async () => {
 
-    const response = await axios.get(`${baseUrl}/all`)
-    setCategoria(response.data.data)
-    setFilteredCategoria(response.data.data)
+
+
+    try {
+      const response = await axios.get(`${baseUrl}/all`)
+      setCategoria(response.data.data)
+      setFilteredCategoria(response.data.data)
+    } catch (error) {
+      
+    }
 
   }
 
