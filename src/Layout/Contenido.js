@@ -25,7 +25,7 @@ import TblProveedor from '../components/Proveedor/TblProveedor'
 import AddCliente from '../components/Cliente/AddCliente'
 import EditCliente from '../components/Cliente/EditCliente'
 import TblCliente from '../components/Cliente/TblCliente'
-import TblVentas from '../components/ventas/TblVentas'
+import TblVentas from '../components/ventas/tblVentas'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
 import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
 

@@ -5,16 +5,14 @@ import Contenido from './Layout/Contenido'
 import { BrowserRouter as Router, Routes } from 'react-router-dom'
 import Login from './components/Login';
 import { getToken } from "./utils/token";
-import { useEffect } from "react";
+import {useEffect} from 'react';
 
 
 
 function App() {
-
   const token = getToken();
   useEffect(() => {
   }, []);
-
 
   return (
     <div className="wrapper">
