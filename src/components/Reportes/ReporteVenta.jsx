@@ -20,8 +20,8 @@ const dataEstado = [
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const ReporteVenta = () => {
-    const [fechaInicial, setfechaInicial] = useState(null);
-    const [fechaFinal, setfechaFinal] = useState(null);
+    const [fechaInicial, setfechaInicial] = useState(new Date());;
+    const [fechaFinal, setfechaFinal] = useState(new Date());;
     const [categoria, setcategoria] = useState({
         nombre: "",
         descripcion: "",
@@ -40,6 +40,7 @@ const ReporteVenta = () => {
     const cargarCategoria = async () => {
         const response = await axios.get(`${baseUrl}/all`)
         setCategoria(response.data.data)
+    
 
     }
 
@@ -62,8 +63,7 @@ const ReporteVenta = () => {
                             <label>Fecha inicial </label> <br />
                             <DatePicker
                                 locale="es"
-                                placeholderText="dd/mm/aaaa"
-                                // value="fechaInicial"
+                                dateFormat="dd/MM/yyyy"
                                 selected={fechaInicial}
                                 onChange={date => setfechaInicial(date)}
                             />
@@ -74,8 +74,9 @@ const ReporteVenta = () => {
                             <label>Fecha final </label> <br />
                             <DatePicker
                                 locale="es"
-                                placeholderText="dd/mm/aaaa"
-                                // value="fechaFinal"
+                                dateFormat="dd/MM/yyyy"
+                                // placeholderText="dd/mm/aaaa"
+                                //  value="fechaFinal"
                                 selected={fechaFinal}
                                 onChange={date => setfechaFinal(date)}
                             />
@@ -99,7 +100,6 @@ const ReporteVenta = () => {
                         <div className="grupo">
                             <h1 className="text-center my-3  py-2 ">
                                 <Link className="btn btn-sm btn-outline-primary px-3 m-2" to="/ReporteVentaPdf" >Generar Reporte</Link>
-
                             </h1>
                         </div>
                     </div>
