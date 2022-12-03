@@ -26,7 +26,7 @@ import AddCliente from '../components/Cliente/AddCliente'
 import EditCliente from '../components/Cliente/EditCliente'
 import TblCliente from '../components/Cliente/TblCliente'
 
-import TblVentas from '../components/ventas/tblVentas'
+import TblVentas from '../components/ventas/TblVentas'
 import VentasRealizadas from '../components/ventas/VentasRealizadas'
 import ReporteDetalleVenta from '../components/ventas/ReporteDetalleVenta'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
