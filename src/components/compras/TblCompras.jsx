@@ -326,7 +326,7 @@ const TblCompras = () => {
                 <div className="row">
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
-                        <button type="button" className="btn btn-primary btn-lg btn-block" onClick={handleMakeSale}>Realizar compra</button>
+                        <button type="button" className="btn btn-Success btn-lg btn-block" onClick={handleMakeSale}>Realizar compra</button>
                     </div>
                     <div className="col-md-4"></div>
                 </div>

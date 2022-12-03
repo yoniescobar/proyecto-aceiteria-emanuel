@@ -58,18 +58,18 @@ const AddPresentacion = () => {
                     <div className="clas " />
                     <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
                         <div className="form-row mb-4">
-
+                        <div className="form-group col-12 col-sm-6">
+                                <label htmlFor="descripcion">Descripcion(*):</label>
+                                <input type="text" name="descripcion" id="descripcion" className="form-control"
+                                    value={descripcion} onChange={(e) => onInputChange(e)} />
+                            </div>
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="presentacion">Presentacion(*):</label>
                                 <input type="text" name="presentacion" id="presentacion" className="form-control"
                                     value={presentacion} onChange={(e) => onInputChange(e)} />
                             </div>
 
-                            <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="descripcion">Descripcion(*):</label>
-                                <input type="text" name="descripcion" id="descripcion" className="form-control"
-                                    value={descripcion} onChange={(e) => onInputChange(e)} />
-                            </div>
+                           
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="estado">Estado(*):</label>

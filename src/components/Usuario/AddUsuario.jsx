@@ -30,6 +30,7 @@ const AddUsuario = () => {
 
   const onInputChange = (e) => {
     setUsuario({ ...Usuario, [e.target.name]: e.target.value });
+ 
   };
 
   const handleChange = event => {
@@ -41,6 +42,7 @@ const AddUsuario = () => {
 
     try {
       const resultado = await axios.post(`${baseUrl}/Usuario/`, Usuario);
+      
       if(resultado){
         mesajeResultado('Usuario creado con exito!', 'success');
         navigate("/tblUsuario");
