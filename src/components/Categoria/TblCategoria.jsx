@@ -117,7 +117,7 @@ const TblCategoria = () => {
   }, [Categoria, search])
 
   return (
-    <div className='container-fluid ' >
+    <div className='container-fluid'>
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
         title="Listado de Categoría"

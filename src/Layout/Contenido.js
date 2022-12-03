@@ -28,7 +28,8 @@ import TblCliente from '../components/Cliente/TblCliente'
 import TblVentas from '../components/ventas/TblVentas'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
 import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
-
+import TblCompras from '../components/compras/TblCompras'
+ 
 export default class Contenido extends Component {
   render() {
     return (
@@ -78,6 +79,10 @@ export default class Contenido extends Component {
 
                       {/* VENTAS */}
                       <Route exact path='/Ventas' element={<TblVentas />}></Route>
+
+                      {/* COMPRAS */}
+                      <Route exact path='/compras' element={<TblCompras />}></Route>                      
+
                       {/* //route reportes */}
 
                       <Route exact path='/reporteVenta' element={<ReporteVenta />} />
