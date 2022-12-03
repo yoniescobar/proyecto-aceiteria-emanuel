@@ -117,7 +117,7 @@ const TblPresentacion = () => {
     <div className='container-fluid ' >
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
-        title="Ventas realizadas"
+        title="Presentaciones"
         columns={columns}
         data={filteredPresentacion}
         pagination
@@ -127,7 +127,7 @@ const TblPresentacion = () => {
         selectableRowsHighlight
         highlightOnHover
         actions={[
-            <Link className="btn btn-sm btn-primary px-5" to="/addPresentacion"> Agregar proveedor</Link>,
+            <Link className="btn btn-sm btn-primary px-5" to="/addPresentacion"> Agregar presentacion</Link>,
         ]}
         subHeader
         subHeaderComponent={
