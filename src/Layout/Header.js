@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
+import { removeUserSession } from "../utils/token";
 
 export default class Header extends Component {
+  
+logOut = () => {
+  removeUserSession();
+  window.location.reload();
+}
+
     render() {
         return (
            <div>
@@ -32,10 +39,10 @@ export default class Header extends Component {
     <ul className="navbar-nav ml-auto">
       {/* Messages Dropdown Menu */}
       <li className="nav-item dropdown">
-        <a className="nav-link" data-toggle="dropdown" href="#">
+        {/* <a className="nav-link" data-toggle="dropdown" href="#">
           <i className="far fa-comments" />
           <span className="badge badge-danger navbar-badge">3</span>
-        </a>
+        </a> */}
         <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" className="dropdown-item">
             {/* Message Start */}
@@ -92,7 +99,7 @@ export default class Header extends Component {
       <li className="nav-item dropdown">
         <a className="nav-link" data-toggle="dropdown" href="#">
           <i className="far fa-bell" />
-          <span className="badge badge-warning navbar-badge">15</span>
+          {/* <span className="badge badge-warning navbar-badge">15</span> */}
         </a>
         <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span className="dropdown-item dropdown-header">15 Notifications</span>
@@ -116,8 +123,9 @@ export default class Header extends Component {
         </div>
       </li>
       <li className="nav-item">
-        <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
-          <i className="fas fa-th-large" />
+        <a className="nav-link" onClick={() => this.logOut()} data-widget="control-sidebar" data-slide="true" href="#">
+          {/* <i className="fas fa-th-large" /> */}
+          <i className="fa-solid fa-power-off" />
         </a>
       </li>
     </ul>

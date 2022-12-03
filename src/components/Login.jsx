@@ -9,8 +9,6 @@ const baseUrl = process.env.REACT_APP_BASE_URL
 
 const Login = () => {
     const [error, setError] = useState(null);
-    
-
     const [form, SetForm] = useState({
       username: "",
       password: "",
@@ -31,16 +29,14 @@ const Login = () => {
 
         try {
             const response = await axios.get(`${baseUrl}/Usuario/all`)
-            console.log(response.data.data)
+
             const usuario = response.data.data.find(x => x.usuario === form.username 
                 && x.password === form.password
                 && x.id_estado === "1" );
 
-                console.log(usuario)
             if (usuario) {
                 setUserSession(usuario.usuario, usuario.usuario, usuario.id);
-                window.location.href = "/home";
-                
+                window.location.reload();
             } else {
                 mesajeResultado('Datos no encontrados, verifique sus credenciales.', 'warning')
             }

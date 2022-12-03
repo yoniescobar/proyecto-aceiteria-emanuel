@@ -57,17 +57,16 @@ const ReporteVentaPdf = () => {
 
 
                     <thead>
-                        <th>Fecha</th>
-                        <th>Ventas Realizadas</th>
-                        <th>Total en Ventas</th>
-                        <th>Costo de ventas</th>
+                        <th>Ventas realizadas</th>
+                        <th>Total de ventas</th>
+                        <th>costo de ventas</th>
                         <th>Ganancias</th>
                     </thead>
                     <tbody>
         {Egreso.map((item, i)=>{
             return(
                 <tr key={item.id}>
-                    <td>{item.fecha_doc}</td>
+                    <td>{item.descripcion}</td>
                      <td>{item.total_egreso}</td>
                     <td>{item.descripcion}</td>
                     <td>{item.condicion}</td> 
