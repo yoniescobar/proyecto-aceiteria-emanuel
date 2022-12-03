@@ -41,6 +41,7 @@ const BuscadorPorCodigo = () => {
     const [total, setTotal] = useState(0);
     const [item, setItem] = useState(initialState);
     const [ops, setOptions] = useState([]);
+    const [cambio, setCambio] = useState(0);
 
     let navigate = useNavigate();
 
@@ -210,7 +211,11 @@ const BuscadorPorCodigo = () => {
             mesajeResultado('Elemento ya agregado a la venta', 'warning');
         }
     }
-
+    const handlePago = (e) => {
+        e.preventDefault();
+        const cambio = e.target.value - total;
+        setCambio(cambio);
+    }
 
     return (
         <>
@@ -305,6 +310,29 @@ const BuscadorPorCodigo = () => {
                     <div className="col-md-3"></div>
                     <div className="col-md-3">
                         <h1>Q. {total}</h1>
+                    </div>
+                </div>
+                <br />
+                <div className="row">
+                    <div className="col-md-3">
+                        <h1>Pago:</h1>
+                    </div>
+                    <div className="col-md-3">
+                        <input
+                                type="number"
+                                className="form-control mb-2 mr-sm-2"
+                                id="pago"
+                                name="pago"
+                                placeholder="Pago"
+                                onChange={handlePago}
+                                min="1"
+                            />
+                    </div>
+                    <div className="col-md-3">
+                        <h1>Cambio:</h1>
+                    </div>
+                    <div className="col-md-3">
+                        <h1>Q. {cambio}</h1>
                     </div>
                 </div>
                 <br />
