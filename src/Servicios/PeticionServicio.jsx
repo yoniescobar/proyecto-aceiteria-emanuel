@@ -6,3 +6,8 @@ export const PeticionGet = async (endpoint) => {
         return response;
 };
   
+
+export const PeticionDelete = async (endpoint) => {
+        const response = await axios.delete(`${baseUrl}/${endpoint}`)
+        return response;
+};

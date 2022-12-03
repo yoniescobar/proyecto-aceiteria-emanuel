@@ -2,6 +2,7 @@ import axios from "axios"
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { Link, useNavigate } from "react-router-dom"
+import { PeticionGet, PeticionDelete } from '../../Servicios/PeticionServicio'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -42,7 +43,8 @@ const AddArticulo = () => {
 
   const consultarPresentacion = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/all`)
+      const response = await PeticionGet('Presentacion/all');
+      console.log(response.data.data)
       setPresentacion(response.data.data)
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
@@ -163,7 +165,7 @@ const AddArticulo = () => {
                 <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
                   <option value="-1">Seleccione una opcion</option>
                   {Presentacion.map((option) => (
-                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                    <option key={option.id} value={option.id} >{option.presentacion}</option>
                   ))}
                 </select>
               </div>
