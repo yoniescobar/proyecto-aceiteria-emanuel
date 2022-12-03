@@ -39,7 +39,7 @@ const Login = () => {
                 console.log(usuario)
             if (usuario) {
                 setUserSession(usuario.usuario, usuario.usuario, usuario.id);
-                window.location.href = "/home";
+                window.location.href = "/tablero";
                 
             } else {
                 mesajeResultado('Datos no encontrados, verifique sus credenciales.', 'warning')
