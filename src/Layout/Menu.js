@@ -191,6 +191,12 @@ export default class Menu extends Component {
                     <p className='px-2'>Reporte de Ventas</p>
                   </Link>
                 </li>
+                <li className="nav-item">
+                  <Link to="/VentasRealizadas" href="!#" className="nav-link">
+                  <i className="far fa-circle nav-icon" />
+                    <p className='px-2'>Ventas realizadas</p>
+                  </Link>
+                </li>
               </ul>
             </nav>
             {/* /.sidebar-menu */}
