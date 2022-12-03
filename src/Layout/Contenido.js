@@ -26,6 +26,10 @@ import AddCliente from '../components/Cliente/AddCliente'
 import EditCliente from '../components/Cliente/EditCliente'
 import TblCliente from '../components/Cliente/TblCliente'
 
+import AddPresentacion from '../components/Presentacion/AddPresentacion'
+import EditPresentacion from '../components/Presentacion/EditPresentacion'
+import TblPresentacion from '../components/Presentacion/TblPresentacion'
+
 import TblVentas from '../components/ventas/TblVentas'
 import VentasRealizadas from '../components/ventas/VentasRealizadas'
 import ReporteDetalleVenta from '../components/ventas/ReporteDetalleVenta'
@@ -87,6 +91,12 @@ export default class Contenido extends Component {
 
                       <Route exact path='/reporteVenta' element={<ReporteVenta />} />
                       <Route exact path='/reporteVentaPdf' element={<ReporteVentaPdf />} />
+
+                      {/* VENTAS */}
+                      <Route exact path='/addPresentacion' element={<AddPresentacion />}></Route>
+                      <Route exact path='/editPresentacion/:idPresentacion' element={<EditPresentacion />}></Route>
+                      <Route exact path='/tblPresentacion' element={<TblPresentacion />}></Route>
+                      {/* //route reportes */}
 
 
                     </Routes>

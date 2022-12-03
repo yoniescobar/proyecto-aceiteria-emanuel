@@ -42,7 +42,7 @@ const AddArticulo = () => {
 
   const consultarPresentacion = async () => {
     try {
-      const response = await axios.get(`${baseUrl}/all`)
+      const response = await axios.get(`${baseUrl}/presentacion/all`)
       setPresentacion(response.data.data)
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
