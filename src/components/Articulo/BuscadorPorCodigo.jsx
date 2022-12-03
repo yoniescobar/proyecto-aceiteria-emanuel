@@ -3,6 +3,7 @@ import { getItemByCode, getProductosVenta, setEgreso } from './ArticuloService';
 import { getClienteByCode } from './ArticuloService';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { trackPromise } from 'react-promise-tracker';
 
 import Select from 'react-select';
 
@@ -17,7 +18,8 @@ const initialState = {
     estado: 1,
     persona: {
         id: 0,
-        nombre: ""
+        nombre: "",
+        codigo: ""
     },
     usuario: {
         id: 1
@@ -31,11 +33,10 @@ const BuscadorPorCodigo = () => {
     const options = [
         { value: 'one', label: 'One' },
         { value: 'two', label: 'Two' }
-      ];
+    ];
 
     const [code, setCode] = useState('');
     const [nit, setNit] = useState('');
-    //const [cliente, setCliente] = useState({});
     const [articulos, setArticulos] = useState([]);
     const [total, setTotal] = useState(0);
     const [item, setItem] = useState(initialState);
@@ -45,17 +46,25 @@ const BuscadorPorCodigo = () => {
 
     useEffect(() => {
         totalCompra();
-    }, [articulos]); 
+    }, [articulos]);
 
     useEffect(() => {
         getProductosVenta().then(
-            data =>{
-                const newData = data.data.map(obj => ({...obj, label:obj.existencia+' existencias de  '+obj.nombre+' - Q.'+obj.precio_venta, value:obj.id}));
-                //console.log(newData);
+            data => {
+                const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - Q.' + obj.precio_venta, value: obj.id }));
                 setOptions(newData);
+                getClienteByCode(0).then(
+                    data => {
+                        const newItem = { ...item };
+                        newItem.persona.id = data.data[0].id;
+                        newItem.persona.codigo = data.data[0].nodocumento;
+                        newItem.persona.nombre = data.data[0].nombre;
+                        setItem(newItem);
+                    }
+                )
             }
-        )
-    },[]);
+        );        
+    }, []);
 
     const mesajeResultado = (mensaje, clase) => {
         Swal.fire(
@@ -75,16 +84,27 @@ const BuscadorPorCodigo = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        getItemByCode(code).then(
-            data => {
-                if (data.id > 0) {
-                    let item = data.data[0];
-                    prepareAdd(item);
-                } else {
-                    mesajeResultado('Producto no encontrado!', 'warning');
-                }
+        if(code.replace(/\s/g,"") !== ""){
+            const exist = articulos.find(item => item.codigo === code);
+            if(exist === undefined){
+                trackPromise(
+                    getItemByCode(code).then(
+                        data => {
+                            if (data.id > 0) {
+                                let item = data.data[0];
+                                prepareAdd(item);
+                            } else {
+                                mesajeResultado('Producto no encontrado!', 'warning');
+                            }
+                        }
+                    )
+                )
+            }else{
+                mesajeResultado('Elemento ya agregado a la venta', 'warning');
             }
-        );
+        }else{
+            mesajeResultado('Código no ingresado', 'warning');
+        };
     };
 
     const onChangeInput = (e, prodId) => {
@@ -117,9 +137,9 @@ const BuscadorPorCodigo = () => {
                     tempItem.persona.id = data.data[0].id;
                     tempItem.persona.nombre = data.data[0].nombre;
                     setItem(item => ({
-                        ...tempItem 
+                        ...tempItem
                     }))
-                }else{
+                } else {
                     mesajeResultado('Cliente no encontrado!', 'warning');
                 }
             }
@@ -141,9 +161,9 @@ const BuscadorPorCodigo = () => {
     const handleMakeSale = () => {
         const tempItem = { ...item };
         tempItem.items = articulos;
-        tempItem.total_egreso=total;
-        if(tempItem.items.length > 0){
-            if(tempItem.persona.id > 0 && (tempItem.serie_doc != '' && tempItem.serie_doc != null) && (tempItem.numero_doc != '' && tempItem.numero_doc != null)){
+        tempItem.total_egreso = total;
+        if (tempItem.items.length > 0) {
+            if (tempItem.persona.id > 0 && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)) {
                 setEgreso(tempItem).then(
                     data => {
                         if (data.id > 0) {
@@ -152,22 +172,22 @@ const BuscadorPorCodigo = () => {
                             navigate("/ventas");
                         };
                     }
-                )   
-            }else{
+                )
+            } else {
                 mesajeResultado('Datos de facturación incorrectos', 'warning');
             }
-        }else{
+        } else {
             mesajeResultado('No hay articulos para vender', 'warning');
         }
     }
     const restart = () => {
         const editData = [];
         setArticulos([...editData]);
-        const init = { ...item } ;
-        init.persona.id=0;
-        init.persona.nombre="";
-        init.serie_doc="";
-        init.numero_doc="";
+        const init = { ...item };
+        init.persona.id = 0;
+        init.persona.nombre = "";
+        init.serie_doc = "";
+        init.numero_doc = "";
         setItem(item => ({
             ...init
         }));
@@ -182,9 +202,16 @@ const BuscadorPorCodigo = () => {
         editData.splice(index, 1);
         setArticulos([...editData]);
     }
-    const logChange = (logChange) =>{
-        prepareAdd(logChange);
-    } 
+    const logChange = (logChange) => {
+        const exist = articulos.find(item => item.codigo === logChange.codigo);
+        if(exist === undefined){
+            prepareAdd(logChange);
+        }else{
+            mesajeResultado('Elemento ya agregado a la venta', 'warning');
+        }
+    }
+
+
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -199,8 +226,14 @@ const BuscadorPorCodigo = () => {
                                 name="codigo"
                                 placeholder="Código"
                                 onChange={(e) => setCode(e.target.value)}
+                                
                             />
-                            <button type="submit" className="btn btn-primary mb-2">Agregar</button>
+                            <button
+                                className="btn btn-primary"
+                                type="submit"
+                            >
+                                <i className='fa fa-search'></i>
+                            </button>
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -211,7 +244,7 @@ const BuscadorPorCodigo = () => {
                                 value="one"
                                 options={ops}
                                 onChange={logChange}
-                                />
+                            />
                         </div>
                     </div>
                 </div>
@@ -231,30 +264,32 @@ const BuscadorPorCodigo = () => {
                         <tbody>
                             {
                                 articulos.length ? (
-                                        articulos.map((item) => (
-                                            <tr key={item.id}>
-                                                <td>{item.existencia}</td>
-                                                <td>
-                                                    <input
-                                                        onChange={(e) => onChangeInput(e, item.id)}
-                                                        type="number"
-                                                        name="cantidad"
-                                                        defaultValue={1}
-                                                    />
-                                                </td>
-                                                <td>{item.descripcion}</td>
-                                                <td>{item.precio_venta}</td>
-                                                <td>{item.cantidad * item.precio_venta}</td>
-                                                <td>
-                                                    <button
-                                                        className="btn btn-danger"
-                                                        onClick={(e) => onclickDelItem(e, item.id)}
-                                                    >
-                                                        <i className='fa fa-trash'></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
+                                    articulos.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{item.existencia}</td>
+                                            <td>
+                                                <input
+                                                    onChange={(e) => onChangeInput(e, item.id)}
+                                                    type="number"
+                                                    name="cantidad"
+                                                    defaultValue={1}
+                                                    min="1"
+                                                    max={item.existencia}
+                                                />
+                                            </td>
+                                            <td>{item.descripcion}</td>
+                                            <td>{item.precio_venta}</td>
+                                            <td>{item.cantidad * item.precio_venta}</td>
+                                            <td>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={(e) => onclickDelItem(e, item.id)}
+                                                >
+                                                    <i className='fa fa-trash'></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
                                 ) : (
                                     <p className="lead">Ningun producto agregado...</p>
                                 )
@@ -277,16 +312,18 @@ const BuscadorPorCodigo = () => {
                     <div className="col">
                         <label for="cliente" className="col-sm-2 col-form-label">NIT</label>
                         <div className="input-group mb-3">
-                            <input type="text" className="form-control" onChange={(e) => setNit(e.target.value)} name="nit" id="nit" />
+                            <input type="text" className="form-control" onChange={(e) => setNit(e.target.value)} name="nit" id="nit" placeholder={item.persona.codigo} />
                             <div className="input-group-append">
                                 <button className="btn btn-outline-secondary" type="button"
-                                    onClick={handleSearchCliente}>Buscar</button>
+                                    onClick={handleSearchCliente}>
+                                    <i className='fa fa-trash'></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                     <div className="col">
                         <label for="cliente" className="col-sm-2 col-form-label">CLIENTE </label>
-                        <input type="text" className="form-control" placeholder={item.persona.nombre} readOnly/>
+                        <input type="text" className="form-control" placeholder={item.persona.nombre} readOnly />
                     </div>
                 </div>
                 <div className="row">

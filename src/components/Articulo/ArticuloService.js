@@ -37,3 +37,23 @@ export const getClienteByCode=(code)=>{
                return   data.json()
               })
  }
+
+ export const getProveedorByCode=(code)=>{
+    return fetch(baseUrl+'/Persona/proveedor/'+code, { // add return here
+                  method:'Get',
+              })
+              .then(data=> {
+               return   data.json()
+              })
+ }
+ 
+ export const setIngreso=(data)=>{
+    return fetch(baseUrl+'/Ingreso', { // add return here
+                  method:'POST',
+                  body:JSON.stringify(data),
+                  headers: {"Content-type": "application/json; charset=UTF-8"}
+              })
+              .then(data=> {
+               return   data.json()
+              })
+ }
