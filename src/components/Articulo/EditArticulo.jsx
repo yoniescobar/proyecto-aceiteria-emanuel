@@ -110,7 +110,7 @@ const EditArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
-                <input type="number" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
+                <input type="text" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
 
               <div className="form-group col-12 col-sm-6">

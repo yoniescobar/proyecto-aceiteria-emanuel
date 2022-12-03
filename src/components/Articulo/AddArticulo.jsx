@@ -44,7 +44,6 @@ const AddArticulo = () => {
   const consultarPresentacion = async () => {
     try {
       const response = await PeticionGet('Presentacion/all');
-      console.log(response.data.data)
       setPresentacion(response.data.data)
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
@@ -101,7 +100,7 @@ const AddArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra(*):</label>
-                <input type="number" name="codigo" id="codigo" className="form-control"
+                <input type="text" name="codigo" id="codigo" className="form-control"
                   value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
 
