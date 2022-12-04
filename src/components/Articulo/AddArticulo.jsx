@@ -26,10 +26,13 @@ const AddArticulo = () => {
     stockMinimo: "",
     marca:"",
     modelo:"",
+    estado:1,
+    precio_compra: 20,
+    precio_venta: 30
   })
 
   const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion } = Articulo;
-
+  let cont = 0;
   useEffect(() => {
     consultarCategorias();
     consultarPresentacion();
@@ -69,6 +72,7 @@ const AddArticulo = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    cont++;
     try {
       console.log(Articulo);
       const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
@@ -81,7 +85,7 @@ const AddArticulo = () => {
 
       navigate("/tblArticulo");
     } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
+      //mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 

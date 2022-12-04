@@ -26,6 +26,10 @@ const EditArticulo = () => {
     stockMinimo: "",
     marca:"",
     modelo:"",
+
+    estado:1,
+    precio_compra: 20,
+    precio_venta: 30
   })
 
   const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo } = articulo;
@@ -44,6 +48,7 @@ const EditArticulo = () => {
     e.preventDefault();
     try {
       setArticulo({ ...articulo, ["id"]: idArticulo });
+      console.log(articulo);
       const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
 
       if (resultado) {

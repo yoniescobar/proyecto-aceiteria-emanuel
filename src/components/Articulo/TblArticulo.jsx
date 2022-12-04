@@ -23,6 +23,7 @@ const TblArticulo = () => {
   const cargarArticulos = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Articulo/all`)
+      console.log(response.data.data)
       setArticulo(response.data.data)
       setFilteredArticulo(response.data.data)
     } catch (error) {
