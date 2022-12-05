@@ -26,7 +26,12 @@ const VentasRealizadas = () => {
 
   const CambiarFormatoFecha = (fecha) => {
     const datos = fecha.split("-");
-    return `${datos[2]}/${datos[1]}/${datos[0]}`;
+    
+    if (datos.length = 3) {
+      return `${datos[2]}/${datos[1]}/${datos[0]}`;
+    } else {
+      return "";
+    }
   }
 
   const columns = [
