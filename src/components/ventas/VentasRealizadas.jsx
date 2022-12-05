@@ -24,20 +24,24 @@ const VentasRealizadas = () => {
     }
   }
 
+  const CambiarFormatoFecha = (fecha) => {
+    const datos = fecha.split("-");
+    return `${datos[2]}/${datos[1]}/${datos[0]}`;
+  }
 
   const columns = [
-    {
-      name: 'Numero',
-      selector: (row) => row.id,
-      sortable: true,
-    },
+    // {
+    //   name: 'Numero',
+    //   selector: (row) => row.id,
+    //   sortable: true,
+    // },
     {
       name: 'Fecha',
-      selector: (row) => row.fecha_doc,
+      selector: (row) => CambiarFormatoFecha(row.fecha_doc),
     },
     {
       name: 'No. documento',
-      selector: (row) => `${row.serie_doc}-${row.numero_doc}`,
+      selector: (row) => `${row.serie_doc.toUpperCase()}-${row.numero_doc}`,
     },
     {
       name: 'Cliente',
