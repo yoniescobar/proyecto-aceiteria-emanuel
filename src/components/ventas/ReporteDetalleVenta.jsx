@@ -1,12 +1,8 @@
-
 import React, { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
-import { alertMensaje } from '../../utils/alert'
-
-const baseUrl = process.env.REACT_APP_BASE_URL
 
 const ReporteDetalleVenta = () => {
     const { idVenta } = useParams()
@@ -16,7 +12,6 @@ const ReporteDetalleVenta = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: 'Listado de DataVentaRealizada',
-        //onAfterPrint:()=>alert('Print success')
     })
 
     const [DataVentaRealizada, setDataVentaRealizada] = useState([{
@@ -24,22 +19,21 @@ const ReporteDetalleVenta = () => {
         serie_doc: "",
         numero_doc: "",
         nombre: "",
-        persona:{nombre:""},
-        item:{
+        persona: {nombre:""},
+        items: [{
             id:"",
             cantidad: 0,
             precio_venta: 0,
             articulo:{ nombre:""}
-        }
+        }]
     }])
 
     const cargarDataVentaRealizada = async () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
-        console.log(response.data.data);
+
         if(response.data.data.length > 0){
             setDataVentaRealizada(response.data.data)
-        }
-        
+        }   
     }
     
     useEffect(() => {
