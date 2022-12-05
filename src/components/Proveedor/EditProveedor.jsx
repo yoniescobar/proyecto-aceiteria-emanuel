@@ -1,7 +1,7 @@
-import axios from "axios";
-import Swal from 'sweetalert2'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
+import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -33,42 +33,26 @@ const EditProveedor = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setProveedor({ ...Proveedor, ["id"]: idProveedor });
-      const resultado = await axios.put(`${baseUrl}/Persona/`, Proveedor);
 
-      if (resultado) {
-        mesajeResultado('Los datos fueron actualizados con exito!', 'success');
-      } else {
-        mesajeResultado('Ocurrio un error al intentar actualizar el proveedor!', 'warning');
-      }
+    setProveedor({ ...Proveedor, ["id"]: idProveedor });
+    const resultado = await PeticionPut('Persona/', Proveedor);
 
+    if (resultado) {
       navigate("/tblProveedor");
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 
   const cargarProveedor = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Persona/id/${idProveedor}`)
+    const response = await PeticionGet(`Persona/id/${idProveedor}`);
+    
+    if (response) {
       setProveedor(response.data.data[0])
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los datos del proveedor, intenta mas tarde.', 'warning')
     }
   }
 
   const handleChange = event => {
     setProveedor({ ...Proveedor, [event.target.name]: parseInt(event.target.value) });
   };
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
-  }
 
   return (
     <div className="container">
@@ -136,17 +120,5 @@ const EditProveedor = () => {
     </div>
   );
 }
-
-const ListaTipoDocumento = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'NIT' },
-  { id: 2, nombre: 'DPI' }
-];
-
-const ListaEstado = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'Activo' },
-  { id: 2, nombre: 'No activo' }
-];
 
 export default EditProveedor

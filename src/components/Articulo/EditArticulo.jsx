@@ -1,10 +1,6 @@
-import axios from "axios";
-import Swal from 'sweetalert2'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { PeticionGet, PeticionDelete } from '../../Servicios/PeticionServicio'
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
 
 const EditArticulo = () => {
   let navigate = useNavigate();
@@ -26,6 +22,9 @@ const EditArticulo = () => {
     stockMinimo: "",
     marca:"",
     modelo:"",
+    estado:1,
+    precio_compra: 0,
+    precio_venta: 0
   })
 
   const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo } = articulo;
@@ -36,54 +35,42 @@ const EditArticulo = () => {
 
   useEffect(() => {
     cargarArticulo();
-    consultarCategorias();
-    consultarPresentacion();
+    cargarCatalogos();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setArticulo({ ...articulo, ["id"]: idArticulo });
-      const resultado = await axios.put(`${baseUrl}/Articulo/`, articulo);
 
-      if (resultado) {
-        mesajeResultado('Se actualizo existosamente el articulo!', 'success');
-      } else {
-        mesajeResultado('Ocurrio un error al intentar actualizar el articulo!', 'warning');
-      }
+    setArticulo({ ...articulo, ["id"]: idArticulo });
 
+    const resultado = await PeticionPut('Articulo/', articulo)
+    
+    if (resultado) {
       navigate("/tblArticulo");
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 
   const cargarArticulo = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Articulo/id/${idArticulo}`)
-      setArticulo(response.data.data[0])
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+      const response = await PeticionGet(`Articulo/id/${idArticulo}`);
+      
+      if (response) {
+        setArticulo(response.data.data[0]);
+      }
+  }
+
+  const cargarCatalogos = async () => {
+    const responseCategoria = await PeticionGet('all');
+    const responsePresentacion = await PeticionGet('Presentacion/all');
+
+    if (responseCategoria) {
+      setCategoria(responseCategoria.data.data)
+    }
+    
+    if (responsePresentacion) {
+      setPresentacion(responsePresentacion.data.data)
     }
   }
 
-  const consultarCategorias = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/all`)
-      setCategoria(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
-    }
-  }
-
-  const consultarPresentacion = async () => {
-    try {
-      const response = await PeticionGet('Presentacion/all');
-      setPresentacion(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
-    }
-  }
   const handleChange = event => {
     setArticulo({ ...articulo, ["categoria"]: { id: parseInt(event.target.value) } });
   };
@@ -91,14 +78,6 @@ const EditArticulo = () => {
   const cargarImagen = (e) => {
     setArticulo({ ...articulo, [e.target.name]: e.target.value });
     setImg(e.target.files[0]);
-  }
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
   }
 
   return (
@@ -110,7 +89,7 @@ const EditArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
-                <input type="number" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
+                <input type="text" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
 
               <div className="form-group col-12 col-sm-6">

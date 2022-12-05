@@ -1,12 +1,8 @@
 import 'styled-components'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
-import { Link, useParams } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import { CSVLink } from 'react-csv'
+import { Link } from 'react-router-dom'
 import { PeticionGet } from '../../Servicios/PeticionServicio'
-import { alertMensaje } from '../../utils/alert'
 
 // const baseUrl = process.env.REACT_APP_BASE_URL
 const VentasRealizadas = () => {
@@ -19,60 +15,38 @@ const VentasRealizadas = () => {
   }, []);
 
   const cargarVentas = async () => {
-    try {
-      const response = await PeticionGet('Egreso/all');
+    
+    const response = await PeticionGet('Egreso/all');
+    
+    if (response) {
       setVentaRealizada(response.data.data)
       setFilteredVentaRealizada(response.data.data)
-    } catch (error) {
-      alertMensaje('Ocurrio un error al intentar consultar los VentaRealizadas, intenta mas tarde.', 'warning')
     }
   }
 
-  // const eliminarVentaRealizada = async (id) => {
-  //   try {
-  //     const resultado = await axios.delete(`${baseUrl}/VentaRealizada/id/${id}`)
-
-  //     if (resultado) {
-  //       alertMensaje('VentaRealizada eliminado con exito!', 'success');
-  //       cargarVentas()
-  //     } else {
-  //       alertMensaje('Ocurrio un error al intentar eliminar el VentaRealizada!', 'warning');
-  //     }
-  //   } catch (error) {
-  //     alertMensaje('Ocurrio un error al intentar eliminar el VentaRealizada!', 'warning');
-  //   }
-  // }
-
-  // function confirmar(id, nombre) {
-  //   Swal.fire({
-  //     title: '¿Confirma eliminar el registro: ' + nombre + '?',
-  //     icon: 'warning',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#d33',
-  //     cancelButtonColor: '#6c757d',
-  //     confirmButtonText: 'Confirmar'
-
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       eliminarVentaRealizada(id)
-  //     }
-  //   });
-  // };
-
+  const CambiarFormatoFecha = (fecha) => {
+    const datos = fecha.split("-");
+    
+    if (datos.length = 3) {
+      return `${datos[2]}/${datos[1]}/${datos[0]}`;
+    } else {
+      return '';
+    }
+  }
 
   const columns = [
-    {
-      name: 'Numero',
-      selector: (row) => row.id,
-      sortable: true,
-    },
+    // {
+    //   name: 'Numero',
+    //   selector: (row) => row.id,
+    //   sortable: true,
+    // },
     {
       name: 'Fecha',
-      selector: (row) => row.fecha_doc,
+      selector: (row) => CambiarFormatoFecha(row.fecha_doc),
     },
     {
       name: 'No. documento',
-      selector: (row) => `${row.serie_doc}-${row.numero_doc}`,
+      selector: (row) => `${row.serie_doc.toUpperCase()}-${row.numero_doc}`,
     },
     {
       name: 'Cliente',

@@ -1,9 +1,7 @@
-import axios from "axios"
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
+import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionPost } from '../../Servicios/PeticionServicio'
+import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
 
 const AddProveedor = () => {
     let navigate = useNavigate();
@@ -30,28 +28,12 @@ const AddProveedor = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const resultado = await axios.post(`${baseUrl}/Persona`, Proveedor);
+        const resultado = await PeticionPost('Persona', Proveedor);
 
-            if (resultado) {
-                mesajeResultado('Proveedor creado con exito!', 'success');
-            } else {
-                mesajeResultado('Ocurrio un error al intentar crear el proveedor!', 'warning');
-            }
-
+        if (resultado) {
             navigate("/tblProveedor");
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
     };
-
-    const mesajeResultado = (mensaje, clase) => {
-        Swal.fire(
-            mensaje,
-            '',
-            clase
-        )
-    }
 
     return (
         <div className="container">
@@ -119,17 +101,5 @@ const AddProveedor = () => {
         </div>
     );
 }
-
-const ListaTipoDocumento = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'NIT' },
-    { id: 2, nombre: 'DPI' }
-];
-
-const ListaEstado = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'Activo' },
-    { id: 2, nombre: 'No activo' }
-];
 
 export default AddProveedor

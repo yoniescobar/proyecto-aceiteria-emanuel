@@ -1,14 +1,10 @@
 import 'styled-components'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { CSVLink } from 'react-csv'
 import { PeticionGet, PeticionDelete } from '../../Servicios/PeticionServicio'
-import { alertMensaje } from '../../utils/alert'
 
-// const baseUrl = process.env.REACT_APP_BASE_URL
 const TblPresentacion = () => {
   const [search, setSearch] = useState('')
   const [Presentacion, setPresentacion] = useState([])
@@ -19,29 +15,16 @@ const TblPresentacion = () => {
   }, []);
 
   const cargarVentas = async () => {
-    try {
-      const response = await PeticionGet('Presentacion/all');
-      console.log(response)
+    const response = await PeticionGet('Presentacion/all');
+
+    if (response) {
       setPresentacion(response.data.data)
       setFilteredPresentacion(response.data.data)
-    } catch (error) {
-      alertMensaje('Ocurrio un error al intentar consultar los Presentacions, intenta mas tarde.', 'warning')
     }
   }
 
   const eliminarPresentacion = async (id) => {
-    try {
-      const resultado = await PeticionDelete(`Presentacion/id/${id}`)
-
-      if (resultado) {
-        alertMensaje('Presentacion eliminado con exito!', 'success');
-        cargarVentas()
-      } else {
-        alertMensaje('Ocurrio un error al intentar eliminar el Presentacion!', 'warning');
-      }
-    } catch (error) {
-      alertMensaje('Ocurrio un error al intentar eliminar el Presentacion!', 'warning');
-    }
+    await PeticionDelete(`Presentacion/id/${id}`)
   }
 
   function confirmar(id, nombre) {
@@ -59,7 +42,6 @@ const TblPresentacion = () => {
       }
     });
   };
-
 
   const columns = [
     {
