@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { PeticionPost } from '../../Servicios/PeticionServicio'
+import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
 
 const AddCliente = () => {
     let navigate = useNavigate();
@@ -100,17 +101,5 @@ const AddCliente = () => {
         </div>
     );
 }
-
-const ListaTipoDocumento = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'NIT' },
-    { id: 2, nombre: 'DPI' }
-];
-
-const ListaEstado = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'Activo' },
-    { id: 2, nombre: 'No activo' }
-];
 
 export default AddCliente

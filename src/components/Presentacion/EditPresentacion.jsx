@@ -2,6 +2,8 @@ import axios from "axios";
 import Swal from 'sweetalert2'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { ListaEstado } from '../../Constantes/ListasSelect';
+import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -28,42 +30,26 @@ const EditPresentacion = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        try {
-            setPresentacion({ ...Presentacion, ["id"]: idPresentacion });
-            const resultado = await axios.put(`${baseUrl}/Presentacion/`, Presentacion);
 
-            if (resultado) {
-                mesajeResultado('Los datos fueron actualizados con exito!', 'success');
-            } else {
-                mesajeResultado('Ocurrio un error al intentar actualizar el Presentacion!', 'warning');
-            }
-
+        setPresentacion({ ...Presentacion, ["id"]: idPresentacion });
+        const resultado = await PeticionPut('Presentacion/', Presentacion);
+    
+        if (resultado) {
             navigate("/tblPresentacion");
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
     };
 
     const cargarPresentacion = async () => {
-        try {
-            const response = await axios.get(`${baseUrl}/Presentacion/id/${idPresentacion}`)
+        const response = await PeticionGet(`Presentacion/id/${idPresentacion}`);
+
+        if (response) {
             setPresentacion(response.data.data[0])
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar consultar los datos del Presentacion, intenta mas tarde.', 'warning')
         }
     }
 
     const handleChange = event => {
         setPresentacion({ ...Presentacion, [event.target.name]: parseInt(event.target.value) });
     };
-
-    const mesajeResultado = (mensaje, clase) => {
-        Swal.fire(
-            mensaje,
-            '',
-            clase
-        )
-    }
 
     return (
         <div className="container">
@@ -105,11 +91,5 @@ const EditPresentacion = () => {
         </div>
     );
 }
-
-const ListaEstado = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'Activo' },
-    { id: 2, nombre: 'No activo' }
-];
 
 export default EditPresentacion

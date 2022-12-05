@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
+import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
 
 const EditCliente = () => {
   let navigate = useNavigate();
@@ -30,6 +31,7 @@ const EditCliente = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    
     setCliente({ ...Cliente, ["id"]: idCliente });
     const resultado = await PeticionPut('Persona/', Cliente);
 
@@ -116,17 +118,5 @@ const EditCliente = () => {
     </div>
   );
 }
-
-const ListaTipoDocumento = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'NIT' },
-  { id: 2, nombre: 'DPI' }
-];
-
-const ListaEstado = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'Activo' },
-  { id: 2, nombre: 'No activo' }
-];
 
 export default EditCliente

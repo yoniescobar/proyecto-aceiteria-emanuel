@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
+import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -119,17 +120,5 @@ const EditProveedor = () => {
     </div>
   );
 }
-
-const ListaTipoDocumento = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'NIT' },
-  { id: 2, nombre: 'DPI' }
-];
-
-const ListaEstado = [
-  { id: -1, nombre: 'Seleccione una opcion' },
-  { id: 1, nombre: 'Activo' },
-  { id: 2, nombre: 'No activo' }
-];
 
 export default EditProveedor
