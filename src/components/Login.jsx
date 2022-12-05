@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { setUserSession } from "../utils/token";
-import { PeticionGet } from '../../Servicios/PeticionServicio'
+import { PeticionGet } from '../Servicios/PeticionServicio'
 import { alertMensaje } from '../utils/alert';
 
 
