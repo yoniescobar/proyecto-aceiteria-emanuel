@@ -189,6 +189,7 @@ const BuscadorPorCodigo = () => {
         init.persona.nombre = "";
         init.serie_doc = "";
         init.numero_doc = "";
+        setCambio(0);
         setItem(item => ({
             ...init
         }));
