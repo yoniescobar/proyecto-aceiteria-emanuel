@@ -8,7 +8,6 @@ import { CSVLink } from 'react-csv'
 import { PeticionGet, PeticionDelete } from '../../Servicios/PeticionServicio'
 import { alertMensaje } from '../../utils/alert'
 
-// const baseUrl = process.env.REACT_APP_BASE_URL
 const TblPresentacion = () => {
   const [search, setSearch] = useState('')
   const [Presentacion, setPresentacion] = useState([])

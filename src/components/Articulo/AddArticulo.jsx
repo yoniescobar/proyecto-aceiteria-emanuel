@@ -1,10 +1,6 @@
-import axios from "axios"
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
+import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import { PeticionGet, PeticionDelete } from '../../Servicios/PeticionServicio'
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionGet, PeticionPost } from '../../Servicios/PeticionServicio'
 
 const AddArticulo = () => {
   let navigate = useNavigate();
@@ -27,32 +23,32 @@ const AddArticulo = () => {
     marca:"",
     modelo:"",
     estado:1,
-    precio_compra: 20,
-    precio_venta: 30
+    precio_compra: 0,
+    precio_venta: 0
   })
 
   const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion } = Articulo;
-  let cont = 0;
+  const inputReference = useRef(null);
+
   useEffect(() => {
     consultarCategorias();
     consultarPresentacion();
+    inputReference.current.focus();
   }, []);
 
   const consultarCategorias = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/all`)
-      setCategoria(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
+    const response = await PeticionGet('all');
+      
+    if(response) {
+      setCategoria(response.data.data);
     }
   }
 
   const consultarPresentacion = async () => {
-    try {
-      const response = await PeticionGet('Presentacion/all');
+    const response = await PeticionGet('Presentacion/all');
+
+    if(response) {
       setPresentacion(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar las categorias, intenta mas tarde.', 'warning')
     }
   }
 
@@ -69,33 +65,15 @@ const AddArticulo = () => {
     setArticulo({ ...Articulo, [event.target.name]: { id: parseInt(event.target.value) } });
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const handleClick = async (event) => {
+    event.preventDefault();
 
-    cont++;
-    try {
-      console.log(Articulo);
-      const resultado = await axios.post(`${baseUrl}/Articulo`, Articulo);
+    const resultado = await PeticionPost('Articulo', Articulo);
 
-      if (resultado) {
-        mesajeResultado('Articulo creado con exito!', 'success');
-      } else {
-        mesajeResultado('Ocurrio un error al intentar crear el articulo!', 'warning');
-      }
-
+    if (resultado) {
       navigate("/tblArticulo");
-    } catch (error) {
-      //mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
-  }
 
   return (
     <div className="container">
@@ -104,12 +82,11 @@ const AddArticulo = () => {
         <div className="col-12 col-lg-9">
           <section className />
           <div className="clas " />
-          <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
+          <form action className="bg-light my-3 p-3 border rounded">
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra(*):</label>
-                <input type="text" name="codigo" id="codigo" className="form-control"
-                  value={codigo} onChange={(e) => onInputChange(e)} />
+                <input ref={inputReference} type="number" name="codigo" id="codigo" className="form-control"value={codigo} onChange={(e) => onInputChange(e)} />
               </div>
 
               <div className="form-group col-12 col-sm-6">
@@ -178,7 +155,7 @@ const AddArticulo = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-outline-primary">Guardar Articulo</button>
+            <button type="button" onClick={handleClick} className="btn btn-outline-primary">Guardar Articulo</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>
         </div>

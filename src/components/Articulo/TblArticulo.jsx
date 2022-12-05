@@ -1,15 +1,10 @@
 import 'styled-components'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { Link, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { CSVLink } from 'react-csv'
-
-
-const baseUrl = process.env.REACT_APP_BASE_URL
-
-
+import { PeticionGet,  PeticionDelete} from '../../Servicios/PeticionServicio'
 
 const TblArticulo = () => {
   const [search, setSearch] = useState('')
@@ -21,37 +16,16 @@ const TblArticulo = () => {
   }, []);
 
   const cargarArticulos = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Articulo/all`)
-      console.log(response.data.data)
-      setArticulo(response.data.data)
-      setFilteredArticulo(response.data.data)
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
+    const response = await PeticionGet('Articulo/all/');
+
+    if(response) {
+      setArticulo(response.data.data);
+      setFilteredArticulo(response.data.data);
     }
   }
 
   const eliminarArticulo = async (id) => {
-    try {
-      const resultado = await axios.delete(`${baseUrl}/Articulo/id/${id}`)
-
-      if (resultado) {
-        mesajeResultado('Articulo eliminado con exito!', 'success');
-        cargarArticulos()
-      } else {
-        mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
-      }
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar eliminar el articulo!', 'warning');
-    }
-  }
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
+      const resultado = await PeticionDelete(`Articulo/id/${id}`);
   }
 
   function confirmar(id, nombre) {
@@ -70,9 +44,7 @@ const TblArticulo = () => {
     });
   };
 
-
   const columns = [
-
     {
       name: 'Nombre',
       selector: (row) => row.nombre,
@@ -86,7 +58,6 @@ const TblArticulo = () => {
       name: 'Existencia',
       selector: (row) => row.existencia,
     },
-
     {
       name: 'Imagen',
       selector: (row) => <img width={50} height={50} src={row.imagen} />,
@@ -111,7 +82,6 @@ const TblArticulo = () => {
         </button>,
       ],
     },
-
   ]
 
   useEffect(() => {
