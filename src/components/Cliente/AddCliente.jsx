@@ -1,9 +1,6 @@
-import axios from "axios"
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
+import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionPost } from '../../Servicios/PeticionServicio'
 
 const AddCliente = () => {
     let navigate = useNavigate();
@@ -30,28 +27,12 @@ const AddCliente = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const resultado = await axios.post(`${baseUrl}/Persona`, Cliente);
+        const resultado = await PeticionPost('Persona', Cliente);
 
-            if (resultado) {
-                mesajeResultado('Cliente creado con exito!', 'success');
-            } else {
-                mesajeResultado('Ocurrio un error al intentar crear el cliente!', 'warning');
-            }
-
+        if (resultado) {
             navigate("/tblCliente");
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
     };
-
-    const mesajeResultado = (mensaje, clase) => {
-        Swal.fire(
-            mensaje,
-            '',
-            clase
-        )
-    }
 
     return (
         <div className="container">

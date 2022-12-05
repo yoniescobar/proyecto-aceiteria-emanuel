@@ -1,9 +1,6 @@
-import axios from "axios";
-import Swal from 'sweetalert2'
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
 
 const EditCliente = () => {
   let navigate = useNavigate();
@@ -33,42 +30,25 @@ const EditCliente = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setCliente({ ...Cliente, ["id"]: idCliente });
-      const resultado = await axios.put(`${baseUrl}/Persona/`, Cliente);
+    setCliente({ ...Cliente, ["id"]: idCliente });
+    const resultado = await PeticionPut('Persona/', Cliente);
 
-      if (resultado) {
-        mesajeResultado('Los datos fueron actualizados con exito!', 'success');
-      } else {
-        mesajeResultado('Ocurrio un error al intentar actualizar el cliente!', 'warning');
-      }
-
+    if (resultado) {
       navigate("/tblCliente");
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
   };
 
   const cargarCliente = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Persona/id/${idCliente}`)
+    const response = await PeticionGet(`Persona/id/${idCliente}`);
+
+    if (response) {
       setCliente(response.data.data[0])
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los datos del cliente, intenta mas tarde.', 'warning')
     }
   }
 
   const handleChange = event => {
     setCliente({ ...Cliente, [event.target.name]: parseInt(event.target.value) });
   };
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
-  }
 
   return (
     <div className="container">

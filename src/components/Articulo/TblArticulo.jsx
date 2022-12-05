@@ -25,7 +25,7 @@ const TblArticulo = () => {
   }
 
   const eliminarArticulo = async (id) => {
-      const resultado = await PeticionDelete(`Articulo/id/${id}`);
+      await PeticionDelete(`Articulo/id/${id}`);
   }
 
   function confirmar(id, nombre) {

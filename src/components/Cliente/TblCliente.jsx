@@ -1,9 +1,9 @@
 import 'styled-components'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { PeticionGet,  PeticionDelete} from '../../Servicios/PeticionServicio'
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -17,36 +17,16 @@ const TblCliente = () => {
   }, []);
 
   const cargarClientes = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Persona/all`)
+    const response = await PeticionGet('Persona/all');
+
+    if (response) {
       setCliente(response.data.data.filter(x => x.tipopersona == 1));
       setFilteredCliente(response.data.data.filter(x => x.tipopersona == 1));
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los Clientes, intenta mas tarde.', 'warning')
     }
   }
 
   const eliminarCliente = async (id) => {
-    try {
-      const resultado = await axios.delete(`${baseUrl}/Persona/id/${id}`)
-
-      if (resultado) {
-        mesajeResultado('Cliente eliminado con exito!', 'success');
-        cargarClientes()
-      } else {
-        mesajeResultado('Ocurrio un error al intentar eliminar el cliente!', 'warning');
-      }
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar eliminar el cliente!', 'warning');
-    }
-  }
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
+    await PeticionDelete(`Persona/id/${id}`);
   }
 
   function confirmar(id, nombre) {

@@ -22,7 +22,6 @@ const EditArticulo = () => {
     stockMinimo: "",
     marca:"",
     modelo:"",
-
     estado:1,
     precio_compra: 0,
     precio_venta: 0
