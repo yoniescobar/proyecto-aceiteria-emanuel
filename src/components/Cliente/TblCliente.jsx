@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { PeticionGet,  PeticionDelete} from '../../Servicios/PeticionServicio'
 
-const baseUrl = process.env.REACT_APP_BASE_URL
-
 const TblCliente = () => {
   const [search, setSearch] = useState('')
   const [Cliente, setCliente] = useState([])

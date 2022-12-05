@@ -1,11 +1,9 @@
 import 'styled-components'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionGet,  PeticionDelete} from '../../Servicios/PeticionServicio'
 
 const TblProveedor = () => {
   const [search, setSearch] = useState('')
@@ -17,36 +15,16 @@ const TblProveedor = () => {
   }, []);
 
   const cargarProveedores = async () => {
-    try {
-      const response = await axios.get(`${baseUrl}/Persona/all`)
+    const response = await PeticionGet('Persona/all');
+
+    if (response) {
       setProveedor(response.data.data.filter(x => x.tipopersona == 2));
       setFilteredProveedor(response.data.data.filter(x => x.tipopersona == 2));
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar consultar los proveedores, intenta mas tarde.', 'warning')
     }
   }
 
   const eliminarProveedor = async (id) => {
-    try {
-      const resultado = await axios.delete(`${baseUrl}/Persona/id/${id}`)
-
-      if (resultado) {
-        mesajeResultado('Proveedor eliminado con exito!', 'success');
-        cargarProveedores()
-      } else {
-        mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
-      }
-    } catch (error) {
-      mesajeResultado('Ocurrio un error al intentar eliminar el proveedor!', 'warning');
-    }
-  }
-
-  const mesajeResultado = (mensaje, clase) => {
-    Swal.fire(
-      mensaje,
-      '',
-      clase
-    )
+    await PeticionDelete(`Persona/id/${id}`);
   }
 
   function confirmar(id, nombre) {
