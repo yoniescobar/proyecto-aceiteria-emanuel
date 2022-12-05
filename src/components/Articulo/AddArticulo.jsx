@@ -31,24 +31,20 @@ const AddArticulo = () => {
   const inputReference = useRef(null);
 
   useEffect(() => {
-    consultarCategorias();
-    consultarPresentacion();
+    cargarCatalogos();
     inputReference.current.focus();
   }, []);
 
-  const consultarCategorias = async () => {
-    const response = await PeticionGet('all');
+  const cargarCatalogos = async () => {
+    const responseCategoria = await PeticionGet('all');
+    const responsePresentacion = await PeticionGet('Presentacion/all');
       
-    if(response) {
-      setCategoria(response.data.data);
+    if(responseCategoria) {
+      setCategoria(responseCategoria.data.data);
     }
-  }
 
-  const consultarPresentacion = async () => {
-    const response = await PeticionGet('Presentacion/all');
-
-    if(response) {
-      setPresentacion(response.data.data)
+    if(responsePresentacion) {
+      setPresentacion(responsePresentacion.data.data)
     }
   }
 
