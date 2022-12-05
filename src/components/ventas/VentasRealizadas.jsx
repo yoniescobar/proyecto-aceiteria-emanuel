@@ -30,7 +30,7 @@ const VentasRealizadas = () => {
     if (datos.length = 3) {
       return `${datos[2]}/${datos[1]}/${datos[0]}`;
     } else {
-      return "";
+      return '';
     }
   }
 
