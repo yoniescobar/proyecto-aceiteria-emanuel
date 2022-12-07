@@ -175,6 +175,7 @@ const TblCompras = () => {
     setItem(item => ({
         ...init
     }));
+    window.location.reload();
   }
   const handleMakeSale = () => {
     const tempItem = { ...item };
@@ -326,7 +327,7 @@ const TblCompras = () => {
                 <div className="row">
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
-                        <button type="button" className="btn btn-Success btn-lg btn-block" onClick={handleMakeSale}>Realizar compra</button>
+                        <button type="button" className="btn btn-success btn-lg btn-block" onClick={handleMakeSale}>Realizar compra</button>
                     </div>
                     <div className="col-md-4"></div>
                 </div>

@@ -192,6 +192,8 @@ const BuscadorPorCodigo = () => {
         setItem(item => ({
             ...init
         }));
+        window.location.reload();
+        
     }
 
     const onclickDelItem = (e, itemId) => {

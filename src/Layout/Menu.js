@@ -100,7 +100,7 @@ export default class Menu extends Component {
                     <li className="nav-item">
                       <Link to="/ventas" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Ingreso</p>
+                        <p>Nueva Venta</p>
                       </Link>
                     </li>
                   </ul>
@@ -108,7 +108,7 @@ export default class Menu extends Component {
                     <li className="nav-item">
                       <Link to="/tblCliente" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Clientes</p>
+                        <p>Registrar Clientes</p>
                       </Link>
 
                     </li>
