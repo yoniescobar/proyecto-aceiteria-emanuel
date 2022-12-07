@@ -1,9 +1,7 @@
-import axios from "axios"
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
+import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-
-const baseUrl = process.env.REACT_APP_BASE_URL
+import { PeticionPost } from '../../Servicios/PeticionServicio'
+import { ListaEstado } from '../../Constantes/ListasSelect'
 
 const AddPresentacion = () => {
     let navigate = useNavigate();
@@ -26,28 +24,12 @@ const AddPresentacion = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const resultado = await axios.post(`${baseUrl}/Presentacion/`, Presentacion);
+        const resultado = await PeticionPost('Presentacion', Presentacion);
 
-            if (resultado) {
-                mesajeResultado('Presentacion creado con exito!', 'success');
-            } else {
-                mesajeResultado('Ocurrio un error al intentar crear el Presentacion!', 'warning');
-            }
-
+        if (resultado) {
             navigate("/tblPresentacion");
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
         }
     };
-
-    const mesajeResultado = (mensaje, clase) => {
-        Swal.fire(
-            mensaje,
-            '',
-            clase
-        )
-    }
 
     return (
         <div className="container">
@@ -89,11 +71,5 @@ const AddPresentacion = () => {
         </div>
     );
 }
-
-const ListaEstado = [
-    { id: -1, nombre: 'Seleccione una opcion' },
-    { id: 1, nombre: 'Activo' },
-    { id: 2, nombre: 'No activo' }
-];
 
 export default AddPresentacion

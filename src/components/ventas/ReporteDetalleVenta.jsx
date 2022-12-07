@@ -1,12 +1,8 @@
-
 import React, { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
-import { alertMensaje } from '../../utils/alert'
-
-const baseUrl = process.env.REACT_APP_BASE_URL
 
 const ReporteDetalleVenta = () => {
     const { idVenta } = useParams()
@@ -16,18 +12,28 @@ const ReporteDetalleVenta = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: 'Listado de DataVentaRealizada',
-        //onAfterPrint:()=>alert('Print success')
     })
 
-    const [DataVentaRealizada, setDataVentaRealizada] = useState([])
+    const [DataVentaRealizada, setDataVentaRealizada] = useState([{
+        fecha_doc: "",
+        serie_doc: "",
+        numero_doc: "",
+        nombre: "",
+        persona: {nombre:""},
+        items: [{
+            id:"",
+            cantidad: 0,
+            precio_venta: 0,
+            articulo:{ nombre:""}
+        }]
+    }])
 
     const cargarDataVentaRealizada = async () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
+
         if(response.data.data.length > 0){
-            console.log(response.data.data[0])
             setDataVentaRealizada(response.data.data)
-        }
-        
+        }   
     }
     
     useEffect(() => {
@@ -40,7 +46,7 @@ const ReporteDetalleVenta = () => {
                 <h1 className="text-center my-3 border py-2 ">
                     Aceitera Emanuel
                     <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={handlePrint}>Imprimir</button>
-                    <Link className="btn btn-sm btn-outline-danger px-3 " to="/tblDataVentaRealizada"> cancelar</Link>
+                    <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
                 </h1>
 
                 <div ref={componentRef} class="container">
@@ -53,10 +59,10 @@ const ReporteDetalleVenta = () => {
 
                     <div class="row">
                         <div class="col-sm">
-                            <label>Cliente: </label><span class="border-0"> {DataVentaRealizada[0].persona.nombre}</span>
+                            <label>Cliente: </label><span class="border-0"> {DataVentaRealizada[0].persona.nombre.toUpperCase()}</span>
                         </div>
                         <div class="col-sm">
-                            <label>Doc: </label><span class="border-0"> {`${DataVentaRealizada[0].serie_doc}-${DataVentaRealizada[0].numero_doc}`}</span>
+                            <label>Doc: </label><span class="border-0"> {`${DataVentaRealizada[0].serie_doc.toUpperCase()}-${DataVentaRealizada[0].numero_doc}`}</span>
                         </div>
                         <div class="col-sm">
                             <label>Telefono: </label><span class="border-0"> N/A</span>

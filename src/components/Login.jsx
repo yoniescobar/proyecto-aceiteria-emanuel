@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
-import Swal from 'sweetalert2';
-import axios from "axios";
 import { setUserSession } from "../utils/token";
+import { PeticionGet } from '../Servicios/PeticionServicio'
+import { alertMensaje } from '../utils/alert';
 
 
 const baseUrl = process.env.REACT_APP_BASE_URL
@@ -25,33 +25,26 @@ const Login = () => {
     };
     
     const onSubmit = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        try {
-            const response = await axios.get(`${baseUrl}/Usuario/all`)
-
-            const usuario = response.data.data.find(x => x.usuario === form.username 
-                && x.password === form.password
-                && x.id_estado === "1" );
-
-            if (usuario) {
-                setUserSession(usuario.usuario, usuario.usuario, usuario.id);
-                window.location.reload();
-            } else {
-                mesajeResultado('Datos no encontrados, verifique sus credenciales.', 'warning')
-            }
-        } catch (error) {
-            mesajeResultado('Ocurrio un error al intentar consultar los articulos, intenta mas tarde.', 'warning')
-        }
+      const response = await PeticionGet('Usuario/all');
+      
+      if (response) {
+        validarUsuario(response);
+      }
     }
     
+    const validarUsuario = (response) => {
+      const usuario = response.data.data.find(x => x.usuario === form.username 
+        && x.password === form.password
+        && x.id_estado === "1" );
 
-    const mesajeResultado = (mensaje, clase) => {
-        Swal.fire(
-          mensaje,
-          '',
-          clase
-        )
+      if (usuario) {
+          setUserSession(usuario.usuario, usuario.usuario, usuario.id);
+          window.location.reload();
+      } else {
+        alertMensaje('Datos no encontrados, verifique sus credenciales.', 'warning')
+      }
     }
 
   return (
