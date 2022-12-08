@@ -49,7 +49,7 @@ const ReporteDetalleVenta = () => {
                     <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
                 </h1>
 
-                <div ref={componentRef} class="container">
+                <div ref={componentRef} style={{margin: '10%', margin: '10%', marginTop: '10%', marginRight: '10%', marginBottom: '10%', marginLeft: '10%'}}>
                     <label>Nit: </label><span class="border-0"> 7455225-5</span><br></br>
                     
                     <label>Telefono: </label><span class="border-0"> 7758-8956</span><br></br>
@@ -57,15 +57,11 @@ const ReporteDetalleVenta = () => {
                     <label>Fecha: </label><span class="border-0"> {DataVentaRealizada[0].fecha_doc}</span><br></br>
                     <br></br>
 
-                    <div class="row">
-                        <div class="col-sm">
-                            <label>Cliente: </label><span class="border-0"> {DataVentaRealizada[0].persona.nombre.toUpperCase()}</span>
-                        </div>
-                        <div class="col-sm">
-                            <label>Doc: </label><span class="border-0"> {`${DataVentaRealizada[0].serie_doc.toUpperCase()}-${DataVentaRealizada[0].numero_doc}`}</span>
-                        </div>
-                        <div class="col-sm">
-                            <label>Telefono: </label><span class="border-0"> N/A</span>
+                    <div>
+                        <div>
+                            <span style={{textAlign: 'right'}}><label>Cliente:</label> {DataVentaRealizada[0].persona.nombre.toUpperCase()}</span>
+                            <span style={{marginLeft: '30%', textAlign: 'right'}}><label>Doc:</label> {`${DataVentaRealizada[0].serie_doc.toUpperCase()}-${DataVentaRealizada[0].numero_doc}`}</span>
+                            <span style={{marginLeft: '30%', textAlign: 'right'}}><label>Telefono:</label> N/A</span>
                         </div>
                     </div>
 
@@ -95,12 +91,8 @@ const ReporteDetalleVenta = () => {
                         </tbody>
                     </table>
 
-                    <div class="row">
-                        <div class="col-sm"></div>
-                        <div class="col-sm"></div>
-                        <div class="col-sm">
-                            <label>Total a pagar: </label><span class="border-0"> Q {total}</span>
-                        </div>
+                    <div>
+                            <span style={{marginLeft: '75%', textAlign: 'right'}}><label>Total a pagar: </label> Q {total}</span>
                     </div>
 
                 </div>
