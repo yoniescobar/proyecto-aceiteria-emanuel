@@ -32,7 +32,9 @@ import TblPresentacion from '../components/Presentacion/TblPresentacion'
 
 import TblVentas from '../components/ventas/TblVentas'
 import VentasRealizadas from '../components/ventas/VentasRealizadas'
-import ReporteDetalleVenta from '../components/ventas/ReporteDetalleVenta'
+
+import FacturaVenta from '../components/Reportes/FacturaVenta'
+import Ticket from '../components/Reportes/Ticket'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
 import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
 import TblCompras from '../components/compras/TblCompras'
@@ -91,7 +93,8 @@ export default class Contenido extends Component {
                       <Route exact path='/compras' element={<TblCompras />}></Route>                      
 
                       <Route exact path='/VentasRealizadas' element={<VentasRealizadas />}></Route>
-                      <Route exact path='/ReporteDetalleVenta/:idVenta' element={<ReporteDetalleVenta />}></Route>
+                      <Route exact path='/FacturaVenta/:idVenta' element={<FacturaVenta />}></Route>
+                      <Route exact path='/Ticket/:idVenta' element={<Ticket />}></Route>
                       {/* //route reportes */}
 
                       <Route exact path='/reporteVenta' element={<ReporteVenta />} />

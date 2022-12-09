@@ -75,12 +75,14 @@ const VentasRealizadas = () => {
     {
       name: 'Opciones',
       cell: (row) => [
-        <Link
-        className="btn btn-sm btn-primary px-5"
-          to={`/reporteDetalleVenta/${row.id}`}>
+        <Link className="btn btn-sm btn-primary mx-1" to={`/FacturaVenta/${row.id}`}>
           <span className="fa-solid fa-file-pdf"></span>
         </Link>,
+        <Link className="btn btn-sm btn-primary mx-1" to={`/Ticket/${row.id}`}>
+          <span className="fa-solid fa-ticket"></span>
+        </Link>,
         // <button
+        //<i class="fa-solid fa-ticket"></i>
         //   className="btn btn-danger mx-1"
         //   onClick={() => confirmar(row.id, row.nombre)}>
         //   <span className="fa-regular fa-trash-can"></span>

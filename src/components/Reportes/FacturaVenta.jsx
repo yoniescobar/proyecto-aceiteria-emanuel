@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
 
-const ReporteDetalleVenta = () => {
+const FacturaVenta = () => {
     const { idVenta } = useParams()
     const componentRef = useRef();
     let total = 0;
@@ -102,4 +102,4 @@ const ReporteDetalleVenta = () => {
     )
 }
 
-export default ReporteDetalleVenta
+export default FacturaVenta
