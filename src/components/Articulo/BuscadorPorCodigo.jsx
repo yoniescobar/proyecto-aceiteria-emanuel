@@ -117,6 +117,15 @@ const BuscadorPorCodigo = () => {
         )
         setArticulos([...editData]);
     };
+    const onChangeInputPV = (e, prodId) => {
+        const { value } = e.target
+        const editData = articulos.map((item) =>
+            item.id === prodId
+                ? { ...item, precio_venta: value }
+                : item
+        )
+        setArticulos([...editData]);
+    };
     const handleAdd = (item) => {
         const editData = articulos;
         editData.unshift(item);
@@ -284,7 +293,16 @@ const BuscadorPorCodigo = () => {
                                                 />
                                             </td>
                                             <td>{item.descripcion}</td>
-                                            <td>{item.precio_venta}</td>
+                                            <td>
+                                            <input
+                                                    onChange={(e) => onChangeInputPV(e, item.id)}
+                                                    type="number"
+                                                    name="precio_venta"
+                                                    defaultValue={item.precio_venta}
+                                                    min="1"
+                                                />
+                                                
+                                            </td>
                                             <td>{item.cantidad * item.precio_venta}</td>
                                             <td>
                                                 <button

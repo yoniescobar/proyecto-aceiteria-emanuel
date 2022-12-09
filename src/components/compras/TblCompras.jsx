@@ -71,7 +71,7 @@ const TblCompras = () => {
                   }
               )
       }else{
-          mesajeResultado('Elemento ya agregado a la venta', 'warning');
+          mesajeResultado('Elemento ya agregado a la compra', 'warning');
       }
     }else{
         mesajeResultado('Código no ingresado', 'warning');
@@ -195,7 +195,7 @@ const TblCompras = () => {
           mesajeResultado('Datos de facturación incorrectos', 'warning');
       }
     } else {
-        mesajeResultado('No hay articulos para vender', 'warning');
+        mesajeResultado('No hay articulos para comprar', 'warning');
     }
   }
 
@@ -308,7 +308,7 @@ const TblCompras = () => {
                         </div>
                     </div>
                     <div className="col">
-                        <label for="cliente" className="col-sm-2 col-form-label">CLIENTE </label>
+                        <label for="cliente" className="col-sm-2 col-form-label">PROVEEDOR </label>
                         <input type="text" className="form-control" placeholder={item.persona.nombre} readOnly />
                     </div>
                 </div>
