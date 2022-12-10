@@ -7,12 +7,8 @@ import { PeticionGet } from '../../Servicios/PeticionServicio'
 const Ticket = () => {
     const { idVenta } = useParams()
     const componentRef = useRef();
-
-
-
     let total = 0;
-
-
+    let tituloDocumento = "";
     const [DataVentaRealizada, setDataVentaRealizada] = useState([{
         fecha_doc: "",
         serie_doc: "",
@@ -31,7 +27,8 @@ const Ticket = () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
 
         if(response.data.data.length > 0){
-            setDataVentaRealizada(response.data.data)
+            setDataVentaRealizada(response.data.data);
+            tituloDocumento = `Tiket_${DataVentaRealizada.numero_doc}`;
         }   
     }
     
@@ -40,19 +37,21 @@ const Ticket = () => {
     }, []);
 
     return (
-        <div style={{width: '85%' }}>
+        <div style={{width: '85%', textAlign: 'center' }}>
             <ReactToPrint
                 trigger={() => <button className="btn btn-sm btn-outline-secondary px-3 m-2">Imprimir</button>}
                 content={() => componentRef.current}
-                documentTitle = 'prueba'
+                documentTitle = 'Ticket'
                 pageStyle='@page { size: 80mm 258mm; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 80px !important; } }'
             />
             <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
+            <hr></hr>
+        <div style={{width: '95%', marginLeft: '35%'}}>
             <div ref={componentRef} >
-            <style type="text/css" media="print">{"\
-                @page {\ size: 80mm 258mm;\ }\
-            "}
-            </style>
+                <style type="text/css" media="print">{"\
+                    @page {\ size: 80mm 258mm;\ }\
+                "}
+                </style>
                 <div style={{width: '35%', textAlign: 'center'}}>
                     <label>Aceitera Emanuel </label><br></br>
                     <label>Nit: </label><span class="border-0"> 7455225-5</span><br></br>
@@ -94,6 +93,7 @@ const Ticket = () => {
                         </div>
                 </div>
             </div>
+</div>
         </div>
     )
 }
