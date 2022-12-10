@@ -27,7 +27,7 @@ const EditArticulo = () => {
     precio_venta: 0
   })
 
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo } = articulo;
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo, precio_venta, precio_compra } = articulo;
 
   const onInputChange = (e) => {
     setArticulo({ ...articulo, [e.target.name]: e.target.value });
@@ -105,6 +105,18 @@ const EditArticulo = () => {
                     <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="precio_venta">Precio de Venta(*):</label>
+                <input type="number" name="precio_venta" id="precio_venta" className="form-control"
+                  value={precio_venta} onChange={(e) => onInputChange(e)} />
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="precio_compra">Precio de Compra(*):</label>
+                <input type="number" name="precio_compra" id="precio_compra" className="form-control"
+                  value={precio_compra} onChange={(e) => onInputChange(e)} />
               </div>
 
               <div className="form-group col-12 col-sm-6">
