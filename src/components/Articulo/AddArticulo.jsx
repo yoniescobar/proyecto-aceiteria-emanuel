@@ -49,6 +49,8 @@ const AddArticulo = () => {
   }
 
   const onInputChange = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
   };
 
@@ -63,7 +65,6 @@ const AddArticulo = () => {
 
   const handleClick = async (event) => {
     event.preventDefault();
-
     const resultado = await PeticionPost('Articulo', Articulo);
 
     if (resultado) {
@@ -82,7 +83,7 @@ const AddArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra(*):</label>
-                <input ref={inputReference} type="number" name="codigo" id="codigo" className="form-control"value={codigo} onChange={(e) => onInputChange(e)} />
+                <input ref={inputReference} type="text" name="codigo" id="codigo" className="form-control" onChange={(e) => onInputChange(e)} />
               </div>
 
               <div className="form-group col-12 col-sm-6">
