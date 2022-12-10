@@ -36,7 +36,7 @@ const TblCompras = () => {
   useEffect(() => {
     getProductosVenta().then(
         data => {
-            const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - Q.' + obj.precio_venta, value: obj.id }));
+            const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - Q.' + obj.precio_compra, value: obj.id }));
             setOptions(newData);
             getProveedorByCode(0).then(
               data => {
@@ -119,6 +119,16 @@ const TblCompras = () => {
     setArticulos([...editData]);
   };
 
+  const onChangeInputPC = (e, prodId) => {
+    const { value } = e.target
+    const editData = articulos.map((item) =>
+        item.id === prodId
+            ? { ...item, precio_compra: value }
+            : item
+    )
+    setArticulos([...editData]);
+  };
+
   const onclickDelItem = (e, itemId) => {
     e.preventDefault();
     const index = articulos.findIndex(item => {
@@ -132,7 +142,7 @@ const TblCompras = () => {
   const totalCompra = () => {
     let total = 0;
     for (var i in articulos) {
-        total += +articulos[i].precio_venta * +articulos[i].cantidad;
+        total += +articulos[i].precio_compra * +articulos[i].cantidad;
     }
     setTotal(total);
   }
@@ -242,9 +252,10 @@ const TblCompras = () => {
                         <thead>
                             <tr>
                                 <th>Existencia</th>
-                                <th>Cantidad</th>
+                                <th>Cantidad a comprar</th>
                                 <th>Producto</th>
-                                <th>C/U</th>
+                                <th>Precio de compra</th>
+                                <th>Precio de venta</th>
                                 <th>Subtotal</th>
                                 <th>Opciones</th>
                             </tr>
@@ -265,8 +276,11 @@ const TblCompras = () => {
                                                 />
                                             </td>
                                             <td>{item.descripcion}</td>
+                                            <td>
+                                                {item.precio_compra}
+                                            </td>
                                             <td>{item.precio_venta}</td>
-                                            <td>{item.cantidad * item.precio_venta}</td>
+                                            <td>{item.cantidad * item.precio_compra}</td>
                                             <td>
                                                 <button
                                                     className="btn btn-danger"

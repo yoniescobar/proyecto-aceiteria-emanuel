@@ -45,6 +45,11 @@ const TblProveedor = () => {
 
   const columns = [
     {
+      name: 'NIT',
+      selector: (row) => row.nodocumento,
+      sortable: true,
+    },
+    {
       name: 'Nombre',
       selector: (row) => row.nombre,
       sortable: true,

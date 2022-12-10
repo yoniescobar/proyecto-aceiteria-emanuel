@@ -73,18 +73,18 @@ export default class Menu extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <Link to="/compras" className="nav-link">
-                          <i className="far fa-circle nav-icon" />
-                          <p>Ingreso</p>
-                        </Link>
-                    </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
                       <Link to="/tblProveedor" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Proveedores</p>
                       </Link>
+                    </li>
+                  </ul>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                      <Link to="/compras" className="nav-link">
+                          <i className="far fa-circle nav-icon" />
+                          <p>Ingreso</p>
+                        </Link>
                     </li>
                   </ul>
                 </li>
@@ -114,11 +114,11 @@ export default class Menu extends Component {
                     </li>
                   </ul>
                 </li>
-                <li className="nav-item has-treeview">
+                {/* <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-chart-line" />
                     <p>
-                      Consulta Compras
+                      Proveedores
                       <i className="fas fa-angle-left right" />
                     </p>
                   </a>
@@ -129,13 +129,13 @@ export default class Menu extends Component {
                   </ul>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="!#" className="nav-link">
+                      <Link to="/tblProveedor" className="nav-link">
                         <i className="far fa-circle nav-icon" />
-                        <p>Proveedores</p>
-                      </a>
+                        <p>Administrar</p>
+                      </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-user" />

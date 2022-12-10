@@ -27,7 +27,7 @@ const AddArticulo = () => {
     precio_venta: 0
   })
 
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion } = Articulo;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion, precio_venta, precio_compra } = Articulo;
   const inputReference = useRef(null);
 
   useEffect(() => {
@@ -101,11 +101,24 @@ const AddArticulo = () => {
                   ))}
                 </select>
               </div>
+
               <div className="form-group col-12 col-sm-6">
+                <label htmlFor="precio_venta">Precio de Venta(*):</label>
+                <input type="number" name="precio_venta" id="precio_venta" className="form-control"
+                  value={precio_venta} onChange={(e) => onInputChange(e)} />
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="precio_compra">Precio de Compra(*):</label>
+                <input type="number" name="precio_compra" id="precio_compra" className="form-control"
+                  value={precio_compra} onChange={(e) => onInputChange(e)} />
+              </div>
+              
+              {/* <div className="form-group col-12 col-sm-6">
                 <label htmlFor="existencia">Existencia(*):</label>
                 <input type="number" name="existencia" id="existencia" className="form-control"
                   value={existencia} onChange={(e) => onInputChange(e)} />
-              </div>
+              </div> */}
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
