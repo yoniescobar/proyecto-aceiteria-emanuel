@@ -50,6 +50,11 @@ const TblCliente = () => {
       sortable: true,
     },
     {
+      name: 'Documento',
+      selector: (row) => row.nodocumento,
+      sortable: true,
+    },
+    {
       name: 'Telefono',
       selector: (row) => row.telefono,
     },

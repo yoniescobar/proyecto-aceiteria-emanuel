@@ -11,7 +11,7 @@ const FacturaVenta = () => {
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
-        documentTitle: 'Listado de DataVentaRealizada',
+        documentTitle: 'FacturaVenta',
     })
 
     const [DataVentaRealizada, setDataVentaRealizada] = useState([{

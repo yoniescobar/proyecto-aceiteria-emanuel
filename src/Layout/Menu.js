@@ -98,21 +98,22 @@ export default class Menu extends Component {
                   </a>
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
+                      <Link to="/tblCliente" className="nav-link">
+                        <i className="far fa-circle nav-icon" />
+                        <p>Clientes</p>
+                      </Link>
+
+                    </li>
+                  </ul>
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
                       <Link to="/ventas" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Nueva Venta</p>
                       </Link>
                     </li>
                   </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblCliente" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Registrar Clientes</p>
-                      </Link>
 
-                    </li>
-                  </ul>
                 </li>
                 {/* <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
@@ -152,14 +153,6 @@ export default class Menu extends Component {
                       </Link>
                     </li>
                   </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <a href="!#" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Proveedores</p>
-                      </a>
-                    </li>
-                  </ul>
                 </li>
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
@@ -169,24 +162,37 @@ export default class Menu extends Component {
                       <i className="fas fa-angle-left right" />
                     </p>
                   </a>
+                  
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="!#" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Ingreso</p>
-                      </a>
+                      <Link to="/reporteVenta" href="!#" className="nav-link">
+                      <i className="fa-solid fa-file-pdf" />
+                        <p className='px-2'>Reporte de Ventas</p>
+                      </Link>
                     </li>
+
+                    <li className="nav-item">
+                      <Link to="/VentasRealizadas" href="!#" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                        <p className='px-2'>Ventas realizadas</p>
+                      </Link>
+                    </li>
+
                   </ul>
-                  <ul className="nav nav-treeview">
+
+
+                  {/* <ul className="nav nav-treeview">
                     <li className="nav-item">
                       <a href="!#" className="nav-link">
                         <i className="far fa-circle nav-icon" />
                         <p>Proveedores</p>
                       </a>
                     </li>
-                  </ul>
+                  </ul> */}
+
                 </li>
-                <li className="nav-header">MULTI LEVEL EXAMPLE</li>
+
+                {/* <li className="nav-header">MULTI LEVEL EXAMPLE</li>
                 <li className="nav-item">
                   <Link to="/reporteVenta" href="!#" className="nav-link">
                   <i className="fa-solid fa-file-pdf" />
@@ -198,7 +204,9 @@ export default class Menu extends Component {
                   <i className="far fa-circle nav-icon" />
                     <p className='px-2'>Ventas realizadas</p>
                   </Link>
-                </li>
+                </li> */}
+
+
               </ul>
             </nav>
             {/* /.sidebar-menu */}
