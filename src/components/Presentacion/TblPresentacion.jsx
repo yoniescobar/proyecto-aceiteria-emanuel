@@ -27,9 +27,9 @@ const TblPresentacion = () => {
     await PeticionDelete(`Presentacion/id/${id}`)
   }
 
-  function confirmar(id, nombre) {
+  function confirmar(id, presentacion) {
     Swal.fire({
-      title: '¿Confirma eliminar el registro: ' + nombre + '?',
+      title: '¿Confirma eliminar el registro: ' + presentacion + '?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -79,7 +79,7 @@ const TblPresentacion = () => {
         </Link>,
         <button
           className="btn btn-danger mx-1"
-          onClick={() => confirmar(row.id, row.nombre)}>
+          onClick={() => confirmar(row.id, row.presentacion)}>
           <span className="fa-regular fa-trash-can"></span>
         </button>,
       ],

@@ -8,14 +8,14 @@ const AddCliente = () => {
     const [Cliente, setCliente] = useState({
         tipopersona: 1,
         tipo_documento: 0,
-        no_documento: "",
+        nodocumento: "",
         nombre: "",
         direccion: "",
         telefono: "",
         correo: ""
     })
 
-    const { tipopersona, tipo_documento, no_documento, nombre, direccion, telefono, correo } = Cliente;
+    const { tipopersona, tipo_documento, nodocumento, nombre, direccion, telefono, correo } = Cliente;
 
     const onInputChange = (e) => {
         setCliente({ ...Cliente, [e.target.name]: e.target.value });
@@ -54,9 +54,9 @@ const AddCliente = () => {
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
-                                <label htmlFor="no_documento">Numero de documento(*):</label>
-                                <input type="text" name="no_documento" id="no_documento" className="form-control"
-                                    value={no_documento} onChange={(e) => onInputChange(e)} />
+                                <label htmlFor="nodocumento">Numero de documento(*):</label>
+                                <input type="text" name="nodocumento" id="nodocumento" className="form-control"
+                                    value={nodocumento} onChange={(e) => onInputChange(e)} />
                             </div>
 
                             <div className="form-group col-12 col-sm-6">

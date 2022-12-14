@@ -25,6 +25,7 @@ const TblProveedor = () => {
 
   const eliminarProveedor = async (id) => {
     await PeticionDelete(`Persona/id/${id}`);
+    cargarProveedores();
   }
 
   function confirmar(id, nombre) {
