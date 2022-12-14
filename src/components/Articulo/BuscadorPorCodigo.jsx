@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { getItemByCode, getProductosVenta, setEgreso } from './ArticuloService';
+import { getItemByCode, getProductosVenta, setEgreso, getSucursales } from './ArticuloService';
 import { getClienteByCode } from './ArticuloService';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { trackPromise } from 'react-promise-tracker';
 
 import Select from 'react-select';
-
+const optionsTI = [
+    { value: '1', label: 'Venta' },
+    { value: '2', label: 'Traslado' }
+  ]
 
 const initialState = {
     tipo_comprobante: 1,
@@ -20,6 +23,9 @@ const initialState = {
         id: 0,
         nombre: "",
         codigo: ""
+    },
+    sucursal:{
+        id:1
     },
     usuario: {
         id: 1
@@ -42,6 +48,7 @@ const BuscadorPorCodigo = () => {
     const [item, setItem] = useState(initialState);
     const [ops, setOptions] = useState([]);
     const [cambio, setCambio] = useState(0);
+    const [sucursales, setSucursales] = useState('');
 
     let navigate = useNavigate();
 
@@ -64,7 +71,15 @@ const BuscadorPorCodigo = () => {
                     }
                 )
             }
-        );        
+        );    
+        getSucursales().then(
+            data => {
+              if(data.id > 0){
+                const newData = data.data.map(obj => ({ ...obj, label: obj.nombre, value: obj.id }));
+                setSucursales(newData);
+              };
+            }
+          )    
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -228,10 +243,45 @@ const BuscadorPorCodigo = () => {
         const cambio = e.target.value - total;
         setCambio(cambio);
     }
+    const logChangeTI = (e) => {
+        const newItem = { ...item };
+        newItem.tipo_comprobante = +e.value;
+        setItem(newItem);  
+    }
+
+    const logChangeSC = (e) => {
+        const newItem = { ...item };
+        newItem.sucursal = {
+          id:e.id
+        };
+        setItem(newItem);    
+    }
 
     return (
         <>
             <form onSubmit={handleSubmit}>
+                <div className="row">
+                    <div className="col-md-6">
+                        <p className="lead"> <b>Tipo de Egreso</b></p>
+                        <div >
+                        <Select
+                            defaultValue={optionsTI[0]}
+                            options={optionsTI}
+                            onChange={(e) => logChangeTI(e)}
+                        />
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <p className="lead"> <b>Sucursal</b></p>
+                        <div >
+                        <Select
+                            defaultValue={sucursales[0]}
+                            options={sucursales}
+                            onChange={(e) => logChangeSC(e)}
+                        />
+                        </div>
+                    </div>
+                </div>                
                 <div className="row">
                     <div className="col-md-6">
                         <p className="lead"> <b>Buscar por código</b></p>
@@ -273,7 +323,7 @@ const BuscadorPorCodigo = () => {
                                 <th>Existencia</th>
                                 <th>Cantidad</th>
                                 <th>Producto</th>
-                                <th>C/U</th>
+                                <th>Precio venta</th>
                                 <th>Subtotal</th>
                                 <th>Opciones</th>
                             </tr>

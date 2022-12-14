@@ -65,8 +65,6 @@ const TblCompras = () => {
         if(data.id > 0){
           const newData = data.data.map(obj => ({ ...obj, label: obj.nombre, value: obj.id }));
           setSucursales(newData);
-        }else{
-
         };
       }
     )
