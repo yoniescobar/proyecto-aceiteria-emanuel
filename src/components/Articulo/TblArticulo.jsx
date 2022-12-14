@@ -46,6 +46,11 @@ const TblArticulo = () => {
 
   const columns = [
     {
+      name: 'Código',
+      selector: (row) => row.codigo,
+      sortable: true,
+    },
+    {
       name: 'Nombre',
       selector: (row) => row.nombre,
       sortable: true,

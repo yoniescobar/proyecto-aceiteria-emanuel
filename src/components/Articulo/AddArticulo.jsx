@@ -1,8 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { PeticionGet, PeticionPost } from '../../Servicios/PeticionServicio'
+import { getItemByCode } from './ArticuloService';
+import Swal from 'sweetalert2';
 
 const AddArticulo = () => {
+  const mesajeResultado = (mensaje, clase) => {
+    Swal.fire(
+        mensaje,
+        '',
+        clase
+    )
+  };
   let navigate = useNavigate();
   const [Categoria, setCategoria] = useState([])
   const [Presentacion, setPresentacion] = useState([])
@@ -49,10 +58,21 @@ const AddArticulo = () => {
   }
 
   const onInputChange = (e) => {
-    console.log(e.target.name);
-    console.log(e.target.value);
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
-  };
+  }; 
+
+  const onLostFocus = (e) => {
+    if(e.target.name==='codigo'){
+      getItemByCode(e.target.value).then(
+        data => {
+            if (data.id > 0) {
+                mesajeResultado('Código ya registrado!', 'warning');  
+            } else {
+            }
+        }
+      )
+    }
+  }
 
   const cargarImagen = (e) => {
     setArticulo({ ...Articulo, [e.target.name]: e.target.value });
@@ -65,12 +85,25 @@ const AddArticulo = () => {
 
   const handleClick = async (event) => {
     event.preventDefault();
+
+    getItemByCode(Articulo.codigo).then(
+      data => {
+          if (data.id > 0) {
+              mesajeResultado('Código ya registrado!', 'warning');  
+          } else {
+            addArticulo();
+          }
+      }
+    )
+  };
+
+  const addArticulo = async() =>{
     const resultado = await PeticionPost('Articulo', Articulo);
 
     if (resultado) {
       navigate("/tblArticulo");
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -83,7 +116,7 @@ const AddArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra(*):</label>
-                <input ref={inputReference} type="text" name="codigo" id="codigo" className="form-control" onChange={(e) => onInputChange(e)} />
+                <input ref={inputReference} type="text" name="codigo" id="codigo" className="form-control" onChange={(e) => onInputChange(e)} onBlur={(e) => onLostFocus(e)}/>
               </div>
 
               <div className="form-group col-12 col-sm-6">

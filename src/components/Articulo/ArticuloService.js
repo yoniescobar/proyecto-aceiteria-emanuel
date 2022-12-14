@@ -57,3 +57,12 @@ export const getClienteByCode=(code)=>{
                return   data.json()
               })
  }
+
+ export const getSucursales=(code)=>{
+    return fetch(baseUrl+'/Sucursal/all', { // add return here
+                  method:'Get',
+              })
+              .then(data=> {
+               return   data.json()
+              })
+ }

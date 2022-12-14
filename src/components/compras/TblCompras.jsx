@@ -3,7 +3,13 @@ import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso } from '../Articulo/ArticuloService';
+import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso, getSucursales } from '../Articulo/ArticuloService';
+
+const optionsTI = [
+  { value: '1', label: 'Compra' },
+  { value: '2', label: 'Traslado' }
+]
+
 const initialState = {
   tipo_comprobante: 1,
   serie_doc: null,
@@ -16,6 +22,9 @@ const initialState = {
       id: 0,
       nombre: "",
       codigo: ""
+  },
+  sucursal:{
+    id:1
   },
   usuario: {
       id: 1
@@ -31,6 +40,7 @@ const TblCompras = () => {
   const [total, setTotal] = useState(0);
   const [item, setItem] = useState(initialState);
   const [nit, setNit] = useState('');
+  const [sucursales, setSucursales] = useState('');
   let navigate = useNavigate();
   
   useEffect(() => {
@@ -48,7 +58,18 @@ const TblCompras = () => {
               }
             )
         }
-    );        
+    );
+    
+    getSucursales().then(
+      data => {
+        if(data.id > 0){
+          const newData = data.data.map(obj => ({ ...obj, label: obj.nombre, value: obj.id }));
+          setSucursales(newData);
+        }else{
+
+        };
+      }
+    )
   }, []);
 
   useEffect(() => {
@@ -87,6 +108,20 @@ const TblCompras = () => {
     }
   }
 
+  const logChangeTI = (e) => {
+    const newItem = { ...item };
+    newItem.tipo_comprobante = +e.value;
+    setItem(newItem);  
+  }
+
+  const logChangeSC = (e) => {
+    const newItem = { ...item };
+    newItem.sucursal = {
+      id:e.id
+    };
+    setItem(newItem);    
+  }
+
   const prepareAdd = (item) => {
     item.cantidad = 1;
     item.descuento = 0;
@@ -119,15 +154,15 @@ const TblCompras = () => {
     setArticulos([...editData]);
   };
 
-  const onChangeInputPC = (e, prodId) => {
-    const { value } = e.target
-    const editData = articulos.map((item) =>
-        item.id === prodId
-            ? { ...item, precio_compra: value }
-            : item
-    )
-    setArticulos([...editData]);
-  };
+  // const onChangeInputPC = (e, prodId) => {
+  //   const { value } = e.target
+  //   const editData = articulos.map((item) =>
+  //       item.id === prodId
+  //           ? { ...item, precio_compra: value }
+  //           : item
+  //   )
+  //   setArticulos([...editData]);
+  // };
 
   const onclickDelItem = (e, itemId) => {
     e.preventDefault();
@@ -158,7 +193,7 @@ const TblCompras = () => {
     setItem(tempItem);
   }
   
-  const handleSearchCliente = () => {
+  const handleSearchProveedor = () => {
     getProveedorByCode(nit).then(
         data => {
             if (data.id > 0) {
@@ -192,7 +227,7 @@ const TblCompras = () => {
     tempItem.items = articulos;
     tempItem.total_ingreso = total;
     if (tempItem.items.length > 0) {
-      if (tempItem.persona.id > 0 && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)) {
+      if (tempItem.persona.id > 0) {       // && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)
         setIngreso(tempItem).then(
             data => {
                 if (data.id > 0) {
@@ -209,10 +244,35 @@ const TblCompras = () => {
         mesajeResultado('No hay articulos para comprar', 'warning');
     }
   }
-
+const handleKeyDown = (e) =>{
+  e.preventDefault();
+  handleSearchProveedor();
+} 
   return (
     <>
-              <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <p className="lead"> <b>Tipo de ingreso</b></p>
+                <div >
+                  <Select
+                    defaultValue={optionsTI[0]}
+                    options={optionsTI}
+                    onChange={(e) => logChangeTI(e)}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <p className="lead"> <b>Sucursal</b></p>
+                <div >
+                  <Select
+                    defaultValue={sucursales[0]}
+                    options={sucursales}
+                    onChange={(e) => logChangeSC(e)}
+                  />
+                </div>
+              </div>
+            </div>
             <div className="row">
               <div className="col-md-6">
                 <p className="lead"> <b>Buscar por código</b></p>
@@ -239,7 +299,6 @@ const TblCompras = () => {
                 <div >
                   <Select
                     name="form-field-name"
-                    value="one"
                     options={ops}
                     onChange={logChange}
                   />
@@ -275,7 +334,7 @@ const TblCompras = () => {
                                                     min="1"
                                                 />
                                             </td>
-                                            <td>{item.descripcion}</td>
+                                            <td>{item.nombre}</td>
                                             <td>
                                                 {item.precio_compra}
                                             </td>
@@ -313,11 +372,11 @@ const TblCompras = () => {
                     <div className="col">
                         <label for="cliente" className="col-sm-2 col-form-label">NIT</label>
                         <div className="input-group mb-3">
-                            <input type="text" className="form-control" onChange={(e) => setNit(e.target.value)} name="nit" id="nit" placeholder={item.persona.codigo} />
+                            <input type="text" className="form-control" onChange={(e) => setNit(e.target.value)} name="nit" id="nit" placeholder={item.persona.codigo} onKeyDown={handleKeyDown}/>
                             <div className="input-group-append">
                                 <button className="btn btn-outline-secondary" type="button"
-                                    onClick={handleSearchCliente}>
-                                    <i className='fa fa-trash'></i>
+                                    onClick={handleSearchProveedor}>
+                                    <i className='fa fa-search'></i>
                                 </button>
                             </div>
                         </div>
