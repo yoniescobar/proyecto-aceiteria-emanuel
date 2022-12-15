@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getItemByCode, getProductosVenta, setEgreso, getSucursales } from './ArticuloService';
+import { getItemByCode, getProductosVenta, setEgreso } from './ArticuloService';
 import { getClienteByCode } from './ArticuloService';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -24,9 +24,6 @@ const initialState = {
         nombre: "",
         codigo: ""
     },
-    sucursal:{
-        id:1
-    },
     usuario: {
         id: 1
     },
@@ -48,8 +45,7 @@ const BuscadorPorCodigo = () => {
     const [item, setItem] = useState(initialState);
     const [ops, setOptions] = useState([]);
     const [cambio, setCambio] = useState(0);
-    const [sucursales, setSucursales] = useState('');
-
+    
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -71,15 +67,7 @@ const BuscadorPorCodigo = () => {
                     }
                 )
             }
-        );    
-        getSucursales().then(
-            data => {
-              if(data.id > 0){
-                const newData = data.data.map(obj => ({ ...obj, label: obj.nombre, value: obj.id }));
-                setSucursales(newData);
-              };
-            }
-          )    
+        );  
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -272,14 +260,7 @@ const BuscadorPorCodigo = () => {
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <p className="lead"> <b>Sucursal</b></p>
-                        <div >
-                        <Select
-                            defaultValue={sucursales[0]}
-                            options={sucursales}
-                            onChange={(e) => logChangeSC(e)}
-                        />
-                        </div>
+ 
                     </div>
                 </div>                
                 <div className="row">

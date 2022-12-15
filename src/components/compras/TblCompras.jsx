@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso} from '../Articulo/ArticuloService';
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
-import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso, getSucursales } from '../Articulo/ArticuloService';
 
 const optionsTI = [
   { value: '1', label: 'Compra' },
   { value: '2', label: 'Traslado' }
 ]
+const today = new Date();
 
 const initialState = {
   tipo_comprobante: 1,
@@ -23,14 +26,12 @@ const initialState = {
       nombre: "",
       codigo: ""
   },
-  sucursal:{
-    id:1
-  },
   usuario: {
       id: 1
   },
   items: [
-  ]
+  ],
+  fechaingreso:new Date()
 }
 const TblCompras = () => {
 
@@ -40,7 +41,6 @@ const TblCompras = () => {
   const [total, setTotal] = useState(0);
   const [item, setItem] = useState(initialState);
   const [nit, setNit] = useState('');
-  const [sucursales, setSucursales] = useState('');
   let navigate = useNavigate();
   
   useEffect(() => {
@@ -59,15 +59,6 @@ const TblCompras = () => {
             )
         }
     );
-    
-    getSucursales().then(
-      data => {
-        if(data.id > 0){
-          const newData = data.data.map(obj => ({ ...obj, label: obj.nombre, value: obj.id }));
-          setSucursales(newData);
-        };
-      }
-    )
   }, []);
 
   useEffect(() => {
@@ -112,13 +103,7 @@ const TblCompras = () => {
     setItem(newItem);  
   }
 
-  const logChangeSC = (e) => {
-    const newItem = { ...item };
-    newItem.sucursal = {
-      id:e.id
-    };
-    setItem(newItem);    
-  }
+
 
   const prepareAdd = (item) => {
     item.cantidad = 1;
@@ -218,7 +203,7 @@ const TblCompras = () => {
     setItem(item => ({
         ...init
     }));
-    window.location.reload();
+    //window.location.reload();
   }
   const handleMakeSale = () => {
     const tempItem = { ...item };
@@ -261,16 +246,24 @@ const handleKeyDown = (e) =>{
                 </div>
               </div>
               <div className="col-md-6">
-                <p className="lead"> <b>Sucursal</b></p>
-                <div >
-                  <Select
-                    defaultValue={sucursales[0]}
-                    options={sucursales}
-                    onChange={(e) => logChangeSC(e)}
+              <p className="lead"><b>Fecha compra</b></p>
+              <DatePicker
+                selected={item.fechaingreso}
+                onChange={(e) => setItem({ ...item, ['fechaingreso']: e})}
+                className="form-control"
+                customInput={
+                  <input
+                    type="text"
+                    name='fechaingreso'
+                    id="fechaingreso"
+                    placeholder="Fecha"
                   />
-                </div>
+                }
+                dateFormat="dd/MM/yyyy"
+              />
               </div>
             </div>
+            <br />
             <div className="row">
               <div className="col-md-6">
                 <p className="lead"> <b>Buscar por código</b></p>
