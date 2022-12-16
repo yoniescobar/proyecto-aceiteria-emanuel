@@ -4,6 +4,7 @@ import { getClienteByCode } from './ArticuloService';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { trackPromise } from 'react-promise-tracker';
+import DatePicker from "react-datepicker";
 
 import Select from 'react-select';
 const optionsTI = [
@@ -28,7 +29,9 @@ const initialState = {
         id: 1
     },
     items: [
-    ]
+    ],
+    fechaegreso:new Date(),
+    tipopago:1
 }
 
 const BuscadorPorCodigo = () => {
@@ -260,7 +263,21 @@ const BuscadorPorCodigo = () => {
                         </div>
                     </div>
                     <div className="col-md-6">
- 
+                    <p className="lead"><b>Fecha venta</b></p>
+                    <DatePicker
+                        selected={item.fechaegreso}
+                        onChange={(e) => setItem({ ...item, ['fechaegreso']: e})}
+                        className="form-control"
+                        customInput={
+                        <input
+                            type="text"
+                            name='fechaegreso'
+                            id="fechaegreso"
+                            placeholder="Fecha"
+                        />
+                        }
+                        dateFormat="dd/MM/yyyy"
+                    />
                     </div>
                 </div>                
                 <div className="row">
@@ -366,29 +383,6 @@ const BuscadorPorCodigo = () => {
                 </div>
                 <br />
                 <div className="row">
-                    <div className="col-md-3">
-                        <h1>Pago:</h1>
-                    </div>
-                    <div className="col-md-3">
-                        <input
-                                type="number"
-                                className="form-control mb-2 mr-sm-2"
-                                id="pago"
-                                name="pago"
-                                placeholder="Pago"
-                                onChange={handlePago}
-                                min="1"
-                            />
-                    </div>
-                    <div className="col-md-3">
-                        <h1>Cambio:</h1>
-                    </div>
-                    <div className="col-md-3">
-                        <h1>Q. {cambio}</h1>
-                    </div>
-                </div>
-                <br />
-                <div className="row">
                     <div className="col">
                         <label for="cliente" className="col-sm-2 col-form-label">NIT</label>
                         <div className="input-group mb-3">
@@ -416,7 +410,48 @@ const BuscadorPorCodigo = () => {
                         <input type="text" className="form-control" placeholder="" onChange={setNoDoc} />
                     </div>
                 </div>
-                <br /> <br /> <br /> <br />
+                <br /> 
+                <div className="row">
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked/>
+                        <label className="form-check-label" for="flexRadioDefault1">
+                            Pago de contado
+                        </label>
+                        <div>
+
+                        <div className="row">
+                            <div className="col-md-3">
+                                <h1>Pago:</h1>
+                            </div>
+                            <div className="col-md-3">
+                                <input
+                                        type="number"
+                                        className="form-control mb-2 mr-sm-2"
+                                        id="pago"
+                                        name="pago"
+                                        placeholder="Pago"
+                                        onChange={handlePago}
+                                        min="1"
+                                    />
+                            </div>
+                            <div className="col-md-3">
+                                <h1>Cambio:</h1>
+                            </div>
+                            <div className="col-md-3">
+                                <h1>Q. {cambio}</h1>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                        <label className="form-check-label" for="flexRadioDefault2">
+                            Pago al crédito
+                        </label>
+                    </div>                            
+                </div>
+                <br /> <br />
                 <div className="row">
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
