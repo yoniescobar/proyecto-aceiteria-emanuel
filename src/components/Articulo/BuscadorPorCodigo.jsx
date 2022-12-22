@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { trackPromise } from 'react-promise-tracker';
 import DatePicker from "react-datepicker";
-
+import numeroAQuetzales from "../../utils/util"
 import Select from 'react-select';
 const optionsTI = [
     { value: '1', label: 'Venta' },
     { value: '2', label: 'Traslado' }
-  ]
+]
 
 const initialState = {
     tipo_comprobante: 1,
@@ -30,8 +30,9 @@ const initialState = {
     },
     items: [
     ],
-    fechaegreso:new Date(),
-    tipopago:1
+    fechaegreso: new Date(),
+    tipopago: "1",
+    pagos:[]
 }
 
 const BuscadorPorCodigo = () => {
@@ -48,7 +49,14 @@ const BuscadorPorCodigo = () => {
     const [item, setItem] = useState(initialState);
     const [ops, setOptions] = useState([]);
     const [cambio, setCambio] = useState(0);
-    
+    const [pago, setPago] = useState({
+        abono:0,
+        tipopago:1,
+        fechapago:new Date(),
+        saldo:0,
+        observaciones:""
+    });
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -58,7 +66,7 @@ const BuscadorPorCodigo = () => {
     useEffect(() => {
         getProductosVenta().then(
             data => {
-                const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - Q.' + obj.precio_venta, value: obj.id }));
+                const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - ' + numeroAQuetzales(obj.precio_venta), value: obj.id }));
                 setOptions(newData);
                 getClienteByCode(0).then(
                     data => {
@@ -70,7 +78,7 @@ const BuscadorPorCodigo = () => {
                     }
                 )
             }
-        );  
+        );
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -91,9 +99,9 @@ const BuscadorPorCodigo = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(code.replace(/\s/g,"") !== ""){
+        if (code.replace(/\s/g, "") !== "") {
             const exist = articulos.find(item => item.codigo === code);
-            if(exist === undefined){
+            if (exist === undefined) {
                 trackPromise(
                     getItemByCode(code).then(
                         data => {
@@ -106,10 +114,10 @@ const BuscadorPorCodigo = () => {
                         }
                     )
                 )
-            }else{
+            } else {
                 mesajeResultado('Elemento ya agregado a la venta', 'warning');
             }
-        }else{
+        } else {
             mesajeResultado('Código no ingresado', 'warning');
         };
     };
@@ -173,6 +181,9 @@ const BuscadorPorCodigo = () => {
         tempItem.numero_doc = event.target.value;
         setItem(tempItem);
     }
+    /*useEffect(() =>{
+        console.log(pago);
+    },[pago]);*/
 
     const handleMakeSale = () => {
         const tempItem = { ...item };
@@ -180,6 +191,14 @@ const BuscadorPorCodigo = () => {
         tempItem.total_egreso = total;
         if (tempItem.items.length > 0) {
             if (tempItem.persona.id > 0 && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)) {
+                if(tempItem.tipopago==="0"){
+                    const endPago = { ...pago };
+                    let saldopago=tempItem.total_egreso - endPago.abono;
+                    endPago.fechapago = tempItem.fechaegreso;
+                    endPago.saldo = saldopago;
+                    tempItem.pagos.push(endPago);
+                    tempItem.pagopendiente = tempItem.total_egreso-endPago.abono;
+                }                
                 setEgreso(tempItem).then(
                     data => {
                         if (data.id > 0) {
@@ -209,7 +228,7 @@ const BuscadorPorCodigo = () => {
             ...init
         }));
         window.location.reload();
-        
+
     }
 
     const onclickDelItem = (e, itemId) => {
@@ -223,9 +242,9 @@ const BuscadorPorCodigo = () => {
     }
     const logChange = (logChange) => {
         const exist = articulos.find(item => item.codigo === logChange.codigo);
-        if(exist === undefined){
+        if (exist === undefined) {
             prepareAdd(logChange);
-        }else{
+        } else {
             mesajeResultado('Elemento ya agregado a la venta', 'warning');
         }
     }
@@ -237,15 +256,15 @@ const BuscadorPorCodigo = () => {
     const logChangeTI = (e) => {
         const newItem = { ...item };
         newItem.tipo_comprobante = +e.value;
-        setItem(newItem);  
+        setItem(newItem);
     }
 
-    const logChangeSC = (e) => {
-        const newItem = { ...item };
-        newItem.sucursal = {
-          id:e.id
-        };
-        setItem(newItem);    
+    const onChangeValue = (e)  => {
+        setItem({ ...item, [e.target.name]: e.target.value });
+    }
+
+    const handleDataPago = (e) => {
+        setPago({ ...pago, [e.target.name]: e.target.value });
     }
 
     return (
@@ -255,31 +274,31 @@ const BuscadorPorCodigo = () => {
                     <div className="col-md-6">
                         <p className="lead"> <b>Tipo de Egreso</b></p>
                         <div >
-                        <Select
-                            defaultValue={optionsTI[0]}
-                            options={optionsTI}
-                            onChange={(e) => logChangeTI(e)}
-                        />
+                            <Select
+                                defaultValue={optionsTI[0]}
+                                options={optionsTI}
+                                onChange={(e) => logChangeTI(e)}
+                            />
                         </div>
                     </div>
                     <div className="col-md-6">
-                    <p className="lead"><b>Fecha venta</b></p>
-                    <DatePicker
-                        selected={item.fechaegreso}
-                        onChange={(e) => setItem({ ...item, ['fechaegreso']: e})}
-                        className="form-control"
-                        customInput={
-                        <input
-                            type="text"
-                            name='fechaegreso'
-                            id="fechaegreso"
-                            placeholder="Fecha"
+                        <p className="lead"><b>Fecha venta</b></p>
+                        <DatePicker
+                            selected={item.fechaegreso}
+                            onChange={(e) => setItem({ ...item, ['fechaegreso']: e })}
+                            className="form-control"
+                            customInput={
+                                <input
+                                    type="text"
+                                    name='fechaegreso'
+                                    id="fechaegreso"
+                                    placeholder="Fecha"
+                                />
+                            }
+                            dateFormat="dd/MM/yyyy"
                         />
-                        }
-                        dateFormat="dd/MM/yyyy"
-                    />
                     </div>
-                </div>                
+                </div>
                 <div className="row">
                     <div className="col-md-6">
                         <p className="lead"> <b>Buscar por código</b></p>
@@ -291,7 +310,7 @@ const BuscadorPorCodigo = () => {
                                 name="codigo"
                                 placeholder="Código"
                                 onChange={(e) => setCode(e.target.value)}
-                                
+
                             />
                             <button
                                 className="btn btn-primary"
@@ -344,16 +363,16 @@ const BuscadorPorCodigo = () => {
                                             </td>
                                             <td>{item.descripcion}</td>
                                             <td>
-                                            <input
+                                                <input
                                                     onChange={(e) => onChangeInputPV(e, item.id)}
                                                     type="number"
                                                     name="precio_venta"
                                                     defaultValue={item.precio_venta}
                                                     min="1"
                                                 />
-                                                
+
                                             </td>
-                                            <td>{item.cantidad * item.precio_venta}</td>
+                                            <td>{numeroAQuetzales(item.cantidad * item.precio_venta)}</td>
                                             <td>
                                                 <button
                                                     className="btn btn-danger"
@@ -378,7 +397,7 @@ const BuscadorPorCodigo = () => {
                     <div className="col-md-3"></div>
                     <div className="col-md-3"></div>
                     <div className="col-md-3">
-                        <h1>Q. {total}</h1>
+                        <h1>{numeroAQuetzales(total)}</h1>
                     </div>
                 </div>
                 <br />
@@ -410,21 +429,21 @@ const BuscadorPorCodigo = () => {
                         <input type="text" className="form-control" placeholder="" onChange={setNoDoc} />
                     </div>
                 </div>
-                <br /> 
-                <div className="row">
-                    <div className="form-check">
-                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked/>
-                        <label className="form-check-label" for="flexRadioDefault1">
-                            Pago de contado
-                        </label>
-                        <div>
+                <br />
 
-                        <div className="row">
-                            <div className="col-md-3">
-                                <h1>Pago:</h1>
-                            </div>
-                            <div className="col-md-3">
-                                <input
+                <div onChange={onChangeValue}>
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" value="1" name="tipopago"/>
+                        <label className="form-check-label">Pago de contado</label>
+                        {
+                            item.tipopago==="1" 
+                            ?
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <h1>Pago:</h1>
+                                </div>
+                                <div className="col-md-3">
+                                    <input
                                         type="number"
                                         className="form-control mb-2 mr-sm-2"
                                         id="pago"
@@ -433,23 +452,38 @@ const BuscadorPorCodigo = () => {
                                         onChange={handlePago}
                                         min="1"
                                     />
-                            </div>
-                            <div className="col-md-3">
-                                <h1>Cambio:</h1>
-                            </div>
-                            <div className="col-md-3">
-                                <h1>Q. {cambio}</h1>
-                            </div>
-                        </div>
-
-                        </div>
+                                </div>
+                                <div className="col-md-3">
+                                    <h1>Cambio:</h1>
+                                </div>
+                                <div className="col-md-3">
+                                    <h1>{numeroAQuetzales(cambio)}</h1>
+                                </div>
+                            </div>  
+                            :
+                            <div></div>
+                        }                  
                     </div>
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                        <label className="form-check-label" for="flexRadioDefault2">
-                            Pago al crédito
-                        </label>
-                    </div>                            
+                        <input className="form-check-input" type="radio" value="0" name="tipopago" />
+                        <label className="form-check-label">Pago al crédito</label>
+                        {
+                            item.tipopago==="0"
+                            ?
+                            <div className='row'>
+                                <div className="col">
+                                    <label for="abono" className="col-sm-2 col-form-label">ABONO</label>
+                                    <input type="text" name="abono" className="form-control" placeholder="Q." onChange={handleDataPago} />
+                                </div>
+                                <div className="col">
+                                    <label for="observaciones" className="col-sm-2 col-form-label">COMENTARIO</label>
+                                    <input type="text" name="observaciones" className="form-control" onChange={handleDataPago} />
+                                </div>
+                            </div>
+                            :
+                            <div></div>                            
+                        }
+                    </div>
                 </div>
                 <br /> <br />
                 <div className="row">

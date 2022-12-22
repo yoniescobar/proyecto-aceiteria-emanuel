@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso} from '../Articulo/ArticuloService';
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
-
+import numeroAQuetzales from "../../utils/util"
 
 const optionsTI = [
   { value: '1', label: 'Compra' },
@@ -46,7 +46,7 @@ const TblCompras = () => {
   useEffect(() => {
     getProductosVenta().then(
         data => {
-            const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - Q.' + obj.precio_compra, value: obj.id }));
+            const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - ' + numeroAQuetzales(obj.precio_compra), value: obj.id }));
             setOptions(newData);
             getProveedorByCode(0).then(
               data => {
@@ -330,7 +330,7 @@ const handleKeyDown = (e) =>{
                                                 {item.precio_compra}
                                             </td>
                                             <td>{item.precio_venta}</td>
-                                            <td>{item.cantidad * item.precio_compra}</td>
+                                            <td>{numeroAQuetzales(item.cantidad * item.precio_compra)}</td>
                                             <td>
                                                 <button
                                                     className="btn btn-danger"
@@ -355,7 +355,7 @@ const handleKeyDown = (e) =>{
                     <div className="col-md-3"></div>
                     <div className="col-md-3"></div>
                     <div className="col-md-3">
-                        <h1>Q. {total}</h1>
+                        <h1>{numeroAQuetzales(total)}</h1>
                     </div>
                 </div>
                 <br />
