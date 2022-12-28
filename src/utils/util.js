@@ -5,3 +5,7 @@ export default function numeroAQuetzales (numero) {
     })
     return f.format(numero)
 }
+
+export function dateToGTFormat(date){
+    return new Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(date)
+}

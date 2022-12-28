@@ -38,6 +38,7 @@ import Ticket from '../components/Reportes/Ticket'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
 import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
 import TblCompras from '../components/compras/TblCompras'
+import Creditos from '../components/ventas/Creditos'
  
 export default class Contenido extends Component {
   render() {
@@ -88,7 +89,7 @@ export default class Contenido extends Component {
 
                       {/* VENTAS */}
                       <Route exact path='/Ventas' element={<TblVentas />}></Route>
-
+                      <Route exact path='/creditos' element={<Creditos />}></Route>
                       {/* COMPRAS */}
                       <Route exact path='/compras' element={<TblCompras />}></Route>                      
 

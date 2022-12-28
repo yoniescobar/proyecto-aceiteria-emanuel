@@ -114,6 +114,15 @@ export default class Menu extends Component {
                     </li>
                   </ul>
 
+                  <ul className="nav nav-treeview">
+                    <li className="nav-item">
+                      <Link to="/creditos" className="nav-link">
+                        <i className="far fa-circle nav-icon" />
+                        <p>Creditos</p>
+                      </Link>
+                    </li>
+                  </ul>
+
                 </li>
                 {/* <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">

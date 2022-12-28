@@ -88,6 +88,8 @@ const BuscadorPorCodigo = () => {
             clase
         )
     };
+
+
     const prepareAdd = (item) => {
         item.cantidad = 1;
         item.descuento = 0;
