@@ -2,56 +2,88 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useRef } from 'react'
 import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
-import axios from 'axios';
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-
+import { ListaSucursal } from '../../Constantes/ListasSelect'
 import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { PeticionGet } from '../../Servicios/PeticionServicio'
 import es from 'date-fns/locale/es';
 registerLocale('es', es)
 
-const dataEstado = [
-    { id: 1, estado: "Sucursal 1" },
-    { id: 2, estado: "Sucursal 2" },
-  ]
-
-const baseUrl = process.env.REACT_APP_BASE_URL
-
 const ReporteVenta = () => {
-    const [fechaInicial, setfechaInicial] = useState(new Date());;
-    const [fechaFinal, setfechaFinal] = useState(new Date());;
-    const [categoria, setcategoria] = useState({
-        nombre: "",
-        descripcion: "",
-        condicion:""
-      })
+    const [fechaInicial, setfechaInicial] = useState(new Date());
+    const [fechaFinal, setfechaFinal] = useState(new Date());
+
+    let datosEgreso = new Array();
     const componentRef = useRef();
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
-        documentTitle: 'Listado de Categoria',
+        documentTitle: 'Ventas',
         //onAfterPrint:()=>alert('Print success')
     })
 
-    const [Categoria, setCategoria] = useState([])
+    const [Egreso, setEgreso] = useState([])
+    const [sucursal, setSucursal] = useState([])
 
-    const cargarCategoria = async () => {
-        const response = await axios.get(`${baseUrl}/all`)
-        setCategoria(response.data.data)
-    
+    const armarDataEgreso = (data) => {
+        let articuloEncontrado = false;
 
+        for (let venta of data) {
+            var itemEgreso = {
+                fechaEgreso: venta.fechaegreso,
+                idArticulo: 0,
+                nombreArticulo: "",
+                cantidad: 0,
+                precioCompra: 0,
+                precioVenta: 0
+            }
+
+            for (let detalleVenta of venta.items) {
+                if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id)) {
+                    itemEgreso = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id);
+                    console.log(itemEgreso);
+                    itemEgreso.cantidad = itemEgreso.cantidad + detalleVenta.cantidad;
+                    itemEgreso.precioVenta = (detalleVenta.cantidad * detalleVenta.precio_venta) + itemEgreso.precioVenta;
+                    articuloEncontrado = true;
+                }
+
+                if (!articuloEncontrado) {
+                    itemEgreso.idArticulo = detalleVenta.articulo.id;
+                    itemEgreso.nombreArticulo = detalleVenta.articulo.nombre;
+                    itemEgreso.cantidad = detalleVenta.cantidad;
+                    itemEgreso.precioCompra = detalleVenta.articulo.precio_compra;
+                    itemEgreso.precioVenta = detalleVenta.cantidad * detalleVenta.precio_venta;
+
+                    datosEgreso.push(itemEgreso);
+                }
+            }            
+        }
+
+        setEgreso(datosEgreso);
+    }
+
+    const cargarEgreso = async () => {
+        const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/egresosFechaActual');
+        //const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/fechaInicio/2022-12-27/fechaFin/2022-12-29');
+        armarDataEgreso(response.data.data);
+    }
+
+    const FiltrarEgreso = async () => {
+        let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
+        let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
+
+        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}`);
+        armarDataEgreso(response.data.data);
     }
 
     const handleChange = event => {
-        setcategoria({ ...categoria, ["condicion"]: event.target.value  });
-      };
+        setSucursal({ ...sucursal, ["condicion"]: event.target.value });
+    };
 
     useEffect(() => {
-        cargarCategoria();
+        cargarEgreso();
     }, []);
-
 
     return (
         <>
@@ -75,8 +107,6 @@ const ReporteVenta = () => {
                             <DatePicker
                                 locale="es"
                                 dateFormat="dd/MM/yyyy"
-                                // placeholderText="dd/mm/aaaa"
-                                //  value="fechaFinal"
                                 selected={fechaFinal}
                                 onChange={date => setfechaFinal(date)}
                             />
@@ -86,28 +116,56 @@ const ReporteVenta = () => {
                         <div className="grupo">
                             <label>Sucursal </label> <br />
                             <div className="mb-3">
-          
-              <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
-                <option value="-1">Seleccione una opcion</option>
-                {dataEstado.map((option) => (
-                  <option key={option.id} value={option.estado} >{option.estado}</option>
-                ))}
-              </select>
-            </div>
+
+                                <select id="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
+                                    <option value="-1">Seleccione una opcion</option>
+                                    {ListaSucursal.map((option) => (
+                                        <option key={option.id} value={option.nombre} >{option.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo">
                             <h1 className="text-center my-3  py-2 ">
-                                <Link className="btn btn-sm btn-outline-primary px-3 m-2" to="/ReporteVentaPdf" >Generar Reporte</Link>
+                            <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={FiltrarEgreso}>Filtrar</button>
+                            <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={handlePrint}>Imprimir</button>
+                                {/* <Link className="btn btn-sm btn-outline-primary px-3 m-2" to="/ReporteVentaPdf" >Generar Reporte</Link> */}
                             </h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-
+            <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '5%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
+                <div className="w-75 mx-auto">
+                    <h1>Aceitera 1</h1>
+                    <p>Nit: 454832666</p>
+                    <p>Tel: 4556-5645</p>
+                </div>
+                <table className='w-75 mx-auto table table-striped pb-5' >
+                    <thead>
+                        <th>Fecha</th>
+                        <th>Articulo</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        {Egreso.map((item, i) => {
+                            return (
+                                <tr>
+                                    <td>{item.fechaEgreso}</td>
+                                    <td>{item.nombreArticulo}</td>
+                                    <td>{item.cantidad}</td>
+                                    <td>Q {item.precioVenta}</td>
+                                </tr>
+                            )
+                        })
+                        }
+                    </tbody>
+                </table>
+            </div>
         </>
     )
 }

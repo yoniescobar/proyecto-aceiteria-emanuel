@@ -63,19 +63,19 @@ const ReporteVentaPdf = () => {
                         <th>Ganancias</th>
                     </thead>
                     <tbody>
-        {Egreso.map((item, i)=>{
-            return(
-                <tr key={item.id}>
-                    <td>{item.descripcion}</td>
-                     <td>{item.total_egreso}</td>
-                    <td>{item.descripcion}</td>
-                    <td>{item.condicion}</td> 
+                        {Egreso.map((item, i) => {
+                            return (
+                                <tr key={item.id}>
+                                    <td>{item.descripcion}</td>
+                                    <td>{item.total_egreso}</td>
+                                    <td>{item.descripcion}</td>
+                                    <td>{item.condicion}</td>
 
-                </tr>
-            )      
-        })
-        }
-    </tbody>
+                                </tr>
+                            )
+                        })
+                        }
+                    </tbody>
                 </table>
             </div>
         </>
