@@ -31,6 +31,7 @@ const ReporteVenta = () => {
     const [sucursal, setSucursal] = useState([])
 
     const armarDataEgreso = (data) => {
+        console.log(data);
         let articuloEncontrado = false;
 
         for (let venta of data) {
@@ -115,7 +116,7 @@ const ReporteVenta = () => {
                             />
                         </div>
                     </div>
-                    <div className="col-sm d-flex justify-content-center">
+                    {/* <div className="col-sm d-flex justify-content-center">
                         <div className="grupo" >
                             <label>Sucursal </label> <br />
                             <div className="mb-3">
@@ -128,7 +129,7 @@ const ReporteVenta = () => {
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo">
                             <h1 className="text-center my-3  py-2 ">
@@ -143,7 +144,7 @@ const ReporteVenta = () => {
 
             <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '5%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
                 <div className="w-75 mx-auto" style={{ textAlign: 'center' }}>
-                    <h1>Aceitera 1</h1>
+                    {/* <h1>Aceitera 1</h1> */}
                     <p>Nit: 454832666</p>
                     <p>Tel: 4556-5645</p>
                 </div>
