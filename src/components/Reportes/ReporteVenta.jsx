@@ -15,6 +15,7 @@ const ReporteVenta = () => {
     const [fechaFinal, setfechaFinal] = useState(new Date());
 
     let datosEgreso = new Array();
+    let total = 0;
     const componentRef = useRef();
 
     const handlePrint = useReactToPrint({
@@ -27,6 +28,7 @@ const ReporteVenta = () => {
     const [sucursal, setSucursal] = useState([])
 
     const armarDataEgreso = (data) => {
+        console.log(data)
         let articuloEncontrado = false;
 
         for (let venta of data) {
@@ -152,6 +154,9 @@ const ReporteVenta = () => {
                     </thead>
                     <tbody>
                         {Egreso.map((item, i) => {
+                            {
+                                total = (total + item.precioVenta)
+                            }
                             return (
                                 <tr>
                                     <td>{item.fechaEgreso}</td>
@@ -164,6 +169,10 @@ const ReporteVenta = () => {
                         }
                     </tbody>
                 </table>
+
+                <div>
+                    <span style={{marginLeft: '75%', textAlign: 'right'}}><label>Total: </label> Q {total}</span>
+                </div>
             </div>
         </>
     )
