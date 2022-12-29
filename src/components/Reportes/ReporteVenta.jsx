@@ -16,6 +16,7 @@ const ReporteVenta = () => {
 
     let datosEgreso = new Array();
     let total = 0;
+    let fecha = '';
     const componentRef = useRef();
 
     const handlePrint = useReactToPrint({
@@ -28,7 +29,6 @@ const ReporteVenta = () => {
     const [sucursal, setSucursal] = useState([])
 
     const armarDataEgreso = (data) => {
-        console.log(data)
         let articuloEncontrado = false;
 
         for (let venta of data) {
@@ -156,10 +156,12 @@ const ReporteVenta = () => {
                         {Egreso.map((item, i) => {
                             {
                                 total = (total + item.precioVenta)
+                                let datosFecha = item.fechaEgreso.split("-")
+                                fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
                             }
                             return (
                                 <tr>
-                                    <td>{item.fechaEgreso}</td>
+                                    <td>{fecha}</td>
                                     <td>{item.nombreArticulo}</td>
                                     <td>{item.cantidad}</td>
                                     <td>Q {item.precioVenta}</td>
