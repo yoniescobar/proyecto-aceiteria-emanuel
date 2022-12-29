@@ -69,7 +69,6 @@ const ReporteVenta = () => {
 
     const cargarEgreso = async () => {
         const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/egresosFechaActual');
-        //const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/fechaInicio/2022-12-27/fechaFin/2022-12-29');
         armarDataEgreso(response.data.data);
     }
 
@@ -77,6 +76,7 @@ const ReporteVenta = () => {
         let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
         let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
+        //const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/fechaInicio/2022-12-27/fechaFin/2022-12-29');
         const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}`);
         armarDataEgreso(response.data.data);
     }
