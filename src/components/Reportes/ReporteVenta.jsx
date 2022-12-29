@@ -87,7 +87,6 @@ const ReporteVenta = () => {
 
     return (
         <>
-            <h1 className='py-4 d-flex justify-content-center'>Generar reporte personalizado.</h1>
             <div className="bg-white w-75 mx-auto table table-striped">
                 <div className="row">
                     <div className="col-sm d-flex justify-content-center">
@@ -113,7 +112,7 @@ const ReporteVenta = () => {
                         </div>
                     </div>
                     <div className="col-sm d-flex justify-content-center">
-                        <div className="grupo">
+                        <div className="grupo" >
                             <label>Sucursal </label> <br />
                             <div className="mb-3">
 
@@ -139,7 +138,7 @@ const ReporteVenta = () => {
             </div>
 
             <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '5%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
-                <div className="w-75 mx-auto">
+                <div className="w-75 mx-auto" style={{ textAlign: 'center' }}>
                     <h1>Aceitera 1</h1>
                     <p>Nit: 454832666</p>
                     <p>Tel: 4556-5645</p>
