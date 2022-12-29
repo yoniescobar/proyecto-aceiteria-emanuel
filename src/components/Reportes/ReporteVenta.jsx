@@ -8,6 +8,8 @@ import { ListaSucursal } from '../../Constantes/ListasSelect'
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
 import es from 'date-fns/locale/es';
+import numeroAQuetzales from "../../utils/util"
+
 registerLocale('es', es)
 
 const ReporteVenta = () => {
@@ -164,7 +166,7 @@ const ReporteVenta = () => {
                                     <td>{fecha}</td>
                                     <td>{item.nombreArticulo}</td>
                                     <td>{item.cantidad}</td>
-                                    <td>Q {item.precioVenta}</td>
+                                    <td>{numeroAQuetzales(item.precioVenta)}</td>
                                 </tr>
                             )
                         })
@@ -173,7 +175,7 @@ const ReporteVenta = () => {
                 </table>
 
                 <div>
-                    <span style={{marginLeft: '75%', textAlign: 'right'}}><label>Total: </label> Q {total}</span>
+                    <span style={{marginLeft: '65%', textAlign: 'right'}}><label>Total: </label> {numeroAQuetzales(total)}</span>
                 </div>
             </div>
         </>
