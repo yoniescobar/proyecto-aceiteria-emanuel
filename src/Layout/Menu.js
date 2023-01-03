@@ -19,17 +19,6 @@ export default class Menu extends Component {
         /* Sidebar Menu */}
             <nav className="mt-2">
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                {/* Add icons to the links using the .nav-icon class
-           with font-awesome or any other icon font library */}
-                {/* <li className="nav-item">
-                  <Link to="/tablero" className="nav-link">
-                    <i className="nav-icon fas  fas fa-server" />
-                    <p>Escritorio</p>
-                  </Link>
-                </li> */}
-
-
-
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fas fa-desktop" />
@@ -124,28 +113,6 @@ export default class Menu extends Component {
                   </ul>
 
                 </li>
-                {/* <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fa fa-chart-line" />
-                    <p>
-                      Proveedores
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-
-                    </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblProveedor" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Administrar</p>
-                      </Link>
-                    </li>
-                  </ul>
-                </li> */}
                 <li className="nav-item has-treeview">
                   <a href="#" className="nav-link">
                     <i className="nav-icon fa fa-user" />
@@ -175,7 +142,7 @@ export default class Menu extends Component {
                   <ul className="nav nav-treeview">
                     <li className="nav-item">
                       <Link to="/reporteVenta" href="!#" className="nav-link">
-                      <i className="fa-solid fa-file-pdf" />
+                      <i className="far fa-circle nav-icon" />
                         <p className='px-2'>Reporte de Ventas</p>
                       </Link>
                     </li>
@@ -187,35 +154,14 @@ export default class Menu extends Component {
                       </Link>
                     </li>
 
-                  </ul>
-
-
-                  {/* <ul className="nav nav-treeview">
                     <li className="nav-item">
-                      <a href="!#" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Proveedores</p>
-                      </a>
+                      <Link to="/inventario" href="!#" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                        <p className='px-2'>Inventario</p>
+                      </Link>
                     </li>
-                  </ul> */}
-
+                  </ul>
                 </li>
-
-                {/* <li className="nav-header">MULTI LEVEL EXAMPLE</li>
-                <li className="nav-item">
-                  <Link to="/reporteVenta" href="!#" className="nav-link">
-                  <i className="fa-solid fa-file-pdf" />
-                    <p className='px-2'>Reporte de Ventas</p>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/VentasRealizadas" href="!#" className="nav-link">
-                  <i className="far fa-circle nav-icon" />
-                    <p className='px-2'>Ventas realizadas</p>
-                  </Link>
-                </li> */}
-
-
               </ul>
             </nav>
             {/* /.sidebar-menu */}
