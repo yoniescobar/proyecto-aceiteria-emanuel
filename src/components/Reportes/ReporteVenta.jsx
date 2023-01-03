@@ -31,7 +31,6 @@ const ReporteVenta = () => {
     const [sucursal, setSucursal] = useState([])
 
     const armarDataEgreso = (data) => {
-        console.log(data);
         let articuloEncontrado = false;
 
         for (let venta of data) {
