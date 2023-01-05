@@ -160,6 +160,14 @@ export default class Menu extends Component {
                         <p className='px-2'>Inventario</p>
                       </Link>
                     </li>
+
+                    <li className="nav-item">
+                      <Link to="/reporteCredito" href="!#" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                        <p className='px-2'>Creditos</p>
+                      </Link>
+                    </li>
+
                   </ul>
                 </li>
               </ul>

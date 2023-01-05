@@ -43,6 +43,7 @@ import Inventario from '../components/Reportes/Inventario'
 
 import TblCompras from '../components/compras/TblCompras'
 import Creditos from '../components/ventas/Creditos'
+import ReporteCreditos from '../components/Reportes/ReporteCreditos'
  
 export default class Contenido extends Component {
   render() {
@@ -104,6 +105,7 @@ export default class Contenido extends Component {
                       <Route exact path='/reporteVenta' element={<ReporteVenta />} />
                       <Route exact path='/reporteVentaPdf' element={<ReporteVentaPdf />} />
                       <Route exact path='/inventario' element={< Inventario/>}/>
+                      <Route exact path='/reporteCredito' element={< ReporteCreditos/>}/>
                       {/* //route reportes */}
 
                       {/* VENTAS */}
