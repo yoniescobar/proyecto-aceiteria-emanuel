@@ -26,7 +26,6 @@ const Inventario = () => {
     const cargarDataArticulos = async () => {
         const response = await PeticionGet('Articulo/activos');
 
-        console.log(response.data.data);
         if(response.data.data.length > 0){
             setDataArticulos(response.data.data)
         }   
