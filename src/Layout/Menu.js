@@ -1,9 +1,43 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
+import { getIdusuario } from "./../utils/token";
+import { getPermisosUsuario } from "../Servicios/oauth"
 // import EditIcon from '@mui/icons-material/Edit';
+import Swal from 'sweetalert2';
 
 export default class Menu extends Component {
+  mesajeResultado(mensaje, clase){
+    Swal.fire(
+        mensaje,
+        '',
+        clase
+    )
+  };
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      permisos: []          
+   }
+
+  }
+  componentDidMount(){
+    this.clickMe = this.clickMe.bind(this);
+  }
+  clickMe () {
+    getPermisosUsuario(getIdusuario()).then(
+      data => {
+          if(data.id < 0)
+            this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
+          if (data.id > 0) {
+            this.setState({
+              permisos:data.data
+            })
+          } 
+      }
+    )
+  }
+
   render() {
     return (
       <div>
