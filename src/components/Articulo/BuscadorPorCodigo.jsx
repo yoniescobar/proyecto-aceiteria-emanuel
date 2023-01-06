@@ -13,7 +13,7 @@ const optionsTI = [
 ]
 
 const initialState = {
-    tipo_comprobante: 1,
+    tipoComprobante: 1,
     serie_doc: null,
     numero_doc: null,
     fecha_doc: "2022-12-01",
@@ -257,7 +257,7 @@ const BuscadorPorCodigo = () => {
     }
     const logChangeTI = (e) => {
         const newItem = { ...item };
-        newItem.tipo_comprobante = +e.value;
+        newItem.tipoComprobante = +e.value;
         setItem(newItem);
     }
 
