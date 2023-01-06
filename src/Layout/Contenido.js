@@ -33,12 +33,17 @@ import TblPresentacion from '../components/Presentacion/TblPresentacion'
 import TblVentas from '../components/ventas/TblVentas'
 import VentasRealizadas from '../components/ventas/VentasRealizadas'
 
+// Reportes
 import FacturaVenta from '../components/Reportes/FacturaVenta'
 import Ticket from '../components/Reportes/Ticket'
 import ReporteVenta from '../components/Reportes/ReporteVenta'
 import ReporteVentaPdf from '../components/Reportes/ReporteVentaPdf'
+import Inventario from '../components/Reportes/Inventario'
+// Fin reportes
+
 import TblCompras from '../components/compras/TblCompras'
 import Creditos from '../components/ventas/Creditos'
+import ReporteCreditos from '../components/Reportes/ReporteCreditos'
  
 export default class Contenido extends Component {
   render() {
@@ -93,19 +98,20 @@ export default class Contenido extends Component {
                       {/* COMPRAS */}
                       <Route exact path='/compras' element={<TblCompras />}></Route>                      
 
+                      {/* //route reportes */}
                       <Route exact path='/VentasRealizadas' element={<VentasRealizadas />}></Route>
                       <Route exact path='/FacturaVenta/:idVenta' element={<FacturaVenta />}></Route>
                       <Route exact path='/Ticket/:idVenta' element={<Ticket />}></Route>
-                      {/* //route reportes */}
-
                       <Route exact path='/reporteVenta' element={<ReporteVenta />} />
                       <Route exact path='/reporteVentaPdf' element={<ReporteVentaPdf />} />
+                      <Route exact path='/inventario' element={< Inventario/>}/>
+                      <Route exact path='/reporteCredito' element={< ReporteCreditos/>}/>
+                      {/* //route reportes */}
 
                       {/* VENTAS */}
                       <Route exact path='/addPresentacion' element={<AddPresentacion />}></Route>
                       <Route exact path='/editPresentacion/:idPresentacion' element={<EditPresentacion />}></Route>
                       <Route exact path='/tblPresentacion' element={<TblPresentacion />}></Route>
-                      {/* //route reportes */}
 
 
                     </Routes>

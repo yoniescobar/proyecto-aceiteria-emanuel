@@ -31,7 +31,6 @@ const ReporteVenta = () => {
     const [sucursal, setSucursal] = useState([])
 
     const armarDataEgreso = (data) => {
-        console.log(data);
         let articuloEncontrado = false;
 
         for (let venta of data) {
@@ -69,7 +68,7 @@ const ReporteVenta = () => {
     }
 
     const cargarEgreso = async () => {
-        const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/egresosFechaActual');
+        const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/egresosFechaActual');
         armarDataEgreso(response.data.data);
     }
 
@@ -77,8 +76,7 @@ const ReporteVenta = () => {
         let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
         let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
-        //const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/fechaInicio/2022-12-27/fechaFin/2022-12-29');
-        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}`);
+        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${sucursal.condicion}`);
         armarDataEgreso(response.data.data);
     }
 
@@ -116,7 +114,7 @@ const ReporteVenta = () => {
                             />
                         </div>
                     </div>
-                    {/* <div className="col-sm d-flex justify-content-center">
+                    <div className="col-sm d-flex justify-content-center">
                         <div className="grupo" >
                             <label>Sucursal </label> <br />
                             <div className="mb-3">
@@ -124,12 +122,12 @@ const ReporteVenta = () => {
                                 <select id="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
                                     <option value="-1">Seleccione una opcion</option>
                                     {ListaSucursal.map((option) => (
-                                        <option key={option.id} value={option.nombre} >{option.nombre}</option>
+                                        <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
                                 </select>
                             </div>
                         </div>
-                    </div> */}
+                    </div>
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo">
                             <h1 className="text-center my-3  py-2 ">
