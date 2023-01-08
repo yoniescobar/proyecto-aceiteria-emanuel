@@ -30,7 +30,7 @@ export const getClienteByCode=(code)=>{
  }
 
  export const getProductosVenta=()=>{
-    return fetch(baseUrl+'/Articulo/ventas', { // add return here
+    return fetch(baseUrl+'/Articulo/activos', { // add return here
                   method:'Get',
               })
               .then(data=> {

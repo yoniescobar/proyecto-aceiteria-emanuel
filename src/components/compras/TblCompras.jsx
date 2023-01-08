@@ -6,6 +6,9 @@ import { getItemByCode, getProductosVenta, getProveedorByCode, setIngreso} from 
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import numeroAQuetzales from "../../utils/util"
+import MaskedInput from 'react-text-mask';
+import { getPermisosUsuario } from "../../Servicios/oauth";
+import { getIdusuario } from "./../../utils/token";
 
 const optionsTI = [
   { value: '1', label: 'Compra' },
@@ -14,7 +17,7 @@ const optionsTI = [
 const today = new Date();
 
 const initialState = {
-  tipo_comprobante: 1,
+  tipoComprobante: 1,
   serie_doc: null,
   numero_doc: null,
   fecha_doc: "2022-12-01",
@@ -41,7 +44,9 @@ const TblCompras = () => {
   const [total, setTotal] = useState(0);
   const [item, setItem] = useState(initialState);
   const [nit, setNit] = useState('');
+  const [sucursal, setSucursal] = useState('');
   let navigate = useNavigate();
+
   
   useEffect(() => {
     getProductosVenta().then(
@@ -59,6 +64,16 @@ const TblCompras = () => {
             )
         }
     );
+
+    getPermisosUsuario(getIdusuario()).then(
+      data => {
+          if(data.id < 0)
+            this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
+          if (data.id > 0) {
+            setSucursal(data.data[0].usuario.sucursal.nombre);
+          } 
+      }
+    )
   }, []);
 
   useEffect(() => {
@@ -99,7 +114,7 @@ const TblCompras = () => {
 
   const logChangeTI = (e) => {
     const newItem = { ...item };
-    newItem.tipo_comprobante = +e.value;
+    newItem.tipoComprobante = +e.value;
     setItem(newItem);  
   }
 
@@ -211,6 +226,7 @@ const TblCompras = () => {
     tempItem.total_ingreso = total;
     if (tempItem.items.length > 0) {
       if (tempItem.persona.id > 0) {       // && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)
+        tempItem.usuario.id = getIdusuario();
         setIngreso(tempItem).then(
             data => {
                 if (data.id > 0) {
@@ -233,6 +249,15 @@ const handleKeyDown = (e) =>{
 } 
   return (
     <>
+    <div className="row bg-warning" style={{lineHeight : 2.5, padding: 5}}>
+      <div className="col-md-6 text-red">
+        <h4>Compra de productos</h4>
+      </div>
+      <div className="col-md-6 text-red">
+        <h4>Sucursal: {sucursal}</h4>  
+      </div>
+    </div>
+    <hr />
           <form onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-md-6">
@@ -252,11 +277,8 @@ const handleKeyDown = (e) =>{
                 onChange={(e) => setItem({ ...item, ['fechaingreso']: e})}
                 className="form-control"
                 customInput={
-                  <input
-                    type="text"
-                    name='fechaingreso'
-                    id="fechaingreso"
-                    placeholder="Fecha"
+                  <MaskedInput
+                  mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
                   />
                 }
                 dateFormat="dd/MM/yyyy"
