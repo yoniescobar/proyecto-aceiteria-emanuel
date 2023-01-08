@@ -2,34 +2,56 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { PeticionPost } from '../../Servicios/PeticionServicio'
 import { ListaEstado } from '../../Constantes/ListasSelect'
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
 const AddPresentacion = () => {
     let navigate = useNavigate();
-    const [Presentacion, setPresentacion] = useState({
+    const [form, setForm] = useState({
         presentacion: "",
         descripcion: "",
         estado: ""
     })
 
-    const { descripcion, presentacion, estado } = Presentacion;
+    const { errors, validateForm, onBlurField } = useValidatorForm(form);
+    const { descripcion, presentacion, estado } = form;
 
     const onInputChange = (e) => {
-        setPresentacion({ ...Presentacion, [e.target.name]: e.target.value });
+        validarInputForm(e)
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleChange = event => {
-        setPresentacion({ ...Presentacion, [event.target.name]: parseInt(event.target.value) });
+        setForm({ ...form, [event.target.name]: parseInt(event.target.value) });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        const resultado = await PeticionPost('Presentacion', Presentacion);
+        const resultado = await PeticionPost('Presentacion', form);
 
         if (resultado) {
             navigate("/tblPresentacion");
         }
     };
+
+    const validarInputForm = (e) => {
+        const field = e.target.name;
+        const nextFormState = {
+            ...form,
+            [field]: e.target.value,
+        };
+
+        setForm(nextFormState);
+
+        if (errors[field].dirty)
+            validateForm({
+                form: nextFormState,
+                errors,
+                field,
+            });
+    }
 
     return (
         <div className="container">
@@ -40,18 +62,48 @@ const AddPresentacion = () => {
                     <div className="clas " />
                     <form action className="bg-light my-3 p-3 border rounded" onSubmit={(e) => onSubmit(e)}>
                         <div className="form-row mb-4">
-                        <div className="form-group col-12 col-sm-6">
+                            <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="descripcion">Descripcion(*):</label>
-                                <input type="text" name="descripcion" id="descripcion" className="form-control"
-                                    value={descripcion} onChange={(e) => onInputChange(e)} />
+                                <input 
+                                    className={clsx(
+                                    'form-control',
+                                    'formField',
+                                    errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                                    )}
+                                    type="text" 
+                                    name="descripcion" 
+                                    id="descripcion" 
+                                    value={descripcion} 
+                                    onChange={(e) => onInputChange(e)} 
+                                    onBlur={onBlurField}
+                                    required
+                                    />
+                                    {errors.descripcion.dirty && errors.descripcion.error ? (
+                                      <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+                                    ) : null}
                             </div>
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="presentacion">Presentacion(*):</label>
-                                <input type="text" name="presentacion" id="presentacion" className="form-control"
-                                    value={presentacion} onChange={(e) => onInputChange(e)} />
+                                <input 
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                                    )}
+                                    type="text" 
+                                    name="presentacion" 
+                                    id="presentacion"
+                                    value={presentacion} 
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.presentacion.dirty && errors.presentacion.error ? (
+                                    <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                                ) : null}
                             </div>
 
-                           
+
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="estado">Estado(*):</label>

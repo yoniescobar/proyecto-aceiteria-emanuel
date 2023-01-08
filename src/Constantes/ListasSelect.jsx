@@ -5,7 +5,7 @@ export const ListaTipoDocumento = [
 ];
 
 export const ListaEstado = [
-    { id: -1, nombre: 'Seleccione una opcion' },
+    // { id: -1, nombre: 'Seleccione una opcion' },
     { id: 1, nombre: 'Activo' },
     { id: 2, nombre: 'No activo' }
 ];
