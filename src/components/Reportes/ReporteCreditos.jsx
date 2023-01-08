@@ -98,7 +98,6 @@ const ReporteCreditos = () => {
                         <th>No. CRedito</th>
                         <th>Cliente</th>
                         <th>Total credito</th>
-                        <th>descripcion</th>
                         <th>abono</th>
                         <th>saldo</th>
                     </thead>
@@ -117,7 +116,6 @@ const ReporteCreditos = () => {
                                     <td>{item.idCredito}</td>
                                     <td>{item.cliente}</td>
                                     <td>{numeroAQuetzales(item.totalCredito)}</td>
-                                    <td>{item.descripcion}</td>
                                     <td>{numeroAQuetzales(item.abono)}</td>
                                     <td>{numeroAQuetzales(item.saldo)}</td>
                                 </tr>
