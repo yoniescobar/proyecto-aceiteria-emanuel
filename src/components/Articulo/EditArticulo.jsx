@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
 const EditArticulo = () => {
   let navigate = useNavigate();
@@ -10,7 +13,7 @@ const EditArticulo = () => {
   const [Presentacion, setPresentacion] = useState([])
   const [imgArticulo, setImg] = useState();
 
-  const [articulo, setArticulo] = useState({
+  const [form, setForm] = useState({
     id: "",
     codigo: "",
     nombre: "",
@@ -27,10 +30,12 @@ const EditArticulo = () => {
     precio_venta: 0
   })
 
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo, precio_venta, precio_compra } = articulo;
+  const { errors, validateForm, onBlurField } = useValidatorForm(form);
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo, precio_venta, precio_compra } = form;
 
   const onInputChange = (e) => {
-    setArticulo({ ...articulo, [e.target.name]: e.target.value });
+    validarInputForm(e);
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -38,12 +43,29 @@ const EditArticulo = () => {
     cargarCatalogos();
   }, []);
 
+  const validarInputForm = (e) => {
+    const field = e.target.name;
+    const nextFormState = {
+      ...form,
+      [field]: e.target.value,
+    };
+    
+    setForm(nextFormState);
+    
+    if (errors[field].dirty)
+      validateForm({
+        form: nextFormState,
+        errors,
+        field,
+      });
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    setArticulo({ ...articulo, ["id"]: idArticulo });
+    setForm({ ...form, ["id"]: idArticulo });
 
-    const resultado = await PeticionPut('Articulo/', articulo)
+    const resultado = await PeticionPut('Articulo/', form)
     
     if (resultado) {
       navigate("/tblArticulo");
@@ -54,7 +76,7 @@ const EditArticulo = () => {
       const response = await PeticionGet(`Articulo/id/${idArticulo}`);
       
       if (response) {
-        setArticulo(response.data.data[0]);
+        setForm(response.data.data[0]);
       }
   }
 
@@ -72,11 +94,14 @@ const EditArticulo = () => {
   }
 
   const handleChange = event => {
-    setArticulo({ ...articulo, ["categoria"]: { id: parseInt(event.target.value) } });
+    validarInputForm(event);
+    setForm({ ...form, [event.target.name]: { id: parseInt(event.target.value) } });
+    // setForm({ ...form, ["categoria"]: { id: parseInt(event.target.value) } });
   };
 
   const cargarImagen = (e) => {
-    setArticulo({ ...articulo, [e.target.name]: e.target.value });
+    validarInputForm(e);
+    setForm({ ...form, [e.target.name]: e.target.value });
     setImg(e.target.files[0]);
   }
 
@@ -89,81 +114,243 @@ const EditArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra:</label>
-                <input type="text" name="codigo" id="codigo" className="form-control" value={codigo} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.codigo.dirty && errors.codigo.error && 'formFieldError'
+                  )}
+                  type="text"
+                  name="codigo" 
+                  id="codigo"
+                  value={codigo} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                  />
+                  {errors.codigo.dirty && errors.codigo.error ? (
+                    <p className="formFieldErrorMessage">{errors.codigo.message}</p>
+                  ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
-                <input type={"text"} className="form-control" name="nombre" value={nombre} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.nombre.dirty && errors.nombre.error && 'formFieldError'
+                  )}
+                  type={"text"} 
+                  name="nombre" 
+                  value={nombre} 
+                  onChange={(e) => onInputChange(e)} 
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.nombre.dirty && errors.nombre.error ? (
+                  <p className="formFieldErrorMessage">{errors.nombre.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
-                  <option value="-1">Seleccione una opcion</option>
+                <select 
+                  className={clsx(
+                    'form-select',
+                    'appSelect',
+                    errors.categoria.dirty && errors.categoria.error && 'formFieldError'
+                  )}
+                  id="categoria"
+                  name="categoria" 
+                  onChange={handleChange}
+                  required
+                  >
+                  <option value="">Seleccione una opcion</option>
                   {Categoria.map((option) => (
                     <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
+                {errors.categoria.dirty && errors.categoria.error ? (
+                  <p className="formFieldErrorMessage">{errors.categoria.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="precio_venta">Precio de Venta(*):</label>
-                <input type="number" name="precio_venta" id="precio_venta" className="form-control"
-                  value={precio_venta} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.precio_venta.dirty && errors.precio_venta.error && 'formFieldError'
+                  )}
+                  type="number" 
+                  name="precio_venta" 
+                  id="precio_venta"
+                  value={precio_venta} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.precio_venta.dirty && errors.precio_venta.error ? (
+                  <p className="formFieldErrorMessage">{errors.precio_venta.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="precio_compra">Precio de Compra(*):</label>
-                <input type="number" name="precio_compra" id="precio_compra" className="form-control"
-                  value={precio_compra} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.precio_compra.dirty && errors.precio_compra.error && 'formFieldError'
+                  )}
+                  type="number" 
+                  name="precio_compra" 
+                  id="precio_compra"
+                  value={precio_compra} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.precio_compra.dirty && errors.precio_compra.error ? (
+                  <p className="formFieldErrorMessage">{errors.precio_compra.message}</p>
+                ) : null}
               </div>
 
-              <div className="form-group col-12 col-sm-6">
+              {/* <div className="form-group col-12 col-sm-6">
                 <label htmlFor="existencia">Existencia(*):</label>
                 <input type={"text"} className="form-control" name="existencia" value={existencia} onChange={(e) => onInputChange(e)} />
-              </div>
+              </div> */}
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
-                <input type={"text"} className="form-control" name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)} />
+                <input
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="descripcion" 
+                  id="descripcion"
+                  value={descripcion} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.descripcion.dirty && errors.descripcion.error ? (
+                  <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+                ) : null}
               </div>
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="stockMinimo">Stock minimo(*):</label>
-                <input type="number" name="stockMinimo" id="stockMinimo" className="form-control"
-                  value={stockMinimo} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.stockMinimo.dirty && errors.stockMinimo.error && 'formFieldError'
+                  )}
+                  type="number"
+                  name="stockMinimo"
+                  id="stockMinimo"
+                  value={stockMinimo}
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.stockMinimo.dirty && errors.stockMinimo.error ? (
+                  <p className="formFieldErrorMessage">{errors.stockMinimo.message}</p>
+                ) : null}
               </div>
+
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="marca">Marca(*):</label>
-                <input type="text" name="marca" id="marca" className="form-control"
-                  value={marca} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.marca.dirty && errors.marca.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="marca" 
+                  id="marca" 
+                  value={marca} 
+                  onChange={(e) => onInputChange(e)} 
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.marca.dirty && errors.marca.error ? (
+                  <p className="formFieldErrorMessage">{errors.marca.message}</p>
+                ) : null}
               </div>
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="modelo">Modelo(*):</label>
-                <input type="text" name="modelo" id="modelo" className="form-control"
-                  value={modelo} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.modelo.dirty && errors.modelo.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="modelo" 
+                  id="modelo"
+                  value={modelo} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.modelo.dirty && errors.modelo.error ? (
+                  <p className="formFieldErrorMessage">{errors.modelo.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" onChange={(e) => cargarImagen(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
+                  )}
+                  type="file" 
+                  name="imagen" 
+                  id="imagen" 
+                  onChange={(e) => cargarImagen(e)} 
+                  />
+                  {errors.imagen.dirty && errors.imagen.error ? (
+                    <p className="formFieldErrorMessage">{errors.imagen.message}</p>
+                  ) : null}
                 <br></br>
                 {imgArticulo && (
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
               </div>
-
+              
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
-                <select id="presentacion" nombre="presentacion" className="form-select appSelect" onChange={handleChange}>
-                  <option value="-1">Seleccione una opcion</option>
+                <select 
+                  className={clsx(
+                    'form-select',
+                    'appSelect',
+                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                  )}
+                  id="presentacion" 
+                  name="presentacion" 
+                  onChange={handleChange}
+                  required
+                  >
+                  <option value="">Seleccione una opcion</option>
                   {Presentacion.map((option) => (
                     <option key={option.id} value={option.id} >{option.presentacion}</option>
                   ))}
                 </select>
+                {errors.presentacion.dirty && errors.presentacion.error ? (
+                  <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                ) : null}
               </div>
             </div>
 

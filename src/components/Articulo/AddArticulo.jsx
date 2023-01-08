@@ -185,12 +185,25 @@ const AddArticulo = () => {
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
-                <select id="categoria" name="categoria" className="form-select appSelect" onChange={handleChange}>
-                  <option value="-1">Seleccione una opcion</option>
+                <select 
+                  className={clsx(
+                    'form-select',
+                    'appSelect',
+                    errors.categoria.dirty && errors.categoria.error && 'formFieldError'
+                  )}
+                  id="categoria"
+                  name="categoria" 
+                  onChange={handleChange}
+                  required
+                  >
+                  <option value="">Seleccione una opcion</option>
                   {Categoria.map((option) => (
                     <option key={option.id} value={option.id} >{option.nombre}</option>
                   ))}
                 </select>
+                {errors.categoria.dirty && errors.categoria.error ? (
+                  <p className="formFieldErrorMessage">{errors.categoria.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">

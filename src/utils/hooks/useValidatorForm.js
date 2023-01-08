@@ -38,6 +38,11 @@ export const useValidatorForm = form => {
             error: false,
             message: "",
         },
+        categoria: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
         precio_venta: {
             dirty: false,
             error: false,
@@ -89,7 +94,7 @@ export const useValidatorForm = form => {
         }
 
         const { nombre, descripcion,
-        codigo, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion } = form;
+        codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion } = form;
 
         // Validacion form categoria
         if (nextErrors.nombre.dirty && (field ? field === "nombre" : true)) {
@@ -112,6 +117,13 @@ export const useValidatorForm = form => {
             const mensajeError = inputValidator(codigo, form);
             nextErrors.codigo.error = !!mensajeError;
             nextErrors.codigo.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+
+        if (nextErrors.categoria.dirty && (field ? field === "categoria" : true)) {
+            const mensajeError = inputValidator(categoria, form);
+            nextErrors.categoria.error = !!mensajeError;
+            nextErrors.categoria.message = mensajeError;
             if (!!mensajeError) isValid = false;
         }
 
