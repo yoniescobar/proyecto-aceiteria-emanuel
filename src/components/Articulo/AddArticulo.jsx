@@ -17,23 +17,23 @@ const AddArticulo = () => {
   const [Presentacion, setPresentacion] = useState([])
   const [imgArticulo, setImg] = useState();
   const [Articulo, setArticulo] = useState({
+    codigo: "",
     nombre: "",
     categoria: {
       id: 0
     },
+    precio_venta: 0,
+    precio_compra: 0,
+    descripcion: "",
+    stockMinimo: "",
+    marca:"",
     presentacion: {
       id: 0
     },
     existencia: "",
-    descripcion: "",
     imagen: "",
-    codigo: "",
-    stockMinimo: "",
-    marca:"",
     modelo:"",
-    estado:1,
-    precio_compra: 0,
-    precio_venta: 0
+    estado:1
   })
 
   const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion, precio_venta, precio_compra } = Articulo;

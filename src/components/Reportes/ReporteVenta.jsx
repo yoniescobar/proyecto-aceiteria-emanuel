@@ -46,7 +46,6 @@ const ReporteVenta = () => {
             for (let detalleVenta of venta.items) {
                 if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id)) {
                     itemEgreso = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id);
-                    console.log(itemEgreso);
                     itemEgreso.cantidad = itemEgreso.cantidad + detalleVenta.cantidad;
                     itemEgreso.precioVenta = (detalleVenta.cantidad * detalleVenta.precio_venta) + itemEgreso.precioVenta;
                     articuloEncontrado = true;

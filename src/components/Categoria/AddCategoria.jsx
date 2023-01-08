@@ -1,7 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
 import Swal from 'sweetalert2'
+import clsx from "clsx";
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const dataEstado = [
@@ -9,24 +12,40 @@ const dataEstado = [
   { id: 2, estado: "No Activo" },
 ]
 
-const AddCategoria = () => {
+const AddCategoria = props => {
 
   let navigate = useNavigate();
 
-  const [categoria, setcategoria] = useState({
+  const [form, setForm] = useState({
     nombre: "",
     descripcion: "",
     condicion:""
   })
 
-  const { nombre, descripcion, condicion } = categoria;
+  const { errors, validateForm, onBlurField } = useValidatorForm(form);
+  const { nombre, descripcion, condicion } = form;
 
   const onInputChange = (e) => {
-    setcategoria({ ...categoria, [e.target.name]: e.target.value });
+    const field = e.target.name;
+    const nextFormState = {
+      ...form,
+      [field]: e.target.value,
+    };
+    
+    setForm(nextFormState);
+    
+    if (errors[field].dirty)
+      validateForm({
+        form: nextFormState,
+        errors,
+        field,
+      });
+
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleChange = event => {
-    setcategoria({ ...categoria, ["condicion"]: event.target.value  });
+    setForm({ ...form, ["condicion"]: event.target.value  });
   };
 
 
@@ -34,7 +53,7 @@ const AddCategoria = () => {
     e.preventDefault();
 
     try {
-      const resultado = await axios.post(`${baseUrl}/categoria`, categoria);
+      const resultado = await axios.post(`${baseUrl}/categoria`, form);
       if(resultado){
         mesajeResultado('Categoria creado con exito!', 'success');
         navigate("/categoria");
@@ -62,24 +81,51 @@ const AddCategoria = () => {
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">Registro de categoria</h2>
           <form onSubmit={(e) => onSubmit(e)}>
-            <div className="mb-3">
+            <div className="mb-3" >
               <label htmlFor="Nombre" className="form-label">Nombre</label>
-              <input type={"text"} className="form-control" placeholder="Nombre categoria"
-                name="nombre" value={nombre} onChange={(e) => onInputChange(e)} required
+              <input 
+                className={clsx(
+                  'form-control',
+                  'formField',
+                  errors.nombre.dirty && errors.nombre.error && 'formFieldError'
+                )}
+                type={"text"} 
+                placeholder="Nombre categoria"
+                name="nombre" 
+                value={nombre} 
+                onChange={(e) => onInputChange(e)} 
+                onBlur={onBlurField}
+                required
               />
+              {errors.nombre.dirty && errors.nombre.error ? (
+                <p className="formFieldErrorMessage">{errors.nombre.message}</p>
+              ) : null}
             </div>
 
             <div className="mb-3">
               <label htmlFor="Descripcion" className="form-label">Descripcion</label>
-              <input type={"text"} className="form-control" placeholder="Descripcion producto"
-                name="descripcion" value={descripcion} onChange={(e) => onInputChange(e)}
+              <input 
+                className={clsx(
+                  'form-control',
+                  'formField',
+                  errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                )}
+                type={"text"} 
+                placeholder="Descripcion producto"
+                name="descripcion" 
+                value={descripcion} 
+                onChange={(e) => onInputChange(e)}
+                onBlur={onBlurField}
+                required
               />
+              {errors.nombre.dirty && errors.nombre.error ? (
+                <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+              ) : null}
             </div>
 
             <div className="mb-3">
               <label htmlFor="categoria">Estado(*):</label>
               <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
-                <option value="-1">Seleccione una opcion</option>
                 {dataEstado.map((option) => (
                   <option key={option.id} value={option.estado} >{option.estado}</option>
                 ))}
