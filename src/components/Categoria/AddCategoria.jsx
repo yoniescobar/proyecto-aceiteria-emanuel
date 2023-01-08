@@ -118,7 +118,7 @@ const AddCategoria = props => {
                 onBlur={onBlurField}
                 required
               />
-              {errors.nombre.dirty && errors.nombre.error ? (
+              {errors.descripcion.dirty && errors.descripcion.error ? (
                 <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
               ) : null}
             </div>

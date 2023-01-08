@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { PeticionGet, PeticionPost } from '../../Servicios/PeticionServicio'
 import { getItemByCode } from './ArticuloService';
 import Swal from 'sweetalert2';
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
 const AddArticulo = () => {
   const mesajeResultado = (mensaje, clase) => {
@@ -12,11 +15,12 @@ const AddArticulo = () => {
         clase
     )
   };
+
   let navigate = useNavigate();
   const [Categoria, setCategoria] = useState([])
   const [Presentacion, setPresentacion] = useState([])
   const [imgArticulo, setImg] = useState();
-  const [Articulo, setArticulo] = useState({
+  const [form, setForm] = useState({
     codigo: "",
     nombre: "",
     categoria: {
@@ -36,7 +40,8 @@ const AddArticulo = () => {
     estado:1
   })
 
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion, precio_venta, precio_compra } = Articulo;
+  const { errors, validateForm, onBlurField } = useValidatorForm(form);
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion, precio_venta, precio_compra } = form;
   const inputReference = useRef(null);
 
   useEffect(() => {
@@ -57,11 +62,30 @@ const AddArticulo = () => {
     }
   }
 
+  const validarInputForm = (e) => {
+    const field = e.target.name;
+    const nextFormState = {
+      ...form,
+      [field]: e.target.value,
+    };
+    
+    setForm(nextFormState);
+    
+    if (errors[field].dirty)
+      validateForm({
+        form: nextFormState,
+        errors,
+        field,
+      });
+  }
+
   const onInputChange = (e) => {
-    setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+    validarInputForm(e);
+    setForm({ ...form, [e.target.name]: e.target.value });
   }; 
 
   const onLostFocus = (e) => {
+    validarInputForm(e);
     if(e.target.name==='codigo'){
       getItemByCode(e.target.value).then(
         data => {
@@ -75,18 +99,20 @@ const AddArticulo = () => {
   }
 
   const cargarImagen = (e) => {
-    setArticulo({ ...Articulo, [e.target.name]: e.target.value });
+    validarInputForm(e);
+    setForm({ ...form, [e.target.name]: e.target.value });
     setImg(e.target.files[0]);
   }
 
   const handleChange = event => {
-    setArticulo({ ...Articulo, [event.target.name]: { id: parseInt(event.target.value) } });
+    validarInputForm(event);
+    setForm({ ...form, [event.target.name]: { id: parseInt(event.target.value) } });
   };
 
   const handleClick = async (event) => {
     event.preventDefault();
 
-    getItemByCode(Articulo.codigo).then(
+    getItemByCode(form.codigo).then(
       data => {
           if (data.id > 0) {
               mesajeResultado('Código ya registrado!', 'warning');  
@@ -98,7 +124,7 @@ const AddArticulo = () => {
   };
 
   const addArticulo = async() =>{
-    const resultado = await PeticionPost('Articulo', Articulo);
+    const resultado = await PeticionPost('Articulo', form);
 
     if (resultado) {
       navigate("/tblArticulo");
@@ -116,13 +142,45 @@ const AddArticulo = () => {
             <div className="form-row mb-4">
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="codigo">Código de Barra(*):</label>
-                <input ref={inputReference} type="text" name="codigo" id="codigo" className="form-control" onChange={(e) => onInputChange(e)} onBlur={(e) => onLostFocus(e)}/>
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.codigo.dirty && errors.codigo.error && 'formFieldError'
+                  )}
+                  ref={inputReference} 
+                  type="text" 
+                  name="codigo" 
+                  id="codigo" 
+                  onChange={(e) => onInputChange(e)} 
+                  onBlur={(e) => onLostFocus(e)}
+                  required
+                  />
+                  {errors.codigo.dirty && errors.codigo.error ? (
+                    <p className="formFieldErrorMessage">{errors.codigo.message}</p>
+                  ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="nombre">Nombre(*):</label>
-                <input type="text" name="nombre" id="nombre" className="form-control" placeholder="Nombre de Producto"
-                  value={nombre} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.nombre.dirty && errors.nombre.error && 'formFieldError'
+                  )}
+                  type="text"
+                  name="nombre" 
+                  id="nombre" 
+                  placeholder="Nombre de Producto"
+                  value={nombre} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.nombre.dirty && errors.nombre.error ? (
+                  <p className="formFieldErrorMessage">{errors.nombre.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
@@ -137,14 +195,44 @@ const AddArticulo = () => {
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="precio_venta">Precio de Venta(*):</label>
-                <input type="number" name="precio_venta" id="precio_venta" className="form-control"
-                  value={precio_venta} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.precio_venta.dirty && errors.precio_venta.error && 'formFieldError'
+                  )}
+                  type="number" 
+                  name="precio_venta" 
+                  id="precio_venta"
+                  value={precio_venta} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.precio_venta.dirty && errors.precio_venta.error ? (
+                  <p className="formFieldErrorMessage">{errors.precio_venta.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="precio_compra">Precio de Compra(*):</label>
-                <input type="number" name="precio_compra" id="precio_compra" className="form-control"
-                  value={precio_compra} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.precio_compra.dirty && errors.precio_compra.error && 'formFieldError'
+                  )}
+                  type="number" 
+                  name="precio_compra" 
+                  id="precio_compra"
+                  value={precio_compra} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.precio_compra.dirty && errors.precio_compra.error ? (
+                  <p className="formFieldErrorMessage">{errors.precio_compra.message}</p>
+                ) : null}
               </div>
               
               {/* <div className="form-group col-12 col-sm-6">
@@ -155,32 +243,108 @@ const AddArticulo = () => {
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="descripcion">Descripción(*):</label>
-                <input type="text" name="descripcion" id="descripcion" className="form-control"
-                  value={descripcion} onChange={(e) => onInputChange(e)} />
+                <input
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="descripcion" 
+                  id="descripcion"
+                  value={descripcion} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.descripcion.dirty && errors.descripcion.error ? (
+                  <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="stockMinimo">Stock minimo(*):</label>
-                <input type="number" name="stockMinimo" id="stockMinimo" className="form-control"
-                  value={stockMinimo} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.stockMinimo.dirty && errors.stockMinimo.error && 'formFieldError'
+                  )}
+                  type="number"
+                  name="stockMinimo"
+                  id="stockMinimo"
+                  value={stockMinimo}
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.stockMinimo.dirty && errors.stockMinimo.error ? (
+                  <p className="formFieldErrorMessage">{errors.stockMinimo.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="marca">Marca(*):</label>
-                <input type="text" name="marca" id="marca" className="form-control"
-                  value={marca} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.marca.dirty && errors.marca.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="marca" 
+                  id="marca" 
+                  value={marca} 
+                  onChange={(e) => onInputChange(e)} 
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.marca.dirty && errors.marca.error ? (
+                  <p className="formFieldErrorMessage">{errors.marca.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="modelo">Modelo(*):</label>
-                <input type="text" name="modelo" id="modelo" className="form-control"
-                  value={modelo} onChange={(e) => onInputChange(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.modelo.dirty && errors.modelo.error && 'formFieldError'
+                  )}
+                  type="text" 
+                  name="modelo" 
+                  id="modelo"
+                  value={modelo} 
+                  onChange={(e) => onInputChange(e)}
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.modelo.dirty && errors.modelo.error ? (
+                  <p className="formFieldErrorMessage">{errors.modelo.message}</p>
+                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
                 <label class="form-label" for="customFile"></label>
-                <input type="file" className="form-control" name="imagen" id="imagen" value={imagen} onChange={(e) => cargarImagen(e)} />
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
+                  )}
+                  type="file" 
+                  name="imagen" 
+                  id="imagen" 
+                  value={imagen} 
+                  onChange={(e) => cargarImagen(e)} 
+                  onBlur={onBlurField}
+                  required
+                />
+                {errors.imagen.dirty && errors.imagen.error ? (
+                  <p className="formFieldErrorMessage">{errors.imagen.message}</p>
+                ) : null}
                 <br></br>
                 {imgArticulo && (
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
@@ -189,12 +353,25 @@ const AddArticulo = () => {
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
-                <select id="presentacion" name="presentacion" className="form-select appSelect" onChange={handleChange}>
-                  <option value="-1">Seleccione una opcion</option>
+                <select 
+                  className={clsx(
+                    'form-select',
+                    'appSelect',
+                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                  )}
+                  id="presentacion" 
+                  name="presentacion" 
+                  onChange={handleChange}
+                  required
+                  >
+                  <option value="">Seleccione una opcion</option>
                   {Presentacion.map((option) => (
                     <option key={option.id} value={option.id} >{option.presentacion}</option>
                   ))}
                 </select>
+                {errors.presentacion.dirty && errors.presentacion.error ? (
+                  <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                ) : null}
               </div>
             </div>
 
