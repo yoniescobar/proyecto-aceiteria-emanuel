@@ -226,6 +226,7 @@ const TblCompras = () => {
     tempItem.total_ingreso = total;
     if (tempItem.items.length > 0) {
       if (tempItem.persona.id > 0) {       // && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)
+        tempItem.usuario.id = getIdusuario();
         setIngreso(tempItem).then(
             data => {
                 if (data.id > 0) {

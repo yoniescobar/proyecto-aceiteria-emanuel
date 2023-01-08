@@ -215,6 +215,7 @@ const BuscadorPorCodigo = () => {
                     tempItem.pagos.push(endPago);
                     tempItem.pagopendiente = tempItem.total_egreso - endPago.abono;
                 }
+                tempItem.usuario.id = getIdusuario();
                 setEgreso(tempItem).then(
                     data => {
                         if (data.id > 0) {
