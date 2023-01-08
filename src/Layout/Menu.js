@@ -22,7 +22,8 @@ export default class Menu extends Component {
 
   }
   componentDidMount(){
-    this.clickMe = this.clickMe.bind(this);
+    //this.clickMe = this.clickMe.bind(this);
+    this.clickMe();  
   }
   clickMe () {
     getPermisosUsuario(getIdusuario()).then(
@@ -30,8 +31,14 @@ export default class Menu extends Component {
           if(data.id < 0)
             this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
           if (data.id > 0) {
+            //console.log(data.data);
+            let menu=[];
+            data.data.map((item) => (
+              item.permiso.menu.map((iten) => menu.push(iten.menu))
+            ));
+            console.log(menu);
             this.setState({
-              permisos:data.data
+              permisos:menu
             })
           } 
       }
@@ -53,157 +60,37 @@ export default class Menu extends Component {
         /* Sidebar Menu */}
             <nav className="mt-2">
               <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fas fa-desktop" />
-                    <p>
-                      Almacen
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblCategoria" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Categoría</p>
-                      </Link>
+                <li className="nav-item">
+                    <Link to="/tablero" className="nav-link">
+                      <i className="nav-icon fas  fas fa-server" />
+                      <p>Escritorio</p>
+                    </Link>
+                  </li>
+                {
+                  this.state.permisos.map((item) => (
+                    <li key={item.id} className="nav-item has-treeview">
+                      <a href="#" className="nav-link">
+                        <i className={item.classname} />
+                        <p>
+                           {item.nombre}
+                          <i className="fas fa-angle-left right" />
+                        </p>
+                      </a>   
+                      {
+                        item.menuhijos.map((iten) => (
+                          <ul key={iten.id} className="nav nav-treeview">
+                            <li className="nav-item">
+                              <Link to={iten.path} className="nav-link">
+                                <i className={iten.classname} />
+                                <p>{iten.nombre}</p>
+                              </Link>
+                            </li>
+                          </ul>                          
+                        ))
+                      }                           
                     </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblPresentacion" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Presentacion</p>
-                      </Link>
-                    </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblArticulo" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Artículos</p>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fa fa-truck" />
-                    <p>
-                      Compras
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblProveedor" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Proveedores</p>
-                      </Link>
-                    </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/compras" className="nav-link">
-                          <i className="far fa-circle nav-icon" />
-                          <p>Ingreso</p>
-                        </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fa fa-cart-plus" />
-                    <p>
-                      Ventas
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblCliente" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Clientes</p>
-                      </Link>
-
-                    </li>
-                  </ul>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/ventas" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Nueva Venta</p>
-                      </Link>
-                    </li>
-                  </ul>
-
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/creditos" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Creditos</p>
-                      </Link>
-                    </li>
-                  </ul>
-
-                </li>
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fa fa-user" />
-                    <p>
-                      Acceso
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/tblUsuario" href="!#" className="nav-link">
-                        <i className="far fa-circle nav-icon" />
-                        <p>Usuario</p>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li className="nav-item has-treeview">
-                  <a href="#" className="nav-link">
-                    <i className="nav-icon fa fa-chart-line" />
-                    <p>
-                      Consulta Ventas
-                      <i className="fas fa-angle-left right" />
-                    </p>
-                  </a>
-                  
-                  <ul className="nav nav-treeview">
-                    <li className="nav-item">
-                      <Link to="/reporteVenta" href="!#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                        <p className='px-2'>Reporte de Ventas</p>
-                      </Link>
-                    </li>
-
-                    <li className="nav-item">
-                      <Link to="/VentasRealizadas" href="!#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                        <p className='px-2'>Ventas realizadas</p>
-                      </Link>
-                    </li>
-
-                    <li className="nav-item">
-                      <Link to="/inventario" href="!#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                        <p className='px-2'>Inventario</p>
-                      </Link>
-                    </li>
-
-                    <li className="nav-item">
-                      <Link to="/reporteCredito" href="!#" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                        <p className='px-2'>Creditos</p>
-                      </Link>
-                    </li>
-
-                  </ul>
-                </li>
+                  ))
+                }
               </ul>
             </nav>
             {/* /.sidebar-menu */}

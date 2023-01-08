@@ -3,6 +3,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { getPermisosUsuario } from "../../Servicios/oauth"
+import { getPermisos } from "../../Servicios/oauth"
+import { addUsuarioPermiso } from "../../Servicios/oauth"
+import { delUsuarioPermiso } from "../../Servicios/oauth"
+
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -16,7 +21,17 @@ const EditUsuario = () => {
   let navigate = useNavigate();
 
   const { idUsuario } = useParams()
-
+  const [usuariopermiso, setUsuarioPermiso] = useState([]);
+  const [permisos, setPermisos] = useState([]);
+  const [usrpermiso, setUsrpermiso] = useState({
+    usuario:{
+      id:idUsuario
+    }, 
+    permiso:{
+      id:0
+    },
+    estado:1
+  });
   const [Usuario, setUsuario] = useState({
     id: "",
     nombre: "",
@@ -39,7 +54,13 @@ const EditUsuario = () => {
   };
 
   useEffect(() => {
-    cargarUsuario()
+    cargarUsuario();
+
+    getPermisos().then(
+      data => {
+        setPermisos(data.data);
+      }
+    )
   }, []);
 
 
@@ -71,6 +92,24 @@ const EditUsuario = () => {
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar los datos del usuario, intenta mas tarde.', 'warning')
     }
+
+
+    getPermisosUsuario(idUsuario).then(
+      data => {
+        if (data.id < 0)
+          this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning');
+        if (data.id > 0) {
+          //console.log(data.data);
+          let menu = [];
+          data.data.map((item) => {
+            item.permiso.idUsuarioPermiso = item.id;
+            menu.push(item.permiso)
+          });
+          setUsuarioPermiso(menu);
+        }
+      }
+    )
+
   }
 
   const handleChange = event => {
@@ -83,6 +122,39 @@ const EditUsuario = () => {
       clase
     )
   }
+
+  const handleChangePermiso = (item) => {
+    const setUsrpermisoCP = {...usrpermiso};
+    setUsrpermisoCP.permiso.id = item.target.value;
+    setUsrpermiso(setUsrpermisoCP);
+  }
+
+  const handleAddPermiso = () => {
+    const result = usuariopermiso.find(({ id }) => id == usrpermiso.permiso.id);
+    if(result) return mesajeResultado('Permiso ya agregado', 'warning');
+    addUsuarioPermiso(usrpermiso).then(
+      data => {
+        if(data.id > 0)
+          mesajeResultado('Permiso agregado exitosamente!', 'success');
+        else 
+          mesajeResultado('Problemas al asignar el mermiso', 'warning');
+      }
+    )
+  }
+
+  const handleDelUsuarioPermiso = (e, item) => {
+    e.preventDefault();
+    delUsuarioPermiso(item.idUsuarioPermiso).then(
+      data => {
+        if(data.id > 0){
+          mesajeResultado('Permiso anulado exitosamente!', 'success');
+        }else{
+          mesajeResultado('Error al anular el permiso', 'warning');
+        }
+      }
+    )
+  }
+
   return (
     <div className="container">
       <div className="row">
@@ -128,6 +200,41 @@ const EditUsuario = () => {
             <button type="submit" className="btn btn-outline-primary">Guardar Usuario</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblUsuario">Cancelar</Link>
           </form>
+          <hr />
+          <div className="mb-3">
+            <label htmlFor="id_permiso">Permisos:</label>
+            <select id="id_permiso" name="id_permiso" className="form-select appSelect" onChange={handleChangePermiso}>
+              {permisos.map((option) => (
+                <option key={option.id} value={option.id} >{option.nombre}</option>
+              ))}
+            </select>
+          </div>
+          <button type="button" className="btn btn-primary btn-sm" onClick={handleAddPermiso}>Agregar permiso</button>
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Permiso</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                usuariopermiso.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.nombre}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={(e) => handleDelUsuarioPermiso(e,item)}
+                      >
+                        <i className='fa fa-trash'></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
