@@ -7,6 +7,10 @@ import { trackPromise } from 'react-promise-tracker';
 import DatePicker from "react-datepicker";
 import numeroAQuetzales from "../../utils/util"
 import Select from 'react-select';
+import MaskedInput from 'react-text-mask'
+import { getPermisosUsuario } from "../../Servicios/oauth";
+import { getIdusuario } from "./../../utils/token";
+
 const optionsTI = [
     { value: '1', label: 'Venta' },
     { value: '2', label: 'Traslado' }
@@ -32,7 +36,7 @@ const initialState = {
     ],
     fechaegreso: new Date(),
     tipopago: "1",
-    pagos:[]
+    pagos: []
 }
 
 const BuscadorPorCodigo = () => {
@@ -49,12 +53,13 @@ const BuscadorPorCodigo = () => {
     const [item, setItem] = useState(initialState);
     const [ops, setOptions] = useState([]);
     const [cambio, setCambio] = useState(0);
+    const [sucursal, setSucursal] = useState('');
     const [pago, setPago] = useState({
-        abono:0,
-        tipopago:1,
-        fechapago:new Date(),
-        saldo:0,
-        observaciones:""
+        abono: 0,
+        tipopago: 1,
+        fechapago: new Date(),
+        saldo: 0,
+        observaciones: ""
     });
 
     let navigate = useNavigate();
@@ -79,6 +84,15 @@ const BuscadorPorCodigo = () => {
                 )
             }
         );
+        getPermisosUsuario(getIdusuario()).then(
+            data => {
+                if(data.id < 0)
+                  this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
+                if (data.id > 0) {
+                  setSucursal(data.data[0].usuario.sucursal.nombre);
+                } 
+            }
+          );
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -193,14 +207,14 @@ const BuscadorPorCodigo = () => {
         tempItem.total_egreso = total;
         if (tempItem.items.length > 0) {
             if (tempItem.persona.id > 0 && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)) {
-                if(tempItem.tipopago==="0"){
+                if (tempItem.tipopago === "0") {
                     const endPago = { ...pago };
-                    let saldopago=tempItem.total_egreso - endPago.abono;
+                    let saldopago = tempItem.total_egreso - endPago.abono;
                     endPago.fechapago = tempItem.fechaegreso;
                     endPago.saldo = saldopago;
                     tempItem.pagos.push(endPago);
-                    tempItem.pagopendiente = tempItem.total_egreso-endPago.abono;
-                }                
+                    tempItem.pagopendiente = tempItem.total_egreso - endPago.abono;
+                }
                 setEgreso(tempItem).then(
                     data => {
                         if (data.id > 0) {
@@ -261,7 +275,7 @@ const BuscadorPorCodigo = () => {
         setItem(newItem);
     }
 
-    const onChangeValue = (e)  => {
+    const onChangeValue = (e) => {
         setItem({ ...item, [e.target.name]: e.target.value });
     }
 
@@ -271,6 +285,15 @@ const BuscadorPorCodigo = () => {
 
     return (
         <>
+            <div className="row bg-warning" style={{ lineHeight: 2.5, padding: 5 }}>
+                <div className="col-md-6 text-red">
+                    <h4>Venta de productos</h4>
+                </div>
+                <div className="col-md-6 text-red">
+                    <h4>Sucursal {sucursal}</h4>
+                </div>
+            </div>
+            <hr />
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-md-6">
@@ -290,11 +313,8 @@ const BuscadorPorCodigo = () => {
                             onChange={(e) => setItem({ ...item, ['fechaegreso']: e })}
                             className="form-control"
                             customInput={
-                                <input
-                                    type="text"
-                                    name='fechaegreso'
-                                    id="fechaegreso"
-                                    placeholder="Fecha"
+                            <MaskedInput
+                                mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/]}
                                 />
                             }
                             dateFormat="dd/MM/yyyy"
@@ -303,7 +323,7 @@ const BuscadorPorCodigo = () => {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <p className="lead"> <b>Buscar por código</b></p>
+                        <p className="lead"> <b>Buscar por código de producto</b></p>
                         <div className="form-inline">
                             <input
                                 type="text"
@@ -411,7 +431,7 @@ const BuscadorPorCodigo = () => {
                             <div className="input-group-append">
                                 <button className="btn btn-outline-secondary" type="button"
                                     onClick={handleSearchCliente}>
-                                    <i className='fa fa-trash'></i>
+                                    <i className='fa fa-search'></i>
                                 </button>
                             </div>
                         </div>
@@ -435,55 +455,55 @@ const BuscadorPorCodigo = () => {
 
                 <div onChange={onChangeValue}>
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" value="1" name="tipopago"/>
+                        <input className="form-check-input" type="radio" value="1" name="tipopago" />
                         <label className="form-check-label">Pago de contado</label>
                         {
-                            item.tipopago==="1" 
-                            ?
-                            <div className="row">
-                                <div className="col-md-3">
-                                    <h1>Pago:</h1>
+                            item.tipopago === "1"
+                                ?
+                                <div className="row">
+                                    <div className="col-md-3">
+                                        <h1>Pago:</h1>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <input
+                                            type="number"
+                                            className="form-control mb-2 mr-sm-2"
+                                            id="pago"
+                                            name="pago"
+                                            placeholder="Pago"
+                                            onChange={handlePago}
+                                            min="1"
+                                        />
+                                    </div>
+                                    <div className="col-md-3">
+                                        <h1>Cambio:</h1>
+                                    </div>
+                                    <div className="col-md-3">
+                                        <h1>{numeroAQuetzales(cambio)}</h1>
+                                    </div>
                                 </div>
-                                <div className="col-md-3">
-                                    <input
-                                        type="number"
-                                        className="form-control mb-2 mr-sm-2"
-                                        id="pago"
-                                        name="pago"
-                                        placeholder="Pago"
-                                        onChange={handlePago}
-                                        min="1"
-                                    />
-                                </div>
-                                <div className="col-md-3">
-                                    <h1>Cambio:</h1>
-                                </div>
-                                <div className="col-md-3">
-                                    <h1>{numeroAQuetzales(cambio)}</h1>
-                                </div>
-                            </div>  
-                            :
-                            <div></div>
-                        }                  
+                                :
+                                <div></div>
+                        }
                     </div>
                     <div className="form-check">
                         <input className="form-check-input" type="radio" value="0" name="tipopago" />
                         <label className="form-check-label">Pago al crédito</label>
                         {
-                            item.tipopago==="0"
-                            ?
-                            <div className='row'>
-                                <div className="col">
-                                    <label for="abono" className="col-sm-2 col-form-label">ABONO</label>
-                                    <input type="text" name="abono" className="form-control" placeholder="Q." onChange={handleDataPago} />
+                            item.tipopago === "0"
+                                ?
+                                <div className='row'>
+                                    <div className="col">
+                                        <label for="abono" className="col-sm-2 col-form-label">ABONO</label>
+                                        <input type="text" name="abono" className="form-control" placeholder="Q." onChange={handleDataPago} />
+                                    </div>
+                                    <div className="col">
+                                        <label for="observaciones" className="col-sm-2 col-form-label">COMENTARIO</label>
+                                        <input type="number" name="observaciones" className="form-control" onChange={handleDataPago} />
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <label for="observaciones" className="col-sm-2 col-form-label">COMENTARIO</label>
-                                    <input type="text" name="observaciones" className="form-control" onChange={handleDataPago} />
-                                </div>
-                            </div>
-                            :
-                            <div></div>                            
+                                :
+                                <div></div>
                         }
                     </div>
                 </div>
