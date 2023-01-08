@@ -21,10 +21,12 @@ const ReporteCreditos = () => {
     })
 
     const [DataCreditos, setDataCreditos] = useState([{
+        idCredito: 0,
         fechaEgreso: "",
         serie_doc: "",
         numero_doc: "",
-        persona: {nombre:""},
+        cliente: "",
+        idCliente: 0,
         items: [{
             id:"",
             cantidad: 0,
@@ -34,34 +36,32 @@ const ReporteCreditos = () => {
     }])
 
     const armarData = (data) => {
+        let clienteEncontrado = false;
+        
         for (let credito of data) {
+            var itemCredito = {
+                idCredito: credito.id,
+                fechaEgreso: credito.fechaegreso,
+                cliente: credito.persona.nombre,
+                idCliente: 0,
+                totalCredito: credito.total_egreso,
+                descripcion: "",
+                abono: 0,
+                saldo: 0
+            }
+
+            // Si no tiene abonos, su saldo es igual al total de credito
             if (credito.pagos.length == 0) {
-                var itemCredito = {
-                    fechaEgreso: credito.fechaegreso,
-                    cliente: credito.persona.nombre,
-                    totalCredito: credito.total_egreso,
-                    descripcion: "",
-                    abono: 0,
-                    saldo: 0
-                }
+                itemCredito.saldo = itemCredito.totalCredito;
                 creditos.push(itemCredito);
             }
 
+            // Se recorren los pagos realizados
             for (let pago of credito.pagos) {
-                var itemCredito = {
-                    fechaEgreso: credito.fechaegreso,
-                    cliente: credito.persona.nombre,
-                    totalCredito: credito.total_egreso,
-                    descripcion: "",
-                    abono: 0,
-                    saldo: 0
-                }
-
-                itemCredito.descripcion = pago.observaciones
-                itemCredito.abono = pago.abono;
-                itemCredito.saldo = pago.saldo
-                creditos.push(itemCredito);
-            }            
+                itemCredito.abono += pago.abono;
+                itemCredito.saldo = pago.saldo;
+            }       
+            creditos.push(itemCredito);     
         }
 
         setDataCreditos(creditos);
@@ -95,8 +95,9 @@ const ReporteCreditos = () => {
                 <table className='w-75 mx-auto table table-striped pb-5' >
                     <thead>
                         <th>Fecha</th>
+                        <th>No. CRedito</th>
                         <th>Cliente</th>
-                        <th>totalCredito</th>
+                        <th>Total credito</th>
                         <th>descripcion</th>
                         <th>abono</th>
                         <th>saldo</th>
@@ -113,6 +114,7 @@ const ReporteCreditos = () => {
                             return(
                                 <tr>
                                     <td>{fecha}</td>
+                                    <td>{item.idCredito}</td>
                                     <td>{item.cliente}</td>
                                     <td>{numeroAQuetzales(item.totalCredito)}</td>
                                     <td>{item.descripcion}</td>
