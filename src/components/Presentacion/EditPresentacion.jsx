@@ -4,24 +4,30 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ListaEstado } from '../../Constantes/ListasSelect';
 import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
-const baseUrl = process.env.REACT_APP_BASE_URL
 
 const EditPresentacion = () => {
     let navigate = useNavigate();
 
     const { idPresentacion } = useParams()
 
-    const [Presentacion, setPresentacion] = useState({
+    const [form, setForm] = useState({
         id: "",
         presentacion: "",
         descripcion: ""
     })
 
-    const { id, descripcion, presentacion, estado } = Presentacion;
+    const { errors, validateForm, onBlurField } = useValidatorForm(form);
+    const { id, descripcion, presentacion, estado } =form;
 
+    
     const onInputChange = (e) => {
-        setPresentacion({ ...Presentacion, [e.target.name]: e.target.value });
+        validarInputForm(e);
+        setForm({ ...form, [e.target.name]: e.target.value });
+    
     };
 
     useEffect(() => {
@@ -31,8 +37,8 @@ const EditPresentacion = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        setPresentacion({ ...Presentacion, ["id"]: idPresentacion });
-        const resultado = await PeticionPut('Presentacion/', Presentacion);
+        setForm({ ...form, ["id"]: idPresentacion });
+        const resultado = await PeticionPut('Presentacion/', form);
     
         if (resultado) {
             navigate("/tblPresentacion");
@@ -43,13 +49,31 @@ const EditPresentacion = () => {
         const response = await PeticionGet(`Presentacion/id/${idPresentacion}`);
 
         if (response) {
-            setPresentacion(response.data.data[0])
+            setForm(response.data.data[0])
         }
     }
 
     const handleChange = event => {
-        setPresentacion({ ...Presentacion, [event.target.name]: parseInt(event.target.value) });
+        setForm({ ...form, [event.target.name]: parseInt(event.target.value) });
     };
+
+    const validarInputForm = (e) => {
+        const field = e.target.name;
+        const nextFormState = {
+            ...form,
+            [field]: e.target.value,
+        };
+
+        setForm(nextFormState);
+
+        if (errors[field].dirty)
+            validateForm({
+                form: nextFormState,
+                errors,
+                field,
+            });
+    }
+
 
     return (
         <div className="container">
@@ -63,8 +87,23 @@ const EditPresentacion = () => {
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="presentacion">Presentacion(*):</label>
-                                <input type="text" name="presentacion" id="presentacion" className="form-control"
-                                    value={presentacion} onChange={(e) => onInputChange(e)} />
+                                <input
+                                 className={clsx(
+                                    'form-control',
+                                    'formField',
+                                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                                    )}
+                                 type="text" 
+                                 name="presentacion" 
+                                 id="presentacion" 
+                                 value={presentacion} 
+                                 onChange={(e) => onInputChange(e)}
+                                 onBlur={onBlurField}
+                                required
+                                  />
+                                  {errors.presentacion.dirty && errors.presentacion.error ? (
+                                      <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                                    ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
