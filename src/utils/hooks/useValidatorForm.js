@@ -2,6 +2,9 @@ import { useState } from "react";
 
 import {
     inputValidator,
+    inputValidatorNamesUsuario,
+    inputValidatorPassword,
+    emailValidator,
 } from "../validator";
 
 const touchErrors = errors => {
@@ -78,7 +81,54 @@ export const useValidatorForm = form => {
             error: false,
             message: "",
         },
-        // 
+         // fin form articulo
+        
+        // Inicio form Usuario
+        usuario: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        password: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        // Fin form Usuario
+
+        //Inicio form proveedor
+        tipopersona: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        tipo_documento: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        numdocumento: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        direccion: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        telefono: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        correo: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
+        //Fin form proveedor
+        
     });
 
 
@@ -94,7 +144,9 @@ export const useValidatorForm = form => {
         }
 
         const { nombre, descripcion,
-        codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion } = form;
+        codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion
+        ,usuario, password,
+         tipopersona,tipo_documento,numdocumento,direccion,telefono,correo } = form;
 
         // Validacion form categoria
         if (nextErrors.nombre.dirty && (field ? field === "nombre" : true)) {
@@ -176,6 +228,72 @@ export const useValidatorForm = form => {
             if (!!mensajeError) isValid = false;
         }
         // fin validacion articulos
+        
+        // inicio validcion usuario 
+        if (nextErrors.usuario.dirty && (field ? field === "usuario" : true)) {
+            const mensajeError = inputValidatorNamesUsuario(usuario, form);
+            nextErrors.usuario.error = !!mensajeError;
+            nextErrors.usuario.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+
+        if (nextErrors.password.dirty && (field ? field === "password" : true)) {
+            const mensajeError = inputValidatorPassword(password, form);
+            nextErrors.password.error = !!mensajeError;
+            nextErrors.password.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+        // fin validacion usuario
+
+        // inicio validacion proveedor
+        if (nextErrors.tipopersona.dirty && (field ? field === "tipopersona" : true)) {
+            const mensajeError = inputValidator(tipopersona, form);
+            nextErrors.tipopersona.error = !!mensajeError;
+            nextErrors.tipopersona.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+
+        if (nextErrors.tipo_documento.dirty && (field ? field === "tipo_documento" : true)) {
+            const mensajeError = inputValidator(tipo_documento, form);
+            nextErrors.tipo_documento.error = !!mensajeError;
+            nextErrors.tipo_documento.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+
+        if (nextErrors.nododocumento.dirty && (field ? field === "nododocumento" : true)) {
+            const mensajeError = inputValidator(tipo_documento, form);
+            nextErrors.nododocumento.error = !!mensajeError;
+            nextErrors.nododocumento.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+        if (nextErrors.direccion.dirty && (field ? field === "direccion" : true)) {
+            const mensajeError = inputValidator(descripcion, form);
+            nextErrors.direccion.error = !!mensajeError;
+            nextErrors.direccion.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+        if (nextErrors.telefono.dirty && (field ? field === "telefono" : true)) {
+            const mensajeError = inputValidator(telefono, form);
+            nextErrors.telefono.error = !!mensajeError;
+            nextErrors.telefono.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+
+        if (nextErrors.correo.dirty && (field ? field === "correo" : true)) {
+            const mensajeError = emailValidator(correo, form);
+            nextErrors.correo.error = !!mensajeError;
+            nextErrors.correo.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
+    
+    
+    
+    
+        
+        // fin validacion proveedor
+
+    
+        
 
         setErrors(nextErrors);
 
