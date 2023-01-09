@@ -107,7 +107,7 @@ export const useValidatorForm = form => {
             error: false,
             message: "",
         },
-        numdocumento: {
+        nodocumento: {
             dirty: false,
             error: false,
             message: "",
@@ -146,7 +146,7 @@ export const useValidatorForm = form => {
         const { nombre, descripcion,
         codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion
         ,usuario, password,
-         tipopersona,tipo_documento,numdocumento,direccion,telefono,correo } = form;
+         tipopersona,tipo_documento,nodocumento,direccion,telefono,correo } = form;
 
         // Validacion form categoria
         if (nextErrors.nombre.dirty && (field ? field === "nombre" : true)) {
@@ -260,10 +260,10 @@ export const useValidatorForm = form => {
             if (!!mensajeError) isValid = false;
         }
 
-        if (nextErrors.nododocumento.dirty && (field ? field === "nododocumento" : true)) {
-            const mensajeError = inputValidator(tipo_documento, form);
-            nextErrors.nododocumento.error = !!mensajeError;
-            nextErrors.nododocumento.message = mensajeError;
+        if (nextErrors.nodocumento.dirty && (field ? field === "nodocumento" : true)) {
+            const mensajeError = inputValidator(nodocumento, form);
+            nextErrors.nodocumento.error = !!mensajeError;
+            nextErrors.nodocumento.message = mensajeError;
             if (!!mensajeError) isValid = false;
         }
         if (nextErrors.direccion.dirty && (field ? field === "direccion" : true)) {

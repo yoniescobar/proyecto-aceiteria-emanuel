@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { PeticionPost } from '../../Servicios/PeticionServicio'
 import { ListaTipoDocumento, ListaEstado } from '../../Constantes/ListasSelect'
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
 const AddProveedor = () => {
     let navigate = useNavigate();
-    const [Proveedor, setProveedor] = useState({
+    const [form, setForm] = useState({
         tipopersona: 2,
         tipo_documento: 0,
         nodocumento: "",
@@ -15,25 +18,47 @@ const AddProveedor = () => {
         correo: ""
     })
 
-    const { tipopersona, tipo_documento, nodocumento, nombre, direccion, telefono, correo } = Proveedor;
+
+    const { errors, validateForm, onBlurField } = useValidatorForm(form);
+    const { tipopersona, tipo_documento, nodocumento, nombre, direccion, telefono, correo } = form;
 
     const onInputChange = (e) => {
-        setProveedor({ ...Proveedor, [e.target.name]: e.target.value });
+        validarInputForm(e);
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     const handleChange = event => {
-        setProveedor({ ...Proveedor, [event.target.name]: parseInt(event.target.value) });
+        setForm({ ...form, [event.target.name]: parseInt(event.target.value) });
     };
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        const resultado = await PeticionPost('Persona', Proveedor);
+        const resultado = await PeticionPost('Persona', form);
 
         if (resultado) {
             navigate("/tblProveedor");
         }
     };
+
+
+    const validarInputForm = (e) => {
+        const field = e.target.name;
+        const nextFormState = {
+            ...form,
+            [field]: e.target.value,
+        };
+
+        setForm(nextFormState);
+
+        if (errors[field].dirty)
+            validateForm({
+                form: nextFormState,
+                errors,
+                field,
+            });
+    }
+
 
     return (
         <div className="container">
@@ -55,32 +80,106 @@ const AddProveedor = () => {
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="nodocumento">Numero de documento(*):</label>
-                                <input type="text" name="nodocumento" id="nodocumento" className="form-control"
-                                    value={nodocumento} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.nodocumento.dirty && errors.nodocumento.error && 'formFieldError'
+                                    )}
+                                    type="text"
+                                    name="nodocumento"
+                                    id="nodocumento"
+                                    value={nodocumento}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.nodocumento.dirty && errors.nodocumento.error ? (
+                                    <p className="formFieldErrorMessage">{errors.nodocumento.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="nombre">Nombre(*):</label>
-                                <input type="text" name="nombre" id="nombre" className="form-control"
-                                    value={nombre} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.nombre.dirty && errors.nombre.error && 'formFieldError'
+                                    )}
+                                    type="text"
+                                    name="nombre"
+                                    id="nombre"
+                                    value={nombre}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.nombre.dirty && errors.nombre.error ? (
+                                    <p className="formFieldErrorMessage">{errors.nombre.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="direccion">Direccion(*):</label>
-                                <input type="text" name="direccion" id="direccion" className="form-control"
-                                    value={direccion} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.direccion.dirty && errors.direccion.error && 'formFieldError'
+                                    )}
+                                    type="text"
+                                    name="direccion"
+                                    id="direccion"
+                                    value={direccion}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.direccion.dirty && errors.direccion.error ? (
+                                    <p className="formFieldErrorMessage">{errors.direccion.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="telefono">Telefono(*):</label>
-                                <input type="number" name="telefono" id="telefono" className="form-control"
-                                    value={telefono} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.telefono.dirty && errors.telefono.error && 'formFieldError'
+                                    )}
+                                    type="number"
+                                    name="telefono"
+                                    id="telefono"
+                                    value={telefono}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.telefono.dirty && errors.telefono.error ? (
+                                    <p className="formFieldErrorMessage">{errors.telefono.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="correo">Correo(*):</label>
-                                <input type="text" name="correo" id="correo" className="form-control"
-                                    value={correo} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.telefono.dirty && errors.telefono.error && 'formFieldError'
+                                    )}
+                                    type="text"
+                                    name="correo"
+                                    id="correo"
+                                    value={correo} onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.telefono.dirty && errors.telefono.error ? (
+                                    <p className="formFieldErrorMessage">{errors.telefono.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">

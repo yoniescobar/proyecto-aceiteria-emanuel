@@ -64,36 +64,36 @@ const AddPresentacion = () => {
                         <div className="form-row mb-4">
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="descripcion">Descripcion(*):</label>
-                                <input 
+                                <input
                                     className={clsx(
-                                    'form-control',
-                                    'formField',
-                                    errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                                        'form-control',
+                                        'formField',
+                                        errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
                                     )}
-                                    type="text" 
-                                    name="descripcion" 
-                                    id="descripcion" 
-                                    value={descripcion} 
-                                    onChange={(e) => onInputChange(e)} 
+                                    type="text"
+                                    name="descripcion"
+                                    id="descripcion"
+                                    value={descripcion}
+                                    onChange={(e) => onInputChange(e)}
                                     onBlur={onBlurField}
                                     required
-                                    />
-                                    {errors.descripcion.dirty && errors.descripcion.error ? (
-                                      <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
-                                    ) : null}
+                                />
+                                {errors.descripcion.dirty && errors.descripcion.error ? (
+                                    <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+                                ) : null}
                             </div>
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="presentacion">Presentacion(*):</label>
-                                <input 
+                                <input
                                     className={clsx(
                                         'form-control',
                                         'formField',
                                         errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
                                     )}
-                                    type="text" 
-                                    name="presentacion" 
+                                    type="text"
+                                    name="presentacion"
                                     id="presentacion"
-                                    value={presentacion} 
+                                    value={presentacion}
                                     onChange={(e) => onInputChange(e)}
                                     onBlur={onBlurField}
                                     required

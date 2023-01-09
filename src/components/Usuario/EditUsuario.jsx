@@ -7,12 +7,14 @@ import { getPermisosUsuario } from "../../Servicios/oauth"
 import { getPermisos } from "../../Servicios/oauth"
 import { addUsuarioPermiso } from "../../Servicios/oauth"
 import { delUsuarioPermiso } from "../../Servicios/oauth"
-
+import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
+import styles from "../../utils/hooks/validatorForm.css"
+import clsx from "clsx";
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const dataEstado = [
-  { id: -1, estado: 'Seleccione una opcion' },
+  // { id: -1, estado: 'Seleccione una opcion' },
   { id: 1, estado: "Activo" },
   { id: 2, estado: "No Activo" },
 ]
@@ -24,15 +26,15 @@ const EditUsuario = () => {
   const [usuariopermiso, setUsuarioPermiso] = useState([]);
   const [permisos, setPermisos] = useState([]);
   const [usrpermiso, setUsrpermiso] = useState({
-    usuario:{
-      id:idUsuario
-    }, 
-    permiso:{
-      id:0
+    usuario: {
+      id: idUsuario
     },
-    estado:1
+    permiso: {
+      id: 0
+    },
+    estado: 1
   });
-  const [Usuario, setUsuario] = useState({
+  const [form, setForm] = useState({
     id: "",
     nombre: "",
     password: "",
@@ -40,7 +42,8 @@ const EditUsuario = () => {
     id_estado: ""
   })
 
-  const { id, nombre, usuario, password, id_estado } = Usuario;
+  const { errors, validateForm, onBlurField } = useValidatorForm(form);
+  const { id, nombre, usuario, password, id_estado } = form;
 
   // Initialize a boolean state
   const [passwordShow, setPasswordShow] = useState(false);
@@ -50,7 +53,8 @@ const EditUsuario = () => {
   }
 
   const onInputChange = (e) => {
-    setUsuario({ ...Usuario, [e.target.name]: e.target.value });
+    validarInputForm(e);
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
@@ -67,8 +71,8 @@ const EditUsuario = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      setUsuario({ ...Usuario, ["id"]: idUsuario });
-      const response = await axios.put(`${baseUrl}/Usuario/`, Usuario);
+      setForm({ ...form, ["id"]: idUsuario });
+      const response = await axios.put(`${baseUrl}/Usuario/`, form);
 
       if (response) {
         mesajeResultado('Se actualizo existosamente la usuario!', 'success');
@@ -87,7 +91,7 @@ const EditUsuario = () => {
   const cargarUsuario = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Usuario/id/${idUsuario}`)
-      setUsuario(response.data.data[0])
+      setForm(response.data.data[0])
 
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar los datos del usuario, intenta mas tarde.', 'warning')
@@ -113,7 +117,7 @@ const EditUsuario = () => {
   }
 
   const handleChange = event => {
-    setUsuario({ ...Usuario, ["id_estado"]: event.target.value });
+    setForm({ ...form, ["id_estado"]: event.target.value });
   };
   const mesajeResultado = (mensaje, clase) => {
     Swal.fire(
@@ -124,19 +128,19 @@ const EditUsuario = () => {
   }
 
   const handleChangePermiso = (item) => {
-    const setUsrpermisoCP = {...usrpermiso};
+    const setUsrpermisoCP = { ...usrpermiso };
     setUsrpermisoCP.permiso.id = item.target.value;
     setUsrpermiso(setUsrpermisoCP);
   }
 
   const handleAddPermiso = () => {
     const result = usuariopermiso.find(({ id }) => id == usrpermiso.permiso.id);
-    if(result) return mesajeResultado('Permiso ya agregado', 'warning');
+    if (result) return mesajeResultado('Permiso ya agregado', 'warning');
     addUsuarioPermiso(usrpermiso).then(
       data => {
-        if(data.id > 0)
+        if (data.id > 0)
           mesajeResultado('Permiso agregado exitosamente!', 'success');
-        else 
+        else
           mesajeResultado('Problemas al asignar el mermiso', 'warning');
       }
     )
@@ -146,14 +150,32 @@ const EditUsuario = () => {
     e.preventDefault();
     delUsuarioPermiso(item.idUsuarioPermiso).then(
       data => {
-        if(data.id > 0){
+        if (data.id > 0) {
           mesajeResultado('Permiso anulado exitosamente!', 'success');
-        }else{
+        } else {
           mesajeResultado('Error al anular el permiso', 'warning');
         }
       }
     )
   }
+
+  const validarInputForm = (e) => {
+    const field = e.target.name;
+    const nextFormState = {
+      ...form,
+      [field]: e.target.value,
+    };
+
+    setForm(nextFormState);
+
+    if (errors[field].dirty)
+      validateForm({
+        form: nextFormState,
+        errors,
+        field,
+      });
+  }
+
 
   return (
     <div className="container">
@@ -163,23 +185,62 @@ const EditUsuario = () => {
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="mb-3">
               <label htmlFor="Nombre" className="form-label">Nombre(*)</label>
-              <input type={"text"} className="form-control"
-                name="nombre" value={nombre} onChange={(e) => onInputChange(e)}
+              <input
+                className={clsx(
+                  'form-control',
+                  'formField',
+                  errors.nombre.dirty && errors.nombre.error && 'formFieldError'
+                )}
+                type={"text"}
+                name="nombre"
+                value={nombre}
+                onChange={(e) => onInputChange(e)}
+                onBlur={onBlurField}
+                required
               />
+              {errors.nombre.dirty && errors.nombre.error ? (
+                <p className="formFieldErrorMessage">{errors.nombre.message}</p>
+              ) : null}
             </div>
             <div className="mb-3">
               <label htmlFor="Usuario" className="form-label">Usuario</label>
-              <input type={"text"} className="form-control"
-                name="usuario" value={usuario} onChange={(e) => onInputChange(e)} />
+              <input
+                className={clsx(
+                  'form-control',
+                  'formField',
+                  errors.usuario.dirty && errors.usuario.error && 'formFieldError'
+                )}
+                type={"text"}
+                name="usuario"
+                value={usuario}
+                onChange={(e) => onInputChange(e)}
+                onBlur={onBlurField}
+                required
+              />
+              {errors.usuario.dirty && errors.usuario.error ? (
+                <p className="formFieldErrorMessage">{errors.usuario.message}</p>
+              ) : null}
             </div>
             <div className="row">
               <div className="col">
                 <div className="mb-3">
                   <label htmlFor="no_documento">Password(*):</label>
-                  <input type={passwordShow ? "text" : "password"} className="form-control"
-                    name="password" value={password} onChange={(e) => onInputChange(e)}
+                  <input
+                   className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.password.dirty && errors.password.error && 'formFieldError'
+                )}
+                   type={passwordShow ? "text" : "password"} 
+                    name="password" 
+                    value={password} 
+                    onChange={(e) => onInputChange(e)}
+                    onBlur={onBlurField}
+                    required
                   />
-
+                  {errors.password.dirty && errors.password.error ? (
+                                    <p className="formFieldErrorMessage">{errors.password.message}</p>
+                                ) : null}
                 </div>
               </div>
               <div className="col">
@@ -225,7 +286,7 @@ const EditUsuario = () => {
                     <td>
                       <button
                         className="btn btn-danger btn-sm"
-                        onClick={(e) => handleDelUsuarioPermiso(e,item)}
+                        onClick={(e) => handleDelUsuarioPermiso(e, item)}
                       >
                         <i className='fa fa-trash'></i>
                       </button>

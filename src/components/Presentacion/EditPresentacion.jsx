@@ -21,13 +21,13 @@ const EditPresentacion = () => {
     })
 
     const { errors, validateForm, onBlurField } = useValidatorForm(form);
-    const { id, descripcion, presentacion, estado } =form;
+    const { id, descripcion, presentacion, estado } = form;
 
-    
+
     const onInputChange = (e) => {
         validarInputForm(e);
         setForm({ ...form, [e.target.name]: e.target.value });
-    
+
     };
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const EditPresentacion = () => {
 
         setForm({ ...form, ["id"]: idPresentacion });
         const resultado = await PeticionPut('Presentacion/', form);
-    
+
         if (resultado) {
             navigate("/tblPresentacion");
         }
@@ -88,28 +88,43 @@ const EditPresentacion = () => {
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="presentacion">Presentacion(*):</label>
                                 <input
-                                 className={clsx(
-                                    'form-control',
-                                    'formField',
-                                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
                                     )}
-                                 type="text" 
-                                 name="presentacion" 
-                                 id="presentacion" 
-                                 value={presentacion} 
-                                 onChange={(e) => onInputChange(e)}
-                                 onBlur={onBlurField}
-                                required
-                                  />
-                                  {errors.presentacion.dirty && errors.presentacion.error ? (
-                                      <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
-                                    ) : null}
+                                    type="text"
+                                    name="presentacion"
+                                    id="presentacion"
+                                    value={presentacion}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                {errors.presentacion.dirty && errors.presentacion.error ? (
+                                    <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="descripcion">Descripcion(*):</label>
-                                <input type="text" name="descripcion" id="descripcion" className="form-control"
-                                    value={descripcion} onChange={(e) => onInputChange(e)} />
+                                <input
+                                    className={clsx(
+                                        'form-control',
+                                        'formField',
+                                        errors.descripcion.dirty && errors.descripcion.error && 'formFieldError'
+                                    )}
+                                    type="text"
+                                    name="descripcion"
+                                    id="descripcion"
+                                    value={descripcion}
+                                    onChange={(e) => onInputChange(e)}
+                                    onBlur={onBlurField}
+                                    required
+                                />
+                                 {errors.descripcion.dirty && errors.descripcion.error ? (
+                                    <p className="formFieldErrorMessage">{errors.descripcion.message}</p>
+                                ) : null}
                             </div>
 
                             <div className="form-group col-12 col-sm-6">
