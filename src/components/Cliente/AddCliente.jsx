@@ -10,7 +10,7 @@ const AddCliente = () => {
     let navigate = useNavigate();
     const [form, setForm] = useState({
         tipopersona: 1,
-        tipo_documento: 0,
+        tipo_documento: 1,
         nodocumento: "",
         nombre: "",
         direccion: "",
@@ -66,7 +66,8 @@ const AddCliente = () => {
                         <div className="form-row mb-4">
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="tipo_documento">Tipo de documento(*):</label>
-                                <select id="tipo_documento" name="tipo_documento" className="form-select appSelect" onChange={handleChange}>
+                                <select id="tipo_documento" name="tipo_documento" className="form-select appSelect" onChange={handleChange} disabled>
+                                    <option value="1" >NIT / DPI</option>
                                     {ListaTipoDocumento.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
