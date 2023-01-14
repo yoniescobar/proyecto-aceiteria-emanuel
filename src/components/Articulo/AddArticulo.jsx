@@ -37,7 +37,7 @@ const AddArticulo = () => {
     existencia: "",
     imagen: "",
     modelo:"",
-    estado:1
+    estado: 1
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);

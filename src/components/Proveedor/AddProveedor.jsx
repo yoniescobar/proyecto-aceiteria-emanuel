@@ -15,7 +15,8 @@ const AddProveedor = () => {
         nombre: "",
         direccion: "",
         telefono: "",
-        correo: ""
+        correo: "",
+        estado: 1
     })
 
 

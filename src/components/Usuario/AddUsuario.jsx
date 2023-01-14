@@ -23,7 +23,7 @@ const AddUsuario = () => {
     nombre: "",
     usuario: "",
     password: "",
-    id_estado: ""
+    id_estado: "1"
   })
 
   // Initialize a boolean state

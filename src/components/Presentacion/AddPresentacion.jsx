@@ -11,7 +11,7 @@ const AddPresentacion = () => {
     const [form, setForm] = useState({
         presentacion: "",
         descripcion: "",
-        estado: ""
+        estado: 1
     })
 
     const { errors, validateForm, onBlurField } = useValidatorForm(form);

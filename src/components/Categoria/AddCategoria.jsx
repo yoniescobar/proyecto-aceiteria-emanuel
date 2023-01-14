@@ -19,7 +19,7 @@ const AddCategoria = props => {
   const [form, setForm] = useState({
     nombre: "",
     descripcion: "",
-    condicion:""
+    condicion: 1
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
