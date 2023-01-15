@@ -17,7 +17,8 @@ const EditPresentacion = () => {
     const [form, setForm] = useState({
         id: "",
         presentacion: "",
-        descripcion: ""
+        descripcion: "",
+        estado: 0
     })
 
     const { errors, validateForm, onBlurField } = useValidatorForm(form);
@@ -129,7 +130,12 @@ const EditPresentacion = () => {
 
                             <div className="form-group col-12 col-sm-6">
                                 <label htmlFor="estado">Estado(*):</label>
-                                <select id="estado" name="estado" className="form-select appSelect" onChange={handleChange}>
+                                <select 
+                                    value={form.estado}
+                                    id="estado" 
+                                    name="estado" 
+                                    className="form-select appSelect" 
+                                    onChange={handleChange}>
                                     {ListaEstado.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}

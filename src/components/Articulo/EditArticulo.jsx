@@ -27,7 +27,8 @@ const EditArticulo = () => {
     modelo:"",
     estado:1,
     precio_compra: 0,
-    precio_venta: 0
+    precio_venta: 0,
+    presentacion: {id: 0}
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
@@ -333,6 +334,7 @@ const EditArticulo = () => {
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
                 <select 
+                  value={form.presentacion.id}
                   className={clsx(
                     'form-select',
                     'appSelect',

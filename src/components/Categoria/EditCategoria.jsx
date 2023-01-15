@@ -131,9 +131,11 @@ const EditCategoria = () => {
 
             <div className="mb-3">
               <label htmlFor="categoria">Estado(*):</label>
-              <select id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
+              <select 
+                value={form.condicion}
+                id="categoria" nombre="categoria" className="form-select appSelect" onChange={handleChange}>
                 {dataEstado.map((option) => (
-                  <option key={option.id} value={option.estado} >{option.estado}</option>
+                  <option key={option.id} value={option.id} >{option.estado}</option>
                 ))}
               </select>
             </div>

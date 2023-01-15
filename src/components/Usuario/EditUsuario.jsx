@@ -252,7 +252,12 @@ const EditUsuario = () => {
 
             <div className="mb-3">
               <label htmlFor="id_estado">Estado(*):</label>
-              <select id="id_estado" name="id_estado" className="form-select appSelect" onChange={handleChange}>
+              <select 
+                value={form.id_estado}
+                id="id_estado" 
+                name="id_estado" 
+                className="form-select appSelect" 
+                onChange={handleChange}>
                 {dataEstado.map((option) => (
                   <option key={option.id} value={option.id} >{option.estado}</option>
                 ))}
@@ -264,7 +269,11 @@ const EditUsuario = () => {
           <hr />
           <div className="mb-3">
             <label htmlFor="id_permiso">Permisos:</label>
-            <select id="id_permiso" name="id_permiso" className="form-select appSelect" onChange={handleChangePermiso}>
+            <select 
+              id="id_permiso" 
+              name="id_permiso" 
+              className="form-select appSelect" 
+              onChange={handleChangePermiso}>
               {permisos.map((option) => (
                 <option key={option.id} value={option.id} >{option.nombre}</option>
               ))}

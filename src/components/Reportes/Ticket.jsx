@@ -32,7 +32,6 @@ const Ticket = () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
 
         if (response.data.data.length > 0) {
-            console.log(response.data.data)
             armarData(response.data.data);
         }
     }

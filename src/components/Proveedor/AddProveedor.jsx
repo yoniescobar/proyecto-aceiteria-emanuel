@@ -169,7 +169,7 @@ const AddProveedor = () => {
                                     className={clsx(
                                         'form-control',
                                         'formField',
-                                        errors.telefono.dirty && errors.telefono.error && 'formFieldError'
+                                        errors.correo.dirty && errors.correo.error && 'formFieldError'
                                     )}
                                     type="text"
                                     name="correo"
@@ -178,8 +178,8 @@ const AddProveedor = () => {
                                     onBlur={onBlurField}
                                     required
                                 />
-                                {errors.telefono.dirty && errors.telefono.error ? (
-                                    <p className="formFieldErrorMessage">{errors.telefono.message}</p>
+                                {errors.correo.dirty && errors.correo.error ? (
+                                    <p className="formFieldErrorMessage">{errors.correo.message}</p>
                                 ) : null}
                             </div>
 

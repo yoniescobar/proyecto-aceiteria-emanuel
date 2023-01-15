@@ -15,7 +15,8 @@ const AddCliente = () => {
         nombre: "",
         direccion: "",
         telefono: "",
-        correo: ""
+        correo: "",
+        estado: 1
     })
 
     const { errors, validateForm, onBlurField } = useValidatorForm(form);
