@@ -19,7 +19,10 @@ const VentasRealizadas = () => {
     const response = await PeticionGet('Egreso/all');
     
     if (response) {
-      setVentaRealizada(response.data.data)
+      setVentaRealizada(response.data.data.sort(
+        (p1, p2) => 
+        (p1.id < p2.id) ? 1 : (p1.id > p2.id) ? -1 : 0))
+
       setFilteredVentaRealizada(response.data.data)
     }
   }
