@@ -3,11 +3,13 @@ import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
+import numeroAQuetzales from "../../utils/util";
 
 const FacturaVenta = () => {
     const { idVenta } = useParams()
     const componentRef = useRef();
     let total = 0;
+    let fecha = "";
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -32,8 +34,19 @@ const FacturaVenta = () => {
         const response = await PeticionGet(`Egreso/id/${idVenta}`);
 
         if(response.data.data.length > 0){
-            setDataVentaRealizada(response.data.data)
+            armarData(response.data.data)
         }   
+    }
+
+    const armarData = (data) => {
+        const datosFecha = data[0].fecha_doc.split("-")
+
+        if(datosFecha.length == 3){
+            fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
+            data[0].fecha_doc = fecha;
+        }
+
+        setDataVentaRealizada(data);
     }
     
     useEffect(() => {
@@ -42,14 +55,16 @@ const FacturaVenta = () => {
 
     return (
         <>
-            <div style={{ width: '100%', height: window.innerHeight }}>
-                <h1 className="text-center my-3 border py-2 ">
-                    Aceitera Emanuel
-                    <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={handlePrint}>Imprimir</button>
+            <div>
+                <h1 className="text-center">
+                    <button type="button" className="btn btn-sm btn-outline-secondary m-2" onClick={handlePrint}>Imprimir</button>
                     <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
                 </h1>
+                <hr></hr>
 
-                <div ref={componentRef} style={{margin: '10%', margin: '10%', marginTop: '10%', marginRight: '10%', marginBottom: '10%', marginLeft: '10%'}}>
+                <div ref={componentRef} style={{margin: '10%', margin: '10%', marginTop: '5%', marginRight: '10%', marginBottom: '10%', marginLeft: '10%'}}>
+                    <h1 style={{textAlign: 'center'}}>Aceitera Emanuel</h1>
+                    <br></br>
                     <label>Nit: </label><span class="border-0"> 7455225-5</span><br></br>
                     
                     <label>Telefono: </label><span class="border-0"> 7758-8956</span><br></br>
@@ -58,17 +73,17 @@ const FacturaVenta = () => {
                     <br></br>
 
                     <div>
-                        <div>
+                        <div style={{textAlign: 'center'}}>
                             <span style={{textAlign: 'right'}}><label>Cliente:</label> {DataVentaRealizada[0].persona.nombre.toUpperCase()}</span>
-                            <span style={{marginLeft: '30%', textAlign: 'right'}}><label>Doc:</label> {`${DataVentaRealizada[0].serie_doc.toUpperCase()}-${DataVentaRealizada[0].numero_doc}`}</span>
-                            <span style={{marginLeft: '30%', textAlign: 'right'}}><label>Telefono:</label> N/A</span>
+                            <span style={{marginLeft: '10%', textAlign: 'center'}}><label>Doc:</label> {`${DataVentaRealizada[0].serie_doc.toUpperCase()}-${DataVentaRealizada[0].numero_doc}`}</span>
+                            <span style={{marginLeft: '10%', textAlign: 'right'}}><label>Telefono:</label> N/A</span>
                         </div>
                     </div>
 
                     <br></br>
                     <table className='w-85 mx-auto table table-striped' >
                         <thead>
-                            <th>Nombre</th>
+                            <th>Producto</th>
                             <th>Cantidad</th>
                             <th>Precio</th>
                             <th>Subtotal</th>
@@ -83,21 +98,18 @@ const FacturaVenta = () => {
                                         <td>{item.articulo.nombre}</td>
                                         <td>{item.cantidad}</td>
                                         <td>{item.precio_venta}</td>
-                                        <td>Q {item.precio_venta * item.cantidad}</td>
+                                        <td>{numeroAQuetzales(item.precio_venta * item.cantidad)}</td>
                                     </tr>
                                 )      
                             })
                             }
                         </tbody>
                     </table>
-
-                    <div>
-                            <span style={{marginLeft: '75%', textAlign: 'right'}}><label>Total a pagar: </label> Q {total}</span>
+                    <div style={{textAlign: 'right'}}>
+                            <span><label>Total a pagar: </label> {numeroAQuetzales(total)}</span>
                     </div>
-
                 </div>
             </div>
-            
         </>
     )
 }
