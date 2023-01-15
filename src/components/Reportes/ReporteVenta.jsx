@@ -4,11 +4,12 @@ import { useReactToPrint } from 'react-to-print'
 import { useEffect, useState } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ListaSucursal } from '../../Constantes/ListasSelect'
+import { ListaSucursal, ListaTipoCredito } from '../../Constantes/ListasSelect'
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { PeticionGet } from '../../Servicios/PeticionServicio'
 import es from 'date-fns/locale/es';
 import numeroAQuetzales from "../../utils/util"
+import clsx from "clsx";
 
 registerLocale('es', es)
 
@@ -28,7 +29,10 @@ const ReporteVenta = () => {
     })
 
     const [Egreso, setEgreso] = useState([])
-    const [sucursal, setSucursal] = useState([])
+    const [sucursal, setSucursal] = useState({
+        sucursal: 1,
+        tipoCredito: 1,
+    })
 
     const armarDataEgreso = (data) => {
         let articuloEncontrado = false;
@@ -36,6 +40,7 @@ const ReporteVenta = () => {
         for (let venta of data) {
             var itemEgreso = {
                 fechaEgreso: venta.fechaegreso,
+                tipopago: venta.tipopago,
                 idArticulo: 0,
                 nombreArticulo: "",
                 cantidad: 0,
@@ -62,8 +67,8 @@ const ReporteVenta = () => {
                 }
             }            
         }
-
-        setEgreso(datosEgreso);
+        
+        setEgreso(datosEgreso.filter(x => x.tipopago === sucursal.tipoCredito));
     }
 
     const cargarEgreso = async () => {
@@ -89,7 +94,7 @@ const ReporteVenta = () => {
 
     return (
         <>
-            <div className="bg-white w-75 mx-auto table table-striped">
+            <div className="w-75 mx-auto">
                 <div className="row">
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo">
@@ -99,6 +104,10 @@ const ReporteVenta = () => {
                                 dateFormat="dd/MM/yyyy"
                                 selected={fechaInicial}
                                 onChange={date => setfechaInicial(date)}
+                                className={clsx(
+                                    'form-control',
+                                    'formField'
+                                )}
                             />
                         </div>
                     </div>
@@ -110,17 +119,19 @@ const ReporteVenta = () => {
                                 dateFormat="dd/MM/yyyy"
                                 selected={fechaFinal}
                                 onChange={date => setfechaFinal(date)}
+                                className={clsx(
+                                    'form-control',
+                                    'formField'
+                                )}
                             />
                         </div>
                     </div>
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo" >
-                            <label>Sucursal </label> <br />
+                            <label>Tipo Credito </label> <br />
                             <div className="mb-3">
-
-                                <select id="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
-                                    <option value="-1">Seleccione una opcion</option>
-                                    {ListaSucursal.map((option) => (
+                                <select id="tipoCredito" nombre="tipoCredito" className="form-select appSelect" onChange={handleChange}>
+                                    {ListaTipoCredito.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
                                 </select>
@@ -128,20 +139,40 @@ const ReporteVenta = () => {
                         </div>
                     </div>
                     <div className="col-sm d-flex justify-content-center">
+                        <div className="grupo" >
+                            <label>Sucursal </label> <br />
+                            <div className="mb-3">
+                                <select id="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
+                                    {ListaSucursal.map((option) => (
+                                        <option key={option.id} value={option.id} >{option.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-sm d-flex justify-content-center">
                         <div className="grupo">
-                            <h1 className="text-center my-3  py-2 ">
+                            <h1 className="text-center">
                             <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={FiltrarEgreso}>Filtrar</button>
+                            </h1>
+                        </div>
+
+                        <div className="grupo">
+                            <h1 className="text-center">
                             <button type="button" className="btn btn-sm btn-outline-secondary px-3 m-2" onClick={handlePrint}>Imprimir</button>
-                                {/* <Link className="btn btn-sm btn-outline-primary px-3 m-2" to="/ReporteVentaPdf" >Generar Reporte</Link> */}
                             </h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '5%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
+            <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '2%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
                 <div className="w-75 mx-auto" style={{ textAlign: 'center' }}>
-                    {/* <h1>Aceitera 1</h1> */}
+                    <h1 style={{ textAlign: 'center' }}>Aceitera Emanuel</h1>
+                    <br></br>
                     <p>Nit: 454832666</p>
                     <p>Tel: 4556-5645</p>
                 </div>

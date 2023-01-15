@@ -14,3 +14,8 @@ export const ListaSucursal = [
     { id: 1, nombre: "Sucursal 1" },
     { id: 2, nombre: "Sucursal 2" },
 ];
+
+export const ListaTipoCredito = [
+    { id: 1, nombre: "Contado" },
+    { id: 2, nombre: "Credito" },
+];
