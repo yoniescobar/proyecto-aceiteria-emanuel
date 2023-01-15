@@ -77,6 +77,7 @@ const EditArticulo = () => {
       const response = await PeticionGet(`Articulo/id/${idArticulo}`);
       
       if (response) {
+        console.log(response.data.data[0]);
         setForm(response.data.data[0]);
       }
   }

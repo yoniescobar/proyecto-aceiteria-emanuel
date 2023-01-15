@@ -59,8 +59,8 @@ const FacturaVenta = () => {
                 <h1 className="text-center">
                     <button type="button" className="btn btn-sm btn-outline-secondary m-2" onClick={handlePrint}>Imprimir</button>
                     <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
+                    <hr></hr>
                 </h1>
-                <hr></hr>
 
                 <div ref={componentRef} style={{ margin: '10%', margin: '10%', marginTop: '5%', marginRight: '10%', marginBottom: '10%', marginLeft: '10%' }}>
                     <h1 style={{ textAlign: 'center' }}>Aceitera Emanuel</h1>

@@ -167,6 +167,7 @@ const ReporteVenta = () => {
                         </div>
                     </div>
                 </div>
+                <hr></hr>
             </div>
 
             <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '2%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>

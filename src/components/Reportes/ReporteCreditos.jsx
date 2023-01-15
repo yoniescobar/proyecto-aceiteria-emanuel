@@ -88,7 +88,8 @@ const ReporteCreditos = () => {
 
             <div ref={componentRef} style={{margin: '5%', margin: '5%', marginTop: '5%', marginRight: '5%', marginBottom: '5%', marginLeft: '5%'}}>
                 <div className="w-75 mx-auto" style={{ textAlign: 'center' }}>
-                    {/* <h1>Aceitera 1</h1> */}
+                    <h1 style={{ textAlign: 'center' }}>Aceitera Emanuel</h1>
+                    <br></br>
                     <p>Nit: 454832666</p>
                     <p>Tel: 4556-5645</p>
                 </div>
