@@ -146,14 +146,20 @@ const BuscadorPorCodigo = () => {
     };
 
     const onChangeInput = (e, prodId) => {
-        let { value } = e.target
-        const element = articulos.find(({id}) => id == prodId);
+        let { value } = e.target;
+
+        if (value < 0){
+            value = 0;
+            mesajeResultado('No se permite cantida a vender negativa', 'warning');
+        }
         
+        const element = articulos.find(({id}) => id == prodId);
+
         if(element.existencia < value){
             value = element.existencia;
             mesajeResultado('Cantidad no disponible, se agregará la existencia máxima', 'warning');
         }
-        
+
         const editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
@@ -231,7 +237,6 @@ const BuscadorPorCodigo = () => {
                 }
                 tempItem.usuario.id = getIdusuario();
 
-                console.log(tempItem.tipopago);
                 if(tempItem.tipopago == 1)
                     if(cambio < 0 ) 
                         return mesajeResultado('El pago al contado no puede ser menor al total', 'warning');
@@ -516,11 +521,11 @@ const BuscadorPorCodigo = () => {
                                 <div className='row'>
                                     <div className="col">
                                         <label for="abono" className="col-sm-2 col-form-label">ABONO</label>
-                                        <input type="text" name="abono" className="form-control" placeholder="Q." onChange={handleDataPago} />
+                                        <input type="number" name="abono" className="form-control" placeholder="Q." onChange={handleDataPago} />
                                     </div>
                                     <div className="col">
                                         <label for="observaciones" className="col-sm-2 col-form-label">COMENTARIO</label>
-                                        <input type="number" name="observaciones" className="form-control" onChange={handleDataPago} />
+                                        <input type="text" name="observaciones" className="form-control" onChange={handleDataPago} />
                                     </div>
                                 </div>
                                 :
