@@ -36,7 +36,10 @@ const initialState = {
     ],
     fechaegreso: new Date(),
     tipopago: "1",
-    pagos: []
+    pagos: [],
+    sucursal:{
+        id:0
+    }
 }
 
 const BuscadorPorCodigo = () => {
@@ -79,20 +82,24 @@ const BuscadorPorCodigo = () => {
                         newItem.persona.id = data.data[0].id;
                         newItem.persona.codigo = data.data[0].nodocumento;
                         newItem.persona.nombre = data.data[0].nombre;
-                        setItem(newItem);
+
+                        getPermisosUsuario(getIdusuario()).then(
+                            data => {
+                                if(data.id < 0)
+                                  this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
+                                if (data.id > 0) {
+                                  setSucursal(data.data[0].usuario.sucursal.nombre);
+                                  newItem.sucursal.id = data.data[0].usuario.sucursal.id;
+                                  setItem(newItem);
+                                } 
+                            }
+                          );
+
+                        
                     }
                 )
             }
         );
-        getPermisosUsuario(getIdusuario()).then(
-            data => {
-                if(data.id < 0)
-                  this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
-                if (data.id > 0) {
-                  setSucursal(data.data[0].usuario.sucursal.nombre);
-                } 
-            }
-          );
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -139,7 +146,14 @@ const BuscadorPorCodigo = () => {
     };
 
     const onChangeInput = (e, prodId) => {
-        const { value } = e.target
+        let { value } = e.target
+        const element = articulos.find(({id}) => id == prodId);
+        
+        if(element.existencia < value){
+            value = element.existencia;
+            mesajeResultado('Cantidad no disponible, se agregará la existencia máxima', 'warning');
+        }
+        
         const editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
@@ -216,6 +230,12 @@ const BuscadorPorCodigo = () => {
                     tempItem.pagopendiente = tempItem.total_egreso - endPago.abono;
                 }
                 tempItem.usuario.id = getIdusuario();
+
+                console.log(tempItem.tipopago);
+                if(tempItem.tipopago == 1)
+                    if(cambio < 0 ) 
+                        return mesajeResultado('El pago al contado no puede ser menor al total', 'warning');
+
                 setEgreso(tempItem).then(
                     data => {
                         if (data.id > 0) {

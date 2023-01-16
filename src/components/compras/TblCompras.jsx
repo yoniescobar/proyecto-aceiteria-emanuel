@@ -34,7 +34,10 @@ const initialState = {
   },
   items: [
   ],
-  fechaingreso:new Date()
+  fechaingreso:new Date(),
+  sucursal:{
+    id:0
+  }
 }
 const TblCompras = () => {
 
@@ -59,21 +62,25 @@ const TblCompras = () => {
                   newItem.persona.id = data.data[0].id;
                   newItem.persona.codigo = data.data[0].nodocumento;
                   newItem.persona.nombre = data.data[0].nombre;
-                  setItem(newItem);
+
+                  getPermisosUsuario(getIdusuario()).then(
+                    data => {
+                        if(data.id < 0)
+                          this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
+                        if (data.id > 0) {
+                          setSucursal(data.data[0].usuario.sucursal.nombre);
+                          newItem.sucursal.id = data.data[0].usuario.sucursal.id;
+                          setItem(newItem);
+                        } 
+                    }
+                  )
+
+                  
+
               }
             )
         }
     );
-
-    getPermisosUsuario(getIdusuario()).then(
-      data => {
-          if(data.id < 0)
-            this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
-          if (data.id > 0) {
-            setSucursal(data.data[0].usuario.sucursal.nombre);
-          } 
-      }
-    )
   }, []);
 
   useEffect(() => {
