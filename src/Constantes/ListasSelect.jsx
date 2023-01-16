@@ -17,5 +17,5 @@ export const ListaSucursal = [
 
 export const ListaTipoCredito = [
     { id: 1, nombre: "Contado" },
-    { id: 2, nombre: "Credito" },
+    { id: 0, nombre: "Credito" },
 ];

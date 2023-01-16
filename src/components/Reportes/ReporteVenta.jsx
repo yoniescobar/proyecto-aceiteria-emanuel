@@ -35,37 +35,48 @@ const ReporteVenta = () => {
     })
 
     const armarDataEgreso = (data) => {
-        let articuloEncontrado = false;
+        let idGenerado = 0;
 
         for (let venta of data) {
+            let articuloEncontrado = false;
             var itemEgreso = {
+                idItem: idGenerado,
+                idEgreso: venta.id,
                 fechaEgreso: venta.fechaegreso,
                 tipopago: venta.tipopago,
                 idArticulo: 0,
                 nombreArticulo: "",
                 cantidad: 0,
                 precioCompra: 0,
-                precioVenta: 0
+                precioVenta: 0,
+                tipoPagoDescripcion: venta.tipopago === 1 ? 'Contado' : 'Credito'
             }
 
             for (let detalleVenta of venta.items) {
-                if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id)) {
-                    itemEgreso = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id);
-                    itemEgreso.cantidad = itemEgreso.cantidad + detalleVenta.cantidad;
-                    itemEgreso.precioVenta = (detalleVenta.cantidad * detalleVenta.precio_venta) + itemEgreso.precioVenta;
-                    articuloEncontrado = true;
-                }
 
-                if (!articuloEncontrado) {
                     itemEgreso.idArticulo = detalleVenta.articulo.id;
                     itemEgreso.nombreArticulo = detalleVenta.articulo.nombre;
                     itemEgreso.cantidad = detalleVenta.cantidad;
                     itemEgreso.precioCompra = detalleVenta.articulo.precio_compra;
                     itemEgreso.precioVenta = detalleVenta.cantidad * detalleVenta.precio_venta;
 
-                    datosEgreso.push(itemEgreso);
-                }
-            }            
+                    if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago)) {
+                        var itemEncontrado = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago);
+                        itemEgreso.cantidad = itemEgreso.cantidad + itemEncontrado.cantidad;
+                        itemEgreso.precioVenta = (itemEgreso.cantidad * itemEgreso.precioVenta);
+                        itemEgreso.idEgreso = itemEgreso.idEgreso + ',' + itemEncontrado.idEgreso;
+
+                        const index = datosEgreso.findIndex((x) => x.idItem === itemEncontrado.idItem);
+                        datosEgreso[index] = itemEgreso
+                        articuloEncontrado = true;
+                    }
+
+                    if(!articuloEncontrado) {
+                        datosEgreso.push(itemEgreso);
+                    }
+            }   
+            
+            idGenerado++;
         }
         
         setEgreso(datosEgreso.filter(x => x.tipopago === sucursal.tipoCredito));
@@ -80,7 +91,7 @@ const ReporteVenta = () => {
         let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
         let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
-        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${sucursal.condicion}`);
+        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${sucursal.sucursal}`);
         armarDataEgreso(response.data.data);
     }
 
@@ -181,6 +192,7 @@ const ReporteVenta = () => {
                     <thead>
                         <th>Fecha</th>
                         <th>Articulo</th>
+                        <th>Tipo pago</th>
                         <th>Cantidad</th>
                         <th>Total</th>
                     </thead>
@@ -195,6 +207,7 @@ const ReporteVenta = () => {
                                 <tr>
                                     <td>{fecha}</td>
                                     <td>{item.nombreArticulo}</td>
+                                    <td>{item.tipoPagoDescripcion}</td>
                                     <td>{item.cantidad}</td>
                                     <td>{numeroAQuetzales(item.precioVenta)}</td>
                                 </tr>
