@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
+import { ListaEstado } from '../../Constantes/ListasSelect';
 
 const AddArticulo = () => {
   const mesajeResultado = (mensaje, clase) => {
@@ -337,6 +338,38 @@ const AddArticulo = () => {
                   <p className="formFieldErrorMessage">{errors.modelo.message}</p>
                 ) : null}
               </div>
+              
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="presentacion">Presentacion(*):</label>
+                <select 
+                  className={clsx(
+                    'form-select',
+                    'appSelect',
+                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
+                  )}
+                  id="presentacion" 
+                  name="presentacion" 
+                  onChange={handleChange}
+                  required
+                  >
+                  <option value="">Seleccione una opcion</option>
+                  {Presentacion.map((option) => (
+                    <option key={option.id} value={option.id} >{option.presentacion}</option>
+                  ))}
+                </select>
+                {errors.presentacion.dirty && errors.presentacion.error ? (
+                  <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
+                ) : null}
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                  <label htmlFor="estado">Estado(*):</label>
+                  <select id="estado" name="estado" className="form-select appSelect" onChange={handleChange}>
+                      {ListaEstado.map((option) => (
+                          <option key={option.id} value={option.id} >{option.nombre}</option>
+                      ))}
+                  </select>
+              </div>
 
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="imagen">Imagen:</label>
@@ -362,29 +395,6 @@ const AddArticulo = () => {
                 {imgArticulo && (
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
-              </div>
-              
-              <div className="form-group col-12 col-sm-6">
-                <label htmlFor="presentacion">Presentacion(*):</label>
-                <select 
-                  className={clsx(
-                    'form-select',
-                    'appSelect',
-                    errors.presentacion.dirty && errors.presentacion.error && 'formFieldError'
-                  )}
-                  id="presentacion" 
-                  name="presentacion" 
-                  onChange={handleChange}
-                  required
-                  >
-                  <option value="">Seleccione una opcion</option>
-                  {Presentacion.map((option) => (
-                    <option key={option.id} value={option.id} >{option.presentacion}</option>
-                  ))}
-                </select>
-                {errors.presentacion.dirty && errors.presentacion.error ? (
-                  <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
-                ) : null}
               </div>
             </div>
 

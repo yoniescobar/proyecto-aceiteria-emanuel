@@ -4,6 +4,7 @@ import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
 import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
+import { ListaEstado } from '../../Constantes/ListasSelect';
 
 const EditArticulo = () => {
   let navigate = useNavigate();
@@ -17,7 +18,7 @@ const EditArticulo = () => {
     id: "",
     codigo: "",
     nombre: "",
-    categoria: {},
+    categoria: {id: 0},
     existencia: "",
     descripcion: "",
     imagen: "",
@@ -25,7 +26,7 @@ const EditArticulo = () => {
     stockMinimo: "",
     marca:"",
     modelo:"",
-    estado:1,
+    estado: 1,
     precio_compra: 0,
     precio_venta: 0,
     presentacion: {id: 0}
@@ -77,7 +78,6 @@ const EditArticulo = () => {
       const response = await PeticionGet(`Articulo/id/${idArticulo}`);
       
       if (response) {
-        console.log(response.data.data[0]);
         setForm(response.data.data[0]);
       }
   }
@@ -158,6 +158,7 @@ const EditArticulo = () => {
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="categoria">Categoria(*):</label>
                 <select 
+                value={form.categoria.id}
                   className={clsx(
                     'form-select',
                     'appSelect',
@@ -308,29 +309,6 @@ const EditArticulo = () => {
                   <p className="formFieldErrorMessage">{errors.modelo.message}</p>
                 ) : null}
               </div>
-
-              <div className="form-group col-12 col-sm-6">
-                <label htmlFor="imagen">Imagen:</label>
-                <label class="form-label" for="customFile"></label>
-                <input 
-                  className={clsx(
-                    'form-control',
-                    'formField',
-                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
-                  )}
-                  type="file" 
-                  name="imagen" 
-                  id="imagen" 
-                  onChange={(e) => cargarImagen(e)} 
-                  />
-                  {errors.imagen.dirty && errors.imagen.error ? (
-                    <p className="formFieldErrorMessage">{errors.imagen.message}</p>
-                  ) : null}
-                <br></br>
-                {imgArticulo && (
-                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
-                )}
-              </div>
               
               <div className="form-group col-12 col-sm-6">
                 <label htmlFor="presentacion">Presentacion(*):</label>
@@ -354,6 +332,43 @@ const EditArticulo = () => {
                 {errors.presentacion.dirty && errors.presentacion.error ? (
                   <p className="formFieldErrorMessage">{errors.presentacion.message}</p>
                 ) : null}
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                  <label htmlFor="estado">Estado(*):</label>
+                  <select 
+                    value={form.estado}
+                    id="estado" 
+                    name="estado" 
+                    className="form-select appSelect" 
+                    onChange={handleChange}>
+                      {ListaEstado.map((option) => (
+                          <option key={option.id} value={option.id} >{option.nombre}</option>
+                      ))}
+                  </select>
+              </div>
+
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="imagen">Imagen:</label>
+                <label class="form-label" for="customFile"></label>
+                <input 
+                  className={clsx(
+                    'form-control',
+                    'formField',
+                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
+                  )}
+                  type="file" 
+                  name="imagen" 
+                  id="imagen" 
+                  onChange={(e) => cargarImagen(e)} 
+                  />
+                  {errors.imagen.dirty && errors.imagen.error ? (
+                    <p className="formFieldErrorMessage">{errors.imagen.message}</p>
+                  ) : null}
+                <br></br>
+                {imgArticulo && (
+                  <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
+                )}
               </div>
             </div>
 
