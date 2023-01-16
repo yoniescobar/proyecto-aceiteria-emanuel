@@ -34,9 +34,8 @@ export default class Menu extends Component {
             //console.log(data.data);
             let menu=[];
             data.data.map((item) => (
-              item.permiso.menu.map((iten) => console.log(iten.menu)/*menu.push(iten.menu)*/)
+              item.permiso.menu.map((iten) => menu.push(iten.menu))
             ));
-            console.log(menu);
             this.setState({
               permisos:menu
             })
