@@ -245,8 +245,8 @@ const BuscadorPorCodigo = () => {
                     data => {
                         if (data.id > 0) {
                             mesajeResultado('Venta realizada con exito!', 'success');
-                            restart();
-                            navigate("/ventas");
+                            //restart();
+                            navigate("/Ticket/"+data.id);
                         };
                     }
                 )

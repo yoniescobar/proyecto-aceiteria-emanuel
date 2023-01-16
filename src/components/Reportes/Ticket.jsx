@@ -63,6 +63,7 @@ const Ticket = () => {
                 pageStyle='@page { size: 80mm 258mm; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 80px !important; } }'
             />
             <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
+            <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventas"> Nueva Venta</Link>
             <hr style={{ width: '50%', marginLeft: '25%' }}></hr>
             <div style={{ width: '95%', marginLeft: '35%' }}>
                 <div ref={componentRef} >
