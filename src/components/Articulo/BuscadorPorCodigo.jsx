@@ -146,8 +146,14 @@ const BuscadorPorCodigo = () => {
     };
 
     const onChangeInput = (e, prodId) => {
-        const { value } = e.target
-        console.log(value);
+        let { value } = e.target
+        const element = articulos.find(({id}) => id == prodId);
+        
+        if(element.existencia < value){
+            value = element.existencia;
+            mesajeResultado('Cantidad no disponible, se agregará la existencia máxima', 'warning');
+        }
+        
         const editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
