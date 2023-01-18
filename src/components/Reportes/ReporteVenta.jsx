@@ -88,7 +88,6 @@ const ReporteVenta = () => {
     }
 
     const FiltrarEgreso = async () => {
-        console.log(filtroSelect);
         let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
         let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
@@ -100,14 +99,8 @@ const ReporteVenta = () => {
         setFiltroSelect({ ...filtroSelect, [event.target.name]: event.target.value });
     };
 
-    // const setDefaultfiltro = () => {
-    //     setFiltroSelect({ ...filtroSelect, ['sucursal']: 1 });
-    //     setFiltroSelect({ ...filtroSelect, ['tipoCredito']: 1 });
-    // }
-
     useEffect(() => {
         cargarEgreso();
-        // setDefaultfiltro();
     }, []);
 
     return (
