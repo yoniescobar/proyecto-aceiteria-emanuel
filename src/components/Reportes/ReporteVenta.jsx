@@ -29,7 +29,7 @@ const ReporteVenta = () => {
     })
 
     const [Egreso, setEgreso] = useState([])
-    const [sucursal, setSucursal] = useState({
+    const [filtroSelect, setFiltroSelect] = useState({
         sucursal: 1,
         tipoCredito: 1,
     })
@@ -54,32 +54,32 @@ const ReporteVenta = () => {
 
             for (let detalleVenta of venta.items) {
 
-                    itemEgreso.idArticulo = detalleVenta.articulo.id;
-                    itemEgreso.nombreArticulo = detalleVenta.articulo.nombre;
-                    itemEgreso.cantidad = detalleVenta.cantidad;
-                    itemEgreso.precioCompra = detalleVenta.articulo.precio_compra;
-                    itemEgreso.precioVenta = detalleVenta.cantidad * detalleVenta.precio_venta;
+                itemEgreso.idArticulo = detalleVenta.articulo.id;
+                itemEgreso.nombreArticulo = detalleVenta.articulo.nombre;
+                itemEgreso.cantidad = detalleVenta.cantidad;
+                itemEgreso.precioCompra = detalleVenta.articulo.precio_compra;
+                itemEgreso.precioVenta = detalleVenta.cantidad * detalleVenta.precio_venta;
 
-                    if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago)) {
-                        var itemEncontrado = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago);
-                        itemEgreso.cantidad = itemEgreso.cantidad + itemEncontrado.cantidad;
-                        itemEgreso.precioVenta = (itemEgreso.cantidad * itemEgreso.precioVenta);
-                        itemEgreso.idEgreso = itemEgreso.idEgreso + ',' + itemEncontrado.idEgreso;
+                if ((datosEgreso.length > 0) && datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago)) {
+                    var itemEncontrado = datosEgreso.find(x => x.fechaEgreso === venta.fechaegreso && x.idArticulo === detalleVenta.articulo.id && x.tipopago === itemEgreso.tipopago);
+                    itemEgreso.cantidad = itemEgreso.cantidad + itemEncontrado.cantidad;
+                    itemEgreso.precioVenta = (itemEgreso.cantidad * itemEgreso.precioVenta);
+                    itemEgreso.idEgreso = itemEgreso.idEgreso + ',' + itemEncontrado.idEgreso;
 
-                        const index = datosEgreso.findIndex((x) => x.idItem === itemEncontrado.idItem);
-                        datosEgreso[index] = itemEgreso
-                        articuloEncontrado = true;
-                    }
+                    const index = datosEgreso.findIndex((x) => x.idItem === itemEncontrado.idItem);
+                    datosEgreso[index] = itemEgreso
+                    articuloEncontrado = true;
+                }
 
-                    if(!articuloEncontrado) {
-                        datosEgreso.push(itemEgreso);
-                    }
+                if(!articuloEncontrado) {
+                    datosEgreso.push(itemEgreso);
+                }
             }   
             
             idGenerado++;
         }
         
-        setEgreso(datosEgreso.filter(x => x.tipopago === sucursal.tipoCredito));
+        setEgreso(datosEgreso.filter(x => x.tipopago === parseInt(filtroSelect.tipoCredito)));
     }
 
     const cargarEgreso = async () => {
@@ -88,19 +88,26 @@ const ReporteVenta = () => {
     }
 
     const FiltrarEgreso = async () => {
+        console.log(filtroSelect);
         let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
         let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
-        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${sucursal.sucursal}`);
+        const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${filtroSelect.sucursal}`);
         armarDataEgreso(response.data.data);
     }
 
     const handleChange = event => {
-        setSucursal({ ...sucursal, ["condicion"]: event.target.value });
+        setFiltroSelect({ ...filtroSelect, [event.target.name]: event.target.value });
     };
+
+    // const setDefaultfiltro = () => {
+    //     setFiltroSelect({ ...filtroSelect, ['sucursal']: 1 });
+    //     setFiltroSelect({ ...filtroSelect, ['tipoCredito']: 1 });
+    // }
 
     useEffect(() => {
         cargarEgreso();
+        // setDefaultfiltro();
     }, []);
 
     return (
@@ -139,9 +146,9 @@ const ReporteVenta = () => {
                     </div>
                     <div className="col-sm d-flex justify-content-center">
                         <div className="grupo" >
-                            <label>Tipo Credito </label> <br />
+                            <label>Tipo Pago </label> <br />
                             <div className="mb-3">
-                                <select id="tipoCredito" nombre="tipoCredito" className="form-select appSelect" onChange={handleChange}>
+                                <select id="tipoCredito" name="tipoCredito" nombre="tipoCredito" className="form-select appSelect" onChange={handleChange}>
                                     {ListaTipoCredito.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
@@ -153,7 +160,7 @@ const ReporteVenta = () => {
                         <div className="grupo" >
                             <label>Sucursal </label> <br />
                             <div className="mb-3">
-                                <select id="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
+                                <select id="sucursal" name="sucursal" nombre="sucursal" className="form-select appSelect" onChange={handleChange}>
                                     {ListaSucursal.map((option) => (
                                         <option key={option.id} value={option.id} >{option.nombre}</option>
                                     ))}
