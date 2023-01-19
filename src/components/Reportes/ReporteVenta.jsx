@@ -10,6 +10,7 @@ import { PeticionGet } from '../../Servicios/PeticionServicio'
 import es from 'date-fns/locale/es';
 import numeroAQuetzales from "../../utils/util"
 import clsx from "clsx";
+import { alertMensaje } from '../../utils/alert';
 
 registerLocale('es', es)
 
@@ -79,6 +80,10 @@ const ReporteVenta = () => {
             idGenerado++;
         }
         
+        if (datosEgreso.length === 0) {
+            alertMensaje('No existen datos para estaconsulta!', 'warning');
+        }
+
         setEgreso(datosEgreso.filter(x => x.tipopago === parseInt(filtroSelect.tipoCredito)));
     }
 
