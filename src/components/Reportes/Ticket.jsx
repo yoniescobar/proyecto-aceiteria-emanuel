@@ -43,7 +43,6 @@ const Ticket = () => {
 
         if(datosFecha.length == 3){
             fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
-            console.log(fecha)
             data[0].fecha_doc = fecha;
         }
 
