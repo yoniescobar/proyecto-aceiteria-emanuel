@@ -26,7 +26,7 @@ const AddUsuario = () => {
     nombre: "",
     usuario: "",
     password: "",
-    id_estado: "1",
+    estado: "1",
     sucursal: {id: 0}
   })
 
@@ -37,7 +37,7 @@ const AddUsuario = () => {
   }
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { nombre, usuario, password, id_estado, sucursal: {id } } = form;
+  const { nombre, usuario, password, estado, sucursal: {id } } = form;
 
   const onInputChange = (e) => {
     validarInputForm(e);
@@ -179,8 +179,8 @@ const AddUsuario = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="id_estado">Estado(*):</label>
-              <select id="id_estado" name="id_estado" className="form-select appSelect" onChange={handleChange}>
+              <label htmlFor="estado">Estado(*):</label>
+              <select id="estado" name="estado" className="form-select appSelect" onChange={handleChange}>
                 {dataEstado.map((option) => (
                   <option key={option.id} value={option.id} >{option.estado}</option>
                 ))}

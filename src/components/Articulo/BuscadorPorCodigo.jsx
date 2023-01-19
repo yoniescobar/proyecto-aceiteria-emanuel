@@ -26,6 +26,7 @@ const initialState = {
     impuesto: 0,
     total_egreso: "total",
     estado: 1,
+    comentario:"",
     persona: {
         id: 0,
         nombre: "",
@@ -342,7 +343,7 @@ const BuscadorPorCodigo = () => {
                             <div className="row">
                                 <div className="col-md-6">
                                     <p className="lead"> <b>Tipo de Egreso</b></p>
-                                    <div >
+                                    <div>
                                         <Select
                                             defaultValue={optionsTI[0]}
                                             options={optionsTI}
@@ -396,6 +397,12 @@ const BuscadorPorCodigo = () => {
                                             onChange={logChange}
                                         />
                                     </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <label for="comentario" className="col-sm-2 col-form-label">OBSERVACIONES</label>
+                                    <input type="text" name="comentario" className="form-control" onChange={onChangeValue} />                                
                                 </div>
                             </div>
                             <br />

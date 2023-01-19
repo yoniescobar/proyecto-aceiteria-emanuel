@@ -66,16 +66,16 @@ const TblUsuario = () => {
 
     {
       name: 'Condicion',
-      selector: (row) => row.id_estado === '1' ? 'Activo' : 'No activo',
+      selector: (row) => row.estado === '1' ? 'Activo' : 'No activo',
       sortable: true,
       grow: 0.5,
       conditionalCellStyles: [
         {
-          when: row => row.id_estado === '1',
+          when: row => row.estado === '1',
           classNames: ['badge badge-pill badge-success m-3 mb-3'],
         },
         {
-          when: row => row.id_estado !== '1',
+          when: row => row.estado !== '1',
           classNames: ['badge badge-pill badge-danger  m-3 mb-3']
         }
       ]

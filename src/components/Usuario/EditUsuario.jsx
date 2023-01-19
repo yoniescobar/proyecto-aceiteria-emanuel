@@ -45,7 +45,7 @@ const EditUsuario = () => {
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { id, nombre, usuario, password, id_estado } = form;
+  const { id, nombre, usuario, password, estado } = form;
 
   // Initialize a boolean state
   const [passwordShow, setPasswordShow] = useState(false);
@@ -127,7 +127,7 @@ const EditUsuario = () => {
     if(event.target.name === 'sucursal'){
       setForm({ ...form, [event.target.name]: { id: parseInt(event.target.value) } });
     } else{
-      setForm({ ...form, ["id_estado"]: event.target.value });
+      setForm({ ...form, ["estado"]: event.target.value });
     }
   };
   const mesajeResultado = (mensaje, clase) => {
@@ -262,11 +262,11 @@ const EditUsuario = () => {
             </div>
 
             <div className="mb-3">
-              <label htmlFor="id_estado">Estado(*):</label>
+              <label htmlFor="estado">Estado(*):</label>
               <select 
-                value={form.id_estado}
-                id="id_estado" 
-                name="id_estado" 
+                value={form.estado}
+                id="estado" 
+                name="estado" 
                 className="form-select appSelect" 
                 onChange={handleChange}>
                 {dataEstado.map((option) => (

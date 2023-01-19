@@ -165,6 +165,7 @@ function Creditos() {
                     <thead>
                         <tr>
                             <th>Fecha</th>
+                            <th>Observaciones</th>
                             <th>Serie</th>
                             <th>No. Documento</th>
                             <th>Total</th>
@@ -177,6 +178,15 @@ function Creditos() {
                             creditos.map((item) => (
                                 <tr key={item.id}>
                                     <td>{item.fechaegreso}</td>
+                                    <td>
+                                        {
+                                            item.persona.id != 2 ? (
+                                                item.persona.nombre
+                                            ):(
+                                                item.comentario
+                                            )
+                                        }
+                                    </td> 
                                     <td>{item.serie_doc}</td>
                                     <td>{item.numero_doc}</td>
                                     <td>{numeroAQuetzales(item.total_egreso)}</td>
@@ -209,7 +219,7 @@ function Creditos() {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                 <Form.Label>Monto</Form.Label>
-                                <Form.Control type="numer" placeholder="Q." name="abono" required onChange={handleChangesFormNewPago} />
+                                <Form.Control type="number" placeholder="Q." name="abono" required onChange={handleChangesFormNewPago} />
                                 <Form.Control.Feedback type="invalid">
                                     Porfavor, ingrese un monto.
                                 </Form.Control.Feedback>
