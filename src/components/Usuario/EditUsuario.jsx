@@ -10,6 +10,7 @@ import { delUsuarioPermiso } from "../../Servicios/oauth"
 import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
+import { PeticionGet, PeticionPost } from '../../Servicios/PeticionServicio';
 
 const baseUrl = process.env.REACT_APP_BASE_URL
 
@@ -23,6 +24,7 @@ const EditUsuario = () => {
   let navigate = useNavigate();
 
   const { idUsuario } = useParams()
+  const [sucursal, setSucursal] = useState([])
   const [usuariopermiso, setUsuarioPermiso] = useState([]);
   const [permisos, setPermisos] = useState([]);
   const [usrpermiso, setUsrpermiso] = useState({
@@ -39,7 +41,7 @@ const EditUsuario = () => {
     nombre: "",
     password: "",
     usuario: "",
-    id_estado: ""
+    sucursal: {id: 0}
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
@@ -59,7 +61,7 @@ const EditUsuario = () => {
 
   useEffect(() => {
     cargarUsuario();
-
+    cargarSucursal();
     getPermisos().then(
       data => {
         setPermisos(data.data);
@@ -87,16 +89,21 @@ const EditUsuario = () => {
 
   };
 
+  const cargarSucursal = async () => {
+    const response = await PeticionGet('Sucursal/all');
+
+    if(response) {
+      setSucursal(response.data.data);
+    }
+  }
 
   const cargarUsuario = async () => {
     try {
       const response = await axios.get(`${baseUrl}/Usuario/id/${idUsuario}`)
       setForm(response.data.data[0])
-
     } catch (error) {
       mesajeResultado('Ocurrio un error al intentar consultar los datos del usuario, intenta mas tarde.', 'warning')
     }
-
 
     getPermisosUsuario(idUsuario).then(
       data => {
@@ -117,7 +124,11 @@ const EditUsuario = () => {
   }
 
   const handleChange = event => {
-    setForm({ ...form, ["id_estado"]: event.target.value });
+    if(event.target.name === 'sucursal'){
+      setForm({ ...form, [event.target.name]: { id: parseInt(event.target.value) } });
+    } else{
+      setForm({ ...form, ["id_estado"]: event.target.value });
+    }
   };
   const mesajeResultado = (mensaje, clase) => {
     Swal.fire(
@@ -262,6 +273,31 @@ const EditUsuario = () => {
                   <option key={option.id} value={option.id} >{option.estado}</option>
                 ))}
               </select>
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="sucursal">Sucursal(*):</label>
+              <select 
+              value={form.sucursal.id}
+                className={clsx(
+                  'form-select',
+                  'appSelect',
+                  errors.sucursal.dirty && errors.sucursal.error && 'formFieldError'
+                )}
+                id="sucursal" 
+                name="sucursal"
+                onChange={handleChange}
+                onBlur={onBlurField}
+                required
+                >
+                <option value="" >Seleccione una opcion</option>
+                {sucursal.map((option) => (
+                  <option key={option.id} value={option.id} >{option.nombre}</option>
+                ))}
+              </select>
+              {errors.sucursal.dirty && errors.sucursal.error ? (
+                  <p className="formFieldErrorMessage">{errors.sucursal.message}</p>
+                ) : null}
             </div>
             <button type="submit" className="btn btn-outline-primary">Guardar Usuario</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblUsuario">Cancelar</Link>

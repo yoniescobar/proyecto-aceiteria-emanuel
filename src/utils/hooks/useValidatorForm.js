@@ -94,6 +94,11 @@ export const useValidatorForm = form => {
             error: false,
             message: "",
         },
+        sucursal: {
+            dirty: false,
+            error: false,
+            message: "",
+        },
         // Fin form Usuario
 
         //Inicio form proveedor
@@ -145,7 +150,7 @@ export const useValidatorForm = form => {
 
         const { nombre, descripcion,
         codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion
-        ,usuario, password,
+        ,usuario, password, sucursal,
          tipopersona,tipo_documento,nodocumento,direccion,telefono,correo } = form;
 
         // Validacion form categoria
@@ -243,6 +248,13 @@ export const useValidatorForm = form => {
             nextErrors.password.message = mensajeError;
             if (!!mensajeError) isValid = false;
         }
+
+        if (nextErrors.sucursal.dirty && (field ? field === "sucursal" : true)) {
+            const mensajeError = inputValidator(sucursal, form);
+            nextErrors.sucursal.error = !!mensajeError;
+            nextErrors.sucursal.message = mensajeError;
+            if (!!mensajeError) isValid = false;
+        }
         // fin validacion usuario
 
         // inicio validacion proveedor
@@ -267,7 +279,7 @@ export const useValidatorForm = form => {
             if (!!mensajeError) isValid = false;
         }
         if (nextErrors.direccion.dirty && (field ? field === "direccion" : true)) {
-            const mensajeError = inputValidator(descripcion, form);
+            const mensajeError = inputValidator(direccion, form);
             nextErrors.direccion.error = !!mensajeError;
             nextErrors.direccion.message = mensajeError;
             if (!!mensajeError) isValid = false;
