@@ -6,10 +6,7 @@ import { PeticionGet } from '../../Servicios/PeticionServicio'
 
 const Inventario = () => {
     const componentRef = useRef();
-
-    let creditos = new Array();
     let total = 0;
-    let fecha = '';
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -27,6 +24,7 @@ const Inventario = () => {
         const response = await PeticionGet('Articulo/activos');
 
         if(response.data.data.length > 0){
+            console.log(response.data.data);
             setDataArticulos(response.data.data)
         }   
     }
@@ -63,6 +61,7 @@ const Inventario = () => {
                             <th>Categoria</th>
                             <th>Presentacion</th>
                             <th>Articulo</th>
+                            <th>Stoc minimo</th>
                             <th>Existencia</th>
                         </thead>
                         <tbody>
@@ -75,6 +74,7 @@ const Inventario = () => {
                                         <td>{item.categoria.nombre}</td>
                                         <td>{item.presentacion.presentacion}</td>
                                         <td>{item.nombre}</td>
+                                        <td>{item.stokminimo}</td>
                                         <td>{item.existencia}</td>
                                     </tr>
                                 )      
