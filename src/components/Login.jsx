@@ -27,17 +27,17 @@ const Login = () => {
     const onSubmit = async (event) => {
       event.preventDefault();
 
-      const response = await PeticionGet('Usuario/all');
+      // const response = await PeticionGet('Usuario/all');
+      const response = await PeticionGet(`Usuario/usuario/${form.username}/password/${form.password}`);
       
-      if (response) {
+
+      if (response && response.data.data.length == 1) {
         validarUsuario(response);
       }
     }
     
     const validarUsuario = (response) => {
-      const usuario = response.data.data.find(x => x.usuario === form.username 
-        && x.password === form.password
-        && x.id_estado === "1" );
+      const usuario = response.data.data;
 
       if (usuario) {
           setUserSession(usuario.usuario, usuario.usuario, usuario.id);
