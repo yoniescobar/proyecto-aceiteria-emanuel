@@ -23,7 +23,7 @@ const EditArticulo = () => {
     descripcion: "",
     imagen: "",
     codigo: "",
-    stockMinimo: "",
+    stokminimo: "",
     marca:"",
     modelo:"",
     estado: 1,
@@ -33,7 +33,7 @@ const EditArticulo = () => {
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stockMinimo, marca, modelo, precio_venta, precio_compra } = form;
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stokminimo, marca, modelo, precio_venta, precio_compra } = form;
 
   const onInputChange = (e) => {
     validarInputForm(e);
@@ -258,7 +258,7 @@ const EditArticulo = () => {
                   type="number"
                   name="stockMinimo"
                   id="stockMinimo"
-                  value={stockMinimo}
+                  value={stokminimo}
                   onChange={(e) => onInputChange(e)}
                   onBlur={onBlurField}
                   required
