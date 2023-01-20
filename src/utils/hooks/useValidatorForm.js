@@ -56,7 +56,7 @@ export const useValidatorForm = form => {
             error: false,
             message: "",
         },
-        stockMinimo: {
+        stokminimo: {
             dirty: false,
             error: false,
             message: "",
@@ -149,7 +149,7 @@ export const useValidatorForm = form => {
         }
 
         const { nombre, descripcion,
-        codigo, categoria, precio_venta, precio_compra, stockMinimo, marca, modelo, imagen, presentacion
+        codigo, categoria, precio_venta, precio_compra, stokminimo, marca, modelo, imagen, presentacion
         ,usuario, password, sucursal,
          tipopersona,tipo_documento,nodocumento,direccion,telefono,correo } = form;
 
@@ -198,10 +198,10 @@ export const useValidatorForm = form => {
             if (!!mensajeError) isValid = false;
         }
 
-        if (nextErrors.stockMinimo.dirty && (field ? field === "stockMinimo" : true)) {
-            const mensajeError = inputValidator(stockMinimo, form);
-            nextErrors.stockMinimo.error = !!mensajeError;
-            nextErrors.stockMinimo.message = mensajeError;
+        if (nextErrors.stokminimo.dirty && (field ? field === "stokminimo" : true)) {
+            const mensajeError = inputValidator(stokminimo, form);
+            nextErrors.stokminimo.error = !!mensajeError;
+            nextErrors.stokminimo.message = mensajeError;
             if (!!mensajeError) isValid = false;
         }
 
