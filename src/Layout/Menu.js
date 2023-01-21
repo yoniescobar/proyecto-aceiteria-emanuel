@@ -31,11 +31,18 @@ export default class Menu extends Component {
           if(data.id < 0)
             this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning'); 
           if (data.id > 0) {
-            //console.log(data.data);
+            /*data.data.map((item) => (
+              item.permiso.menu.map((iten) => console.log(iten.menu))
+            ));*/
             let menu=[];
             data.data.map((item) => (
               item.permiso.menu.map((iten) => menu.push(iten.menu))
             ));
+            menu.sort((a, b) => a.orden - b.orden);
+            menu.map((item) => (
+              item.menuhijos.sort((a, b) => a.segundoOrden - b.segundoOrden)
+            ));
+            console.log(menu);
             this.setState({
               permisos:menu
             })
