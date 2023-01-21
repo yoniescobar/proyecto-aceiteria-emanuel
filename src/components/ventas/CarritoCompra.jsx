@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 export const CarritoCompra = (props) => {
     const [products, setProducts] = useState([]);
-    console.log(props.parentToChild);
     return (
         <>
             <div className="row">

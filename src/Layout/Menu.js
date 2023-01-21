@@ -42,7 +42,7 @@ export default class Menu extends Component {
             menu.map((item) => (
               item.menuhijos.sort((a, b) => a.segundoOrden - b.segundoOrden)
             ));
-            console.log(menu);
+            // console.log(menu);
             this.setState({
               permisos:menu
             })
