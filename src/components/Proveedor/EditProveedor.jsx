@@ -138,65 +138,47 @@ const EditProveedor = () => {
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="direccion">Direccion(*):</label>
+                <label htmlFor="direccion">Direccion:</label>
                 <input
                     className={clsx(
                         'form-control',
-                        'formField',
-                        errors.direccion.dirty && errors.direccion.error && 'formFieldError'
+                        'formField'
                     )}
                     type="text"
                     name="direccion"
                     id="direccion"
                     value={direccion}
                     onChange={(e) => onInputChange(e)}
-                    onBlur={onBlurField}
-                    required
                 />
-                {errors.direccion.dirty && errors.direccion.error ? (
-                    <p className="formFieldErrorMessage">{errors.direccion.message}</p>
-                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="telefono">Telefono(*):</label>
+                <label htmlFor="telefono">Telefono:</label>
                 <input
                     className={clsx(
                         'form-control',
-                        'formField',
-                        errors.telefono.dirty && errors.telefono.error && 'formFieldError'
+                        'formField'
                     )}
                     type="number"
                     name="telefono"
                     id="telefono"
                     value={telefono}
                     onChange={(e) => onInputChange(e)}
-                    onBlur={onBlurField}
-                    required
                 />
-                {errors.telefono.dirty && errors.telefono.error ? (
-                    <p className="formFieldErrorMessage">{errors.telefono.message}</p>
-                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="correo">Correo(*):</label>
+                <label htmlFor="correo">Correo:</label>
                 <input
                     className={clsx(
                         'form-control',
-                        'formField',
-                        errors.correo.dirty && errors.correo.error && 'formFieldError'
+                        'formField'
                     )}
                     type="text"
                     name="correo"
                     id="correo"
                     value={correo} onChange={(e) => onInputChange(e)}
-                    onBlur={onBlurField}
-                    required
                 />
-                {errors.correo.dirty && errors.correo.error ? (
-                    <p className="formFieldErrorMessage">{errors.correo.message}</p>
-                ) : null}
               </div>
 
               <div className="form-group col-12 col-sm-6">
