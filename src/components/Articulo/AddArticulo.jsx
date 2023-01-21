@@ -30,7 +30,7 @@ const AddArticulo = () => {
     precio_venta: 0,
     precio_compra: 0,
     descripcion: "",
-    stockMinimo: "",
+    stokminimo: "",
     marca:"",
     presentacion: {
       id: 0
@@ -42,7 +42,7 @@ const AddArticulo = () => {
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stockMinimo, marca, modelo, presentacion, precio_venta, precio_compra } = form;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stokminimo, marca, modelo, presentacion, precio_venta, precio_compra } = form;
   const inputReference = useRef(null);
 
   useEffect(() => {
@@ -277,23 +277,23 @@ const AddArticulo = () => {
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="stockMinimo">Stock minimo(*):</label>
+                <label htmlFor="stokminimo">Stock minimo(*):</label>
                 <input 
                   className={clsx(
                     'form-control',
                     'formField',
-                    errors.stockMinimo.dirty && errors.stockMinimo.error && 'formFieldError'
+                    errors.stokminimo.dirty && errors.stokminimo.error && 'formFieldError'
                   )}
                   type="number"
-                  name="stockMinimo"
-                  id="stockMinimo"
-                  value={stockMinimo}
+                  name="stokminimo"
+                  id="stokminimo"
+                  value={stokminimo}
                   onChange={(e) => onInputChange(e)}
                   onBlur={onBlurField}
                   required
                 />
-                {errors.stockMinimo.dirty && errors.stockMinimo.error ? (
-                  <p className="formFieldErrorMessage">{errors.stockMinimo.message}</p>
+                {errors.stokminimo.dirty && errors.stokminimo.error ? (
+                  <p className="formFieldErrorMessage">{errors.stokminimo.message}</p>
                 ) : null}
               </div>
 
