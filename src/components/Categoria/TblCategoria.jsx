@@ -75,7 +75,7 @@ const TblCategoria = () => {
     },
 
     {
-      name: 'condicion',
+      name: 'Estado',
       selector: (row) => row.condicion === '1' ? 'Activo' : 'No activo',
       sortable: true,
       grow:0.5,
