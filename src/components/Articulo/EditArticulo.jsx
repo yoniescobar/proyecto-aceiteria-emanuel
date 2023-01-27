@@ -69,12 +69,12 @@ const EditArticulo = () => {
     e.preventDefault();
 
     setForm({ ...form, ["id"]: idArticulo });
-
     setIsDisabled(true);
+
     if(!imgArticulo) {
-      guardarImagen()
-    } else {
       actualizarArticulo();
+    } else {
+      guardarImagen()
     }
   };
 
