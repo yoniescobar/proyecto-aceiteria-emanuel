@@ -23,6 +23,7 @@
     "boostrap": "^2.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
+    "firebase": "^9.16.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
     "material-table": "^1.63.0",

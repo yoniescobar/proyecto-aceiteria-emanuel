@@ -5,6 +5,8 @@ import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
 import { ListaEstado } from '../../Constantes/ListasSelect';
+import { storage } from '../../Servicios/firebase'
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const EditArticulo = () => {
   let navigate = useNavigate();
@@ -13,6 +15,7 @@ const EditArticulo = () => {
   const [Categoria, setCategoria] = useState([])
   const [Presentacion, setPresentacion] = useState([])
   const [imgArticulo, setImg] = useState();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [form, setForm] = useState({
     id: "",
@@ -66,18 +69,14 @@ const EditArticulo = () => {
     e.preventDefault();
 
     setForm({ ...form, ["id"]: idArticulo });
-
-    const resultado = await PeticionPut('Articulo/', form)
-    
-    if (resultado) {
-      navigate("/tblArticulo");
-    }
+    guardarImagen()
   };
 
   const cargarArticulo = async () => {
       const response = await PeticionGet(`Articulo/id/${idArticulo}`);
       
       if (response) {
+        console.log(response.data.data[0]);
         setForm(response.data.data[0]);
       }
   }
@@ -107,6 +106,44 @@ const EditArticulo = () => {
     setImg(e.target.files[0]);
   }
 
+  const actualizarArticulo = async () => {
+    setIsDisabled(true);
+    const resultado = await PeticionPut('Articulo/', form)
+    
+    if (resultado) {
+      navigate("/tblArticulo");
+    }
+  }
+
+  const guardarImagen = async () => {
+    const storageRef = ref(storage, 'files/' + imgArticulo.name);
+    const uploadTask = uploadBytesResumable(storageRef, imgArticulo);
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+      },
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        // Upload completed successfully, now we can get the download URL
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          form.imagen = downloadURL;
+          actualizarArticulo();
+        });
+      }
+    );
+  }
+  
   return (
     <div className="container">
       <div className="row">
@@ -369,10 +406,14 @@ const EditArticulo = () => {
                 {imgArticulo && (
                   <img class="img-preview" width={200} height={120} src={URL.createObjectURL(imgArticulo)} />
                 )}
+
+                {!imgArticulo && (
+                  <img class="img-preview" width={200} height={120} src={form.imagen} />
+                )}
               </div>
             </div>
 
-            <button type="submit" className="btn btn-outline-primary">Guardar</button>
+            <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblArticulo">Cancelar</Link>
           </form>
         </div>
