@@ -69,7 +69,13 @@ const EditArticulo = () => {
     e.preventDefault();
 
     setForm({ ...form, ["id"]: idArticulo });
-    guardarImagen()
+
+    setIsDisabled(true);
+    if(!imgArticulo) {
+      guardarImagen()
+    } else {
+      actualizarArticulo();
+    }
   };
 
   const cargarArticulo = async () => {
@@ -107,7 +113,6 @@ const EditArticulo = () => {
   }
 
   const actualizarArticulo = async () => {
-    setIsDisabled(true);
     const resultado = await PeticionPut('Articulo/', form)
     
     if (resultado) {
