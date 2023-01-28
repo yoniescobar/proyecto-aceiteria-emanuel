@@ -32,6 +32,7 @@ const Login = () => {
   const validarUsuario = (response) => {
     if (response && response.data.data.length == 1) {
       const usuario = response.data.data[0];
+      console.log(usuario);
       setUserSession(usuario.usuario, usuario.usuario, usuario.id);
       window.location.href = "/";
     } else {

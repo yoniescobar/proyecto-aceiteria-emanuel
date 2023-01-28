@@ -4,6 +4,7 @@ import { getIdusuario } from "./../utils/token";
 import { getPermisosUsuario } from "../Servicios/oauth"
 // import EditIcon from '@mui/icons-material/Edit';
 import Swal from 'sweetalert2';
+import { tr } from 'date-fns/locale';
 
 export default class Menu extends Component {
   mesajeResultado(mensaje, clase){
@@ -42,13 +43,49 @@ export default class Menu extends Component {
             menu.map((item) => (
               item.menuhijos.sort((a, b) => a.segundoOrden - b.segundoOrden)
             ));
-            // console.log(menu);
+
             this.setState({
               permisos:menu
             })
+
+            validarPath(menu);
           } 
       }
     )
+
+    const validarPath = (menu) => {
+      let menuHijos = new Array();
+      let tienePermiso = false;
+
+      menu.map((item) => (
+        menuHijos.push(item.menuhijos)
+      ));
+
+      var pathNameUrl = window.location.pathname.split('/');
+      let pathName = "tablero"
+      
+      for (let item of pathNameUrl) {
+        if ((item !== "") && (typeof item !== 'number') && (item.length > 4)) {
+           pathName = item;
+        }
+      } 
+
+      if (pathName === "tablero") {
+        console.log('menu tablero ->');
+        return;
+      }
+
+      for (let item of menuHijos) {
+        if (item.find(x => x.path.trim() === pathName.trim())) {
+          tienePermiso = true;
+          break;
+        }
+      } 
+
+      if (!tienePermiso) {
+        window.location.href = "/";
+      }
+    }
   }
 
   render() {
