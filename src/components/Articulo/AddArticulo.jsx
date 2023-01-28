@@ -123,7 +123,12 @@ const AddArticulo = () => {
           mesajeResultado('Código ya registrado!', 'warning');
         } else {
           setIsDisabled(true);
-          guardarImagen();
+
+          if (imgArticulo) {
+            guardarImagen();
+          } else{
+            guardarArticulo();
+          }
         }
       }
     )
@@ -412,15 +417,12 @@ const AddArticulo = () => {
                   className={clsx(
                     'form-control',
                     'formField',
-                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
                   )}
                   type="file"
                   name="imagen"
                   id="imagen"
                   value={imagen}
                   onChange={(e) => cargarImagen(e)}
-                  onBlur={onBlurField}
-                  required
                 />
                 {errors.imagen.dirty && errors.imagen.error ? (
                   <p className="formFieldErrorMessage">{errors.imagen.message}</p>

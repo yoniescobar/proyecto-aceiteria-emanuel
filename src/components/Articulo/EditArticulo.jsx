@@ -396,8 +396,7 @@ const EditArticulo = () => {
                 <input 
                   className={clsx(
                     'form-control',
-                    'formField',
-                    errors.imagen.dirty && errors.imagen.error && 'formFieldError'
+                    'formField'
                   )}
                   type="file" 
                   name="imagen" 

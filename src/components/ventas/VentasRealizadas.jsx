@@ -42,9 +42,10 @@ const VentasRealizadas = () => {
       setFilteredVentaRealizada(response.data.data.filter(x => x.tipopago === parseInt(filtroSelect.tipoCredito)));
     }
   }
+
   const cargarVentas = async () => {
     const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/egresosFechaActual');
-
+    console.log(response);
     if (response) {
       setVentaRealizada(response.data.data.sort(
         (p1, p2) =>
