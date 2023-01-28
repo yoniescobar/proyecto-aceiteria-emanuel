@@ -18,14 +18,16 @@ logOut = () => {
         <a className="nav-link" data-widget="pushmenu" href="#"><i className="fas fa-bars" /></a>
       </li>
       <li className="nav-item d-none d-sm-inline-block">
-        <a href="/tablero" className="nav-link">Home</a>
+        <a href="/tablero" className="nav-link">Inicio</a>
       </li>
       {/* <li className="nav-item d-none d-sm-inline-block">
         <a href="#" className="nav-link">Contact</a>
       </li> */}
     </ul>
     {/* SEARCH FORM */}
-    <form className="form-inline ml-3">
+
+
+    {/* <form className="form-inline ml-3">
       <div className="input-group input-group-sm">
         <input className="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" />
         <div className="input-group-append">
@@ -34,7 +36,9 @@ logOut = () => {
           </button>
         </div>
       </div>
-    </form>
+    </form> */}
+
+
     {/* Right navbar links */}
     <ul className="navbar-nav ml-auto">
       {/* Messages Dropdown Menu */}
@@ -96,10 +100,11 @@ logOut = () => {
         </div>
       </li>
       {/* Notifications Dropdown Menu */}
-      <li className="nav-item dropdown">
+      
+      {/* <li className="nav-item dropdown">
         <a className="nav-link" data-toggle="dropdown" href="#">
           <i className="far fa-bell" />
-          {/* <span className="badge badge-warning navbar-badge">15</span> */}
+          <span className="badge badge-warning navbar-badge">15</span>
         </a>
         <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span className="dropdown-item dropdown-header">15 Notifications</span>
@@ -121,10 +126,10 @@ logOut = () => {
           <div className="dropdown-divider" />
           <a href="#" className="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
-      </li>
+      </li> */}
+
       <li className="nav-item">
-        <a className="nav-link" onClick={() => this.logOut()} data-widget="control-sidebar" data-slide="true" href="#">
-          {/* <i className="fas fa-th-large" /> */}
+        <a className="nav-link" onClick={() => this.logOut()} data-widget="control-sidebar" data-slide="true" href="#"  data-toggle="tooltip" title="Cerrar sesion">
           <i className="fa-solid fa-power-off" />
         </a>
       </li>
