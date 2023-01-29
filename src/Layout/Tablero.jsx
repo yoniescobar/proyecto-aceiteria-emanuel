@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 const Tablero = () => {
-
   var [date, setDate] = useState(new Date());
-
+  
   useEffect(() => {
     var timer = setInterval(() => setDate(new Date()), 1000)
     return function cleanup() {
@@ -18,23 +17,14 @@ const Tablero = () => {
       <section className="content">
         <div className="container-fluid" lassName="col-lg-3 col-6">
           <div className="row justify-content-center">
-            <div className="col-7">
-              <div className="small-box bg-success">
+            <div className="col-9">
+              <div className="small-box bg-white d-flex justify-content-center my-5">
                 <div className="inner">
-                  <h1 style={{ fontSize: 50 }}>Bienvenido.</h1>
-                  <strong style={{ fontSize: 25 }}>Aceitera Emanuel</strong>
-                  <strong className='text-dark' style={{ marginLeft: '10%', fontSize: 20 }}> {date.toLocaleTimeString()}</strong>
-
-                  <div className="row d-flex">
-                    <div className="col-12 d-flex justify-content-center">
-                      <div className="col-5"></div>
-                      <div className="small-box bg-success">
-                        <div className="icon text-success">
-                          <i style={{ fontSize: 450 }} className="ion ion-stats-bars" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <h1 className='text-secondary d-flex justify-content-center' style={{ fontSize: 50 }}>Bienvenido. </h1>
+                  <hr></hr>
+                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 25 }}>Aceitera Emanuel</strong>
+                  <br></br>
+                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 20 }}> {date.toLocaleTimeString()}</strong>
                 </div>
               </div>
             </div>

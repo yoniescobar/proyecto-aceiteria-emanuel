@@ -71,7 +71,6 @@ export default class Menu extends Component {
       } 
 
       if (pathName === "tablero") {
-        console.log('menu tablero ->');
         return;
       }
 

@@ -33,7 +33,7 @@ const Login = () => {
     if (response && response.data.data.length == 1) {
       const usuario = response.data.data[0];
       console.log(usuario);
-      setUserSession(usuario.usuario, usuario.usuario, usuario.id);
+      setUserSession(usuario.usuario, usuario.usuario, usuario.nombre, usuario.id);
       window.location.href = "/";
     } else {
       alertMensaje('Datos no encontrados, verifique sus credenciales.', 'warning')
