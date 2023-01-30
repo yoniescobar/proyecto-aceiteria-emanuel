@@ -30,17 +30,21 @@ const VentasRealizadas = () => {
   };
 
   const FiltrarEgreso = async () => {
+    setFilteredVentaRealizada([]);
     let fechaInicio = fechaInicial.getFullYear() + '-' + (fechaInicial.getMonth() + 1) + '-' + fechaInicial.getDate();
     let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
-    const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${filtroSelect.sucursal}`);
+    const responseFilter = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${filtroSelect.sucursal}`);
+    
+    if (responseFilter.data.data) {
+      console.log(parseInt(filtroSelect.tipoCredito))
+      const resultado = responseFilter.data.data.filter(x => parseInt(x.tipopago) === parseInt(filtroSelect.tipoCredito));
 
-    if (response) {
-      setVentaRealizada(response.data.data.sort(
-        (p1, p2) =>
-          (p1.id < p2.id) ? 1 : (p1.id > p2.id) ? -1 : 0))
-
-      setFilteredVentaRealizada(response.data.data.filter(x => x.tipopago === parseInt(filtroSelect.tipoCredito)));
+      if (resultado){
+        setVentaRealizada(resultado.sort(
+          (p1, p2) =>
+            (p1.id < p2.id) ? 1 : (p1.id > p2.id) ? -1 : 0))
+      }
     }
   }
 
