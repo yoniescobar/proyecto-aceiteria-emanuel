@@ -39,7 +39,7 @@ const FacturaVenta = () => {
     }
 
     const armarData = (data) => {
-        const datosFecha = data[0].fecha_doc.split("-")
+        const datosFecha = data[0].fechaegreso.split("-")
 
         if (datosFecha.length == 3) {
             fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`

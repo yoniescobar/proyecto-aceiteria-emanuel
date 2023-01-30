@@ -34,7 +34,7 @@ const VentasRealizadas = () => {
     let fechaFin = fechaFinal.getFullYear() + '-' + (fechaFinal.getMonth() + 1) + '-' + fechaFinal.getDate();
 
     const response = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${filtroSelect.sucursal}`);
-    console.log(response);
+
     if (response) {
       setVentaRealizada(response.data.data.sort(
         (p1, p2) =>
@@ -46,7 +46,7 @@ const VentasRealizadas = () => {
 
   const cargarVentas = async () => {
     const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/egresosFechaActual');
-    console.log(response);
+    
     if (response) {
       setVentaRealizada(response.data.data.sort(
         (p1, p2) =>
@@ -69,7 +69,7 @@ const VentasRealizadas = () => {
   const columns = [
     {
       name: 'Fecha',
-      selector: (row) => CambiarFormatoFecha(row.fecha_doc),
+      selector: (row) => CambiarFormatoFecha(row.fechaegreso),
     },
     {
       name: 'No. documento',
