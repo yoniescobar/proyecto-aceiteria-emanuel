@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { usePromiseTracker } from "react-promise-tracker";
+import Moment from 'react-moment';
 
  const LoadingIndicator = props => {
   const { promiseInProgress } = usePromiseTracker();
@@ -12,7 +13,7 @@ import { usePromiseTracker } from "react-promise-tracker";
       <h1>Hey some async call in progress ! </h1>
     );  
   }
-
+  
 ReactDOM.render(
   <React.StrictMode>
     <App />
