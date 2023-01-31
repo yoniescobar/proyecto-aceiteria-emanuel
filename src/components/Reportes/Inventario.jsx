@@ -24,7 +24,6 @@ const Inventario = () => {
         const response = await PeticionGet('Articulo/activos');
 
         if(response.data.data.length > 0){
-            console.log(response.data.data);
             setDataArticulos(response.data.data)
         }   
     }

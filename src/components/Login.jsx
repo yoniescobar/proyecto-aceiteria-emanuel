@@ -4,7 +4,6 @@ import { setUserSession } from "../utils/token";
 import { PeticionGet } from '../Servicios/PeticionServicio'
 import { alertMensaje } from '../utils/alert';
 
-
 const baseUrl = process.env.REACT_APP_BASE_URL
 
 const Login = () => {
@@ -26,20 +25,19 @@ const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-
-    // const response = await PeticionGet('Usuario/all');
     const response = await PeticionGet(`Usuario/usuario/${form.username}/password/${form.password}`);
+    validarUsuario(response);
+  }
 
+  const validarUsuario = (response) => {
     if (response && response.data.data.length == 1) {
-      validarUsuario(response.data.data[0]);
+      const usuario = response.data.data[0];
+      console.log(usuario);
+      setUserSession(usuario.usuario, usuario.usuario, usuario.nombre, usuario.id);
+      window.location.href = "/";
     } else {
       alertMensaje('Datos no encontrados, verifique sus credenciales.', 'warning')
     }
-  }
-
-  const validarUsuario = (usuario) => {
-    setUserSession(usuario.usuario, usuario.usuario, usuario.id);
-    window.location.reload();
   }
 
   return (
