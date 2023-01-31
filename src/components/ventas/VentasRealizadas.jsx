@@ -60,10 +60,15 @@ const VentasRealizadas = () => {
   }
 
   const CambiarFormatoFecha = (fecha) => {
-    const datos = fecha.split("-");
 
-    if (datos.length = 3) {
-      return `${datos[2]}/${datos[1]}/${datos[0]}`;
+    let datosFecha = fecha.split("T")
+    let datosFechaHora = datosFecha[1].split("-")[0].split(":")
+    let datosFechaLast = `${datosFecha[0]}`.split("-") 
+    //fecha = `${datosFechaLast[2]}/${datosFechaLast[1]}/${datosFechaLast[0]}`
+    //const datos = fecha.split("-");
+
+    if (datosFechaLast.length = 3) {
+      return `${datosFechaLast[2]}/${datosFechaLast[1]}/${datosFechaLast[0]} - ${datosFechaHora[0]}:${datosFechaHora[1]}`;
     } else {
       return '';
     }

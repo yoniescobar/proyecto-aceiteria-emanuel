@@ -88,7 +88,7 @@ const ReporteVenta = () => {
     }
 
     const cargarEgreso = async () => {
-        const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/egresosFechaActual');
+        const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/tipopago/1/egresosFechaActual');
         armarDataEgreso(response.data.data);
     }
 
@@ -205,8 +205,10 @@ const ReporteVenta = () => {
                         {Egreso.map((item, i) => {
                             {
                                 total = (total + item.precioVenta)
-                                let datosFecha = item.fechaEgreso.split("-")
-                                fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
+                                let datosFecha = item.fechaEgreso.split("T")
+                                let datosFechaHora = datosFecha[1].split("-")[0].split(":")
+                                let datosFechaLast = `${datosFecha[0]}`.split("-") 
+                                fecha = `${datosFechaLast[2]}/${datosFechaLast[1]}/${datosFechaLast[0]} - ${datosFechaHora[0]}:${datosFechaHora[1]}`
                             }
                             return (
                                 <tr>
