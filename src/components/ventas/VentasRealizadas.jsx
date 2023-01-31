@@ -37,7 +37,6 @@ const VentasRealizadas = () => {
     const responseFilter = await PeticionGet(`Egreso/estado/1/tipoComprobante/1/fechaInicio/${fechaInicio}/fechaFin/${fechaFin}/sucursal/${filtroSelect.sucursal}`);
     
     if (responseFilter.data.data) {
-      console.log(parseInt(filtroSelect.tipoCredito))
       const resultado = responseFilter.data.data.filter(x => parseInt(x.tipopago) === parseInt(filtroSelect.tipoCredito));
 
       if (resultado){
@@ -49,7 +48,7 @@ const VentasRealizadas = () => {
   }
 
   const cargarVentas = async () => {
-    const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/egresosFechaActual');
+    const response = await PeticionGet('Egreso/estado/1/tipoComprobante/1/sucursal/1/tipopago/1/egresosFechaActual');
     
     if (response) {
       setVentaRealizada(response.data.data.sort(
