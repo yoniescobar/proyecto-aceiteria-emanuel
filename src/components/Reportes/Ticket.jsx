@@ -40,12 +40,17 @@ const Ticket = () => {
         tituloDocumento = `Tiket_${data[0].id}`;
 
         const arrayFecha = data[0].fechaegreso.split("T")
-        const datosFecha = arrayFecha[0].split("-")
 
-        if(datosFecha.length == 3){
-            fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
-            data[0].fecha_doc = fecha;
+        if (arrayFecha.length == 2){
+            const datosFecha = arrayFecha[0].split("-")
+            const hora = arrayFecha[1].split(":")
+
+            if(datosFecha.length == 3 && hora.length >= 3) {
+                fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]} ${hora[0]}:${hora[1]}`
+                data[0].fecha_doc = fecha;
+            }
         }
+
 
         setDataVentaRealizada(data);
     }
