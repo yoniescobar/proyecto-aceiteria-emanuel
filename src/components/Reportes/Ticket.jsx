@@ -39,7 +39,8 @@ const Ticket = () => {
     const armarData = (data) => {
         tituloDocumento = `Tiket_${data[0].id}`;
 
-        const datosFecha = data[0].fechaegreso.split("-")
+        const arrayFecha = data[0].fechaegreso.split("T")
+        const datosFecha = arrayFecha[0].split("-")
 
         if(datosFecha.length == 3){
             fecha = `${datosFecha[2]}/${datosFecha[1]}/${datosFecha[0]}`
