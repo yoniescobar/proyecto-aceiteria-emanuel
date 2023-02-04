@@ -5,6 +5,7 @@ import DataTable, { createTheme } from 'react-data-table-component'
 import { Link, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { CSVLink } from 'react-csv'
+import { alertMensaje } from '../../utils/alert';
 
 
 const baseUrl = process.env.REACT_APP_BASE_URL
@@ -39,8 +40,7 @@ const TblCategoria = () => {
     try {
       const del = await axios.delete(`${baseUrl}/categoria/${id}`)
 
-      if (resultado) {
-        resultOperacion = true;
+      if (del) {
         alertMensaje('Datos eliminados con exito!', 'success');
         cargarCategoria()
       } else {
