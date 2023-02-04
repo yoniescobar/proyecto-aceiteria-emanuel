@@ -25,7 +25,7 @@ export const PeticionDelete = async (endpoint) => {
           resultOperacion = true;
           alertMensaje('Datos eliminados con exito!', 'success');
         } else {
-          alertMensaje('Ocurrio un error al intentar eliminar los datos!', 'warning');
+          alertMensaje('No es posible eliminar el dato, ya que son datos comprometidos!', 'warning');
         }
     } catch (error) {
         alertMensaje('Ocurrio un error al intentar eliminar los datos!', 'warning');

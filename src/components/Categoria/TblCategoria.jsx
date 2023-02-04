@@ -29,19 +29,29 @@ const TblCategoria = () => {
       setCategoria(response.data.data)
       setFilteredCategoria(response.data.data)
     } catch (error) {
-      
+
     }
 
   }
 
 
   const deleteCategoria = async (id) => {
-    const del = await axios.delete(`${baseUrl}/categoria/${id}`)
-    console.log(del);
-    cargarCategoria()
+    try {
+      const del = await axios.delete(`${baseUrl}/categoria/${id}`)
+
+      if (resultado) {
+        resultOperacion = true;
+        alertMensaje('Datos eliminados con exito!', 'success');
+        cargarCategoria()
+      } else {
+        alertMensaje('No es posible eliminar el dato, ya que son datos comprometidos!', 'warning');
+      }
+    } catch (error) {
+      alertMensaje('Ocurrio un error al intentar eliminar los datos!', 'warning');
+    }
   }
 
-  function confirmar(id,nombre) {
+  function confirmar(id, nombre) {
     Swal.fire({
       title: '¿Confirma eliminar el registro: ' + nombre + '?',
       icon: 'warning',
@@ -49,7 +59,7 @@ const TblCategoria = () => {
       confirmButtonColor: '#d33',
       cancelButtonColor: '#6c757d',
       confirmButtonText: 'Confirmar'
-      
+
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCategoria(id)
@@ -60,7 +70,7 @@ const TblCategoria = () => {
 
 
   const columns = [
-   
+
     {
       name: 'Nombre',
       selector: (row) => row.nombre,
@@ -79,15 +89,15 @@ const TblCategoria = () => {
       name: 'Estado',
       selector: (row) => row.condicion === '1' ? 'Activo' : 'No activo',
       sortable: true,
-      grow:0.5,
-      conditionalCellStyles:[
+      grow: 0.5,
+      conditionalCellStyles: [
         {
-            when: row => row.condicion === '1',
-            classNames: ['badge badge-pill badge-success m-3 mb-3'],
+          when: row => row.condicion === '1',
+          classNames: ['badge badge-pill badge-success m-3 mb-3'],
         },
         {
           when: row => row.condicion !== '1',
-            classNames: ['badge badge-pill badge-danger  m-3 mb-3']
+          classNames: ['badge badge-pill badge-danger  m-3 mb-3']
         }
       ]
     },
@@ -106,7 +116,7 @@ const TblCategoria = () => {
 
         <button
           className="btn btn-danger mx-1"
-          onClick={() => confirmar(row.id,row.nombre)}>
+          onClick={() => confirmar(row.id, row.nombre)}>
           <span className="fa-regular fa-trash-can"></span>
         </button>,
 
@@ -128,7 +138,7 @@ const TblCategoria = () => {
       <DataTable className='table border table-responsive  '
         defaultSortField="idTablaData"
         title="Listado de Categoría"
-        
+
         columns={columns}
         data={filteredCategoria}
         pagination
@@ -149,8 +159,8 @@ const TblCategoria = () => {
             type="text"
             placeholder="Buscar Categoria"
 
-           // className="form-control"
-             className="w-25 form-control"
+            // className="form-control"
+            className="w-25 form-control"
 
             value={search}
             onChange={(e) => setSearch(e.target.value)}
