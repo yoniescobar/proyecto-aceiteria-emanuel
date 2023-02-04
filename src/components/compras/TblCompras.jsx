@@ -10,6 +10,8 @@ import MaskedInput from 'react-text-mask';
 import { getPermisosUsuario } from "../../Servicios/oauth";
 import { getIdusuario } from "./../../utils/token";
 import ClipLoader from "react-spinners/ClipLoader";
+import moment from 'moment';
+
 
 const optionsTI = [
   { value: '1', label: 'Compra' },
@@ -238,6 +240,10 @@ const TblCompras = () => {
       if (tempItem.persona.id > 0) {       // && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)
         tempItem.usuario.id = getIdusuario();
         setLoading(true);
+        console.log(tempItem);
+        //console.log(JSON.stringify(tempItem));
+        //tempItem.fechaingreso.toJSON = function(){ return moment(this).format(); }
+        //console.log(JSON.stringify(tempItem));
         setIngreso(tempItem).then(
           data => {
             if (data.id > 0) {

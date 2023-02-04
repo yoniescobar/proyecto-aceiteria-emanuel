@@ -36,7 +36,8 @@ const TblCategoria = () => {
 
 
   const deleteCategoria = async (id) => {
-    await axios.delete(`${baseUrl}/categoria/${id}`)
+    const del = await axios.delete(`${baseUrl}/categoria/${id}`)
+    console.log(del);
     cargarCategoria()
   }
 
