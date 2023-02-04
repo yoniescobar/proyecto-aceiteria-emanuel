@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react'
 import DataTable, { createTheme } from 'react-data-table-component'
 import { Link } from 'react-router-dom'
 import { PeticionGet } from '../../Servicios/PeticionServicio'
-
+import Swal from 'sweetalert2';
 import DatePicker from "react-datepicker";
 import clsx from "clsx";
 import { ListaSucursal, ListaTipoCredito } from '../../Constantes/ListasSelect'
-
+import { delEgreso } from '../Articulo/ArticuloService'
 // const baseUrl = process.env.REACT_APP_BASE_URL
 const VentasRealizadas = () => {
   const [fechaInicial, setfechaInicial] = useState(new Date());
@@ -24,7 +24,30 @@ const VentasRealizadas = () => {
   useEffect(() => {
     cargarVentas();
   }, []);
-
+  
+  const mesajeConfirmarAnular = (item, clase) => {
+    Swal.fire({
+        title: '¿Esta seguro que desea anular la venta '+item.serie_doc+' - '+item.numero_doc+' ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        showConfirmButton: false,
+        denyButtonText: `Anular`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          delEgreso(item.id).then(
+            data => {
+              if(data.id == 1) {
+                Swal.fire(data.msj, '', 'success');
+                cargarVentas();
+              }
+            }
+          )
+        }
+      })
+};
   const handleChange = event => {
     setFiltroSelect({ ...filtroSelect, [event.target.name]: event.target.value });
   };
@@ -73,7 +96,9 @@ const VentasRealizadas = () => {
       return '';
     }
   }
-
+  const handleDelete = (item) => {
+    mesajeConfirmarAnular(item, 'warning');
+  }
   const columns = [
     {
       name: 'Fecha',
@@ -115,6 +140,9 @@ const VentasRealizadas = () => {
         </Link>,
         <Link className="btn btn-sm btn-primary mx-1" to={`/Ticket/${row.id}`}>
           <span className="fa-solid fa-ticket"></span>
+        </Link>,
+        <Link className="btn btn-sm btn-danger mx-1" onClick={() => handleDelete(row)}>
+          <span className="fa-solid fa-remove"></span>
         </Link>,
       ],
     },

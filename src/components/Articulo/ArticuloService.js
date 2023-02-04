@@ -66,3 +66,13 @@ export const getClienteByCode=(code)=>{
                return   data.json()
               })
  }
+
+
+ export const delEgreso=(id)=>{
+    return fetch(baseUrl+'/Egreso/id/'+id, { // add return here
+                  method:'delete',
+              })
+              .then(data=> {
+               return   data.json()
+              })
+ }

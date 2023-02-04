@@ -20,11 +20,15 @@ const Tablero = () => {
             <div className="col-9">
               <div className="small-box bg-white d-flex justify-content-center my-5">
                 <div className="inner">
-                  <h1 className='text-secondary d-flex justify-content-center' style={{ fontSize: 50 }}>Bienvenido. </h1>
+                  <h1 className='text-secondary d-flex justify-content-center' style={{ fontSize: 25 }}>Bienvenido. </h1>
                   <hr></hr>
-                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 25 }}>Aceitera Emanuel</strong>
-                  <br></br>
-                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 20 }}> {date.toLocaleTimeString()}</strong>
+                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 50 }}>Aceitera Emanuel</strong>
+                  <div>
+                    <img src="https://media.istockphoto.com/id/518901244/es/foto/aceite-de-motor.jpg?s=612x612&w=0&k=20&c=9LXxMhTz4TGpQQDdPbdz43BoUjvN5_wiAZuT_SHRmdc=" alt="BigCo Inc. logo"/>
+                  </div>    
+                  <br>                
+                  </br>
+                  <strong className='text-info d-flex justify-content-center' style={{ fontSize: 40 }}> {date.toLocaleTimeString()}</strong>
                 </div>
               </div>
             </div>

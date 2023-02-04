@@ -68,7 +68,7 @@ const Ticket = () => {
                 pageStyle='@page { size: 80mm 258mm; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 80px !important; } }'
             />
             <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
-            <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventas"> Nueva Venta</Link>
+            <Link className="btn btn-sm btn-outline-primary px-3 " to="/ventas"> Nueva Venta</Link>
             <hr style={{ width: '50%', marginLeft: '25%' }}></hr>
             <div style={{ width: '95%', marginLeft: '35%' }}>
                 <div ref={componentRef} >
@@ -121,6 +121,8 @@ const Ticket = () => {
                         <hr></hr>
                         <div style={{ textAlign: 'right' }}>
                             <span style={{ textAlign: 'right' }}><label>Total a pagar: </label> {numeroAQuetzales(total)}</span><br /><br />
+                            <span style={{ textAlign: 'right' }}><label>Pago: </label>{numeroAQuetzales(DataVentaRealizada[0].pago)}</span><br /><br />
+                            <span style={{ textAlign: 'right' }}><label>Cambio: </label>{numeroAQuetzales(DataVentaRealizada[0].cambio)}</span><br /><br />
                         </div>
                         <h5 className='d-flex justify-content-center'>Gracias por su compra</h5>
                         <span className='d-flex justify-content-center'>*** NO SE ACEPTAN CAMBIOS NI DEVOLUCIONES.***</span>

@@ -42,7 +42,9 @@ const initialState = {
     pagos: [],
     sucursal: {
         id: 0
-    }
+    }, 
+    pago:0,
+    cambio:0
 }
 
 const override = {
@@ -120,6 +122,8 @@ const BuscadorPorCodigo = () => {
             clase
         )
     };
+
+
 
 
     const prepareAdd = (item) => {
@@ -251,6 +255,8 @@ const BuscadorPorCodigo = () => {
                 if (tempItem.tipopago == 1)
                     if (cambio < 0)
                         return mesajeResultado('El pago al contado no puede ser menor al total', 'warning');
+                //console.log(tempItem);
+                tempItem.cambio = cambio;
                 setLoading(true);
                 setEgreso(tempItem).then(
                     data => {
@@ -302,8 +308,15 @@ const BuscadorPorCodigo = () => {
     }
     const handlePago = (e) => {
         e.preventDefault();
-        const cambio = e.target.value - total;
-        setCambio(cambio);
+        const cambioTmp = e.target.value - total;
+        setCambio(cambioTmp);
+
+        const deepClone = JSON.parse(JSON.stringify(item))
+
+        deepClone.pago = +e.target.value;
+        deepClone.cambio = cambioTmp;
+        console.log(deepClone.cambio);
+        setItem(deepClone);
     }
     const logChangeTI = (e) => {
         const newItem = { ...item };
