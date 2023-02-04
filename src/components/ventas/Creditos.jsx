@@ -133,13 +133,7 @@ function Creditos() {
     }
     const handleOptionsCredito = (item) => {
         setCredito(item);
-        //setModalShow(true);
     }
-
-//    const handleClose = (e) => {
-//        console.log(e.target.value);
-//        setModalShow(false);
-//    }
 
     return (
         <>
@@ -147,7 +141,7 @@ function Creditos() {
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-6">
-                            <label for="codigo" className="col-sm-2 col-form-label">Número de NIT</label>
+                            <label for="codigo" className="col-sm-12 col-form-label">Número de NIT</label>
                             <div className="input-group mb-3">
                                 <input type="text" className="form-control" onChange={handleFormChanges} name="codigo" id="codigo" />
                                 <div className="input-group-append">
