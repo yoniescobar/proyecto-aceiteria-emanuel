@@ -19,3 +19,13 @@ code {
 .rdt_TableCell{
   font-size: 1rem;
 } */
+
+[class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:hover {
+  background-color: #0358d8;
+  color: #ffffff;
+}
