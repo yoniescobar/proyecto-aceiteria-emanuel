@@ -11,6 +11,7 @@ const EditCliente = () => {
 
   const { idCliente } = useParams()
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const [form, setForm] = useState({
     id: "",
     tipopersona: 2,
@@ -38,11 +39,14 @@ const EditCliente = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    setIsDisabled(true);
     setForm({ ...form, ["id"]: idCliente });
     const resultado = await PeticionPut('Persona/', form);
 
     if (resultado) {
       navigate("/tblCliente");
+    } else {
+      setIsDisabled(false);
     }
   };
 
@@ -193,7 +197,7 @@ const EditCliente = () => {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-outline-primary">Guardar</button>
+            <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblCliente">Cancelar</Link>
           </form>
         </div>

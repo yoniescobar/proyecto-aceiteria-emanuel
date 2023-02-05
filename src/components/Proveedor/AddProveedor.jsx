@@ -8,6 +8,7 @@ import clsx from "clsx";
 
 const AddProveedor = () => {
     let navigate = useNavigate();
+    const [isDisabled, setIsDisabled] = useState(false);
     const [form, setForm] = useState({
         tipopersona: 2,
         tipo_documento: 0,
@@ -18,7 +19,6 @@ const AddProveedor = () => {
         correo: "",
         estado: 1
     })
-
 
     const { errors, validateForm, onBlurField } = useValidatorForm(form);
     const { tipopersona, tipo_documento, nodocumento, nombre, direccion, telefono, correo } = form;
@@ -34,11 +34,14 @@ const AddProveedor = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
+        setIsDisabled(true);
 
         const resultado = await PeticionPost('Persona', form);
 
         if (resultado) {
             navigate("/tblProveedor");
+        } else {
+            setIsDisabled(false);
         }
     };
 
@@ -175,7 +178,7 @@ const AddProveedor = () => {
                             </div>
                         </div>
 
-                        <button type="submit" className="btn btn-outline-primary">Guardar</button>
+                        <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
                         <Link className="btn btn-outline-danger mx-2" to="/tblProveedor">Cancelar</Link>
                     </form>
                 </div>

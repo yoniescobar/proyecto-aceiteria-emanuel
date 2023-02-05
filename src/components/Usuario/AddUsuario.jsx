@@ -20,7 +20,7 @@ const AddUsuario = () => {
   }, []);
 
   let navigate = useNavigate();
-
+  const [isDisabled, setIsDisabled] = useState(false);
   const [sucursal, setSucursal] = useState([])
   const [form, setForm] = useState({
     nombre: "",
@@ -55,6 +55,7 @@ const AddUsuario = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsDisabled(true);
     try {
       const resultado = await axios.post(`${baseUrl}/Usuario/`, form);
 
@@ -62,9 +63,11 @@ const AddUsuario = () => {
         mesajeResultado('Usuario creado con exito!', 'success');
         navigate("/tblUsuario");
       } else {
+        setIsDisabled(false);
         mesajeResultado('Ocurrio un error al intentar crear el Usuario!', 'warning');
       }
     } catch (error) {
+      setIsDisabled(false);
       mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde', 'warning');
     }
 
@@ -211,7 +214,7 @@ const AddUsuario = () => {
                 ) : null}
             </div>
 
-            <button type="submit" className="btn btn-outline-primary">Guardar Usuario</button>
+            <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar Usuario</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblUsuario">Cancelar</Link>
           </form>
         </div>
