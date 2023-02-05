@@ -1,4 +1,4 @@
-import { useState, useEffect, CSSProperties } from 'react';
+import { useState, useEffect, CSSProperties, useRef } from 'react';
 import { getItemByCode, getProductosVenta, setEgreso } from './ArticuloService';
 import { getClienteByCode } from './ArticuloService';
 import { useNavigate } from 'react-router-dom';
@@ -54,7 +54,7 @@ const override = {
 };
 
 const BuscadorPorCodigo = () => {
-
+    const inputReference = useRef(null);
     const options = [
         { value: 'one', label: 'One' },
         { value: 'two', label: 'Two' }
@@ -113,6 +113,7 @@ const BuscadorPorCodigo = () => {
                 )
             }
         );
+        inputReference.current.focus();
     }, []);
 
     const mesajeResultado = (mensaje, clase) => {
@@ -389,8 +390,8 @@ const BuscadorPorCodigo = () => {
                                             id="codigo"
                                             name="codigo"
                                             placeholder="Código"
+                                            ref={inputReference}
                                             onChange={(e) => setCode(e.target.value)}
-
                                         />
                                         <button
                                             className="btn btn-primary"
@@ -447,7 +448,7 @@ const BuscadorPorCodigo = () => {
                                                                 max={item.existencia}
                                                             />
                                                         </td>
-                                                        <td>{item.descripcion}</td>
+                                                        <td>{item.nombre}</td>
                                                         <td>
                                                             <input
                                                                 onChange={(e) => onChangeInputPV(e, item.id)}
