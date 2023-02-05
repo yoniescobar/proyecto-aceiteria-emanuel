@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { removeUserSession } from "../utils/token";
+import { removeUserSession, getName } from "../utils/token";
 
 export default class Header extends Component {
   
@@ -129,8 +129,15 @@ logOut = () => {
       </li> */}
 
       <li className="nav-item">
-        <a className="nav-link" onClick={() => this.logOut()} data-widget="control-sidebar" data-slide="true" href="#"  data-toggle="tooltip" title="Cerrar sesion">
-          <i className="fa-solid fa-power-off" />
+        <a className="nav-link" 
+          onClick={() => this.logOut()} 
+          data-widget="control-sidebar" 
+          data-slide="true" 
+          href="#"  
+          data-toggle="tooltip" 
+          title="Cerrar sesion">
+            <strong>{getName()} </strong>
+            <i className="fa-solid fa-power-off" />
         </a>
       </li>
     </ul>
