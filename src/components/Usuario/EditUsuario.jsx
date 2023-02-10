@@ -22,7 +22,8 @@ const dataEstado = [
 
 const EditUsuario = () => {
   let navigate = useNavigate();
-
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabledPermiso, setIsDisabledPermiso] = useState(false);
   const { idUsuario } = useParams()
   const [sucursal, setSucursal] = useState([])
   const [usuariopermiso, setUsuarioPermiso] = useState([]);
@@ -72,18 +73,21 @@ const EditUsuario = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsDisabled(true);
+
     try {
       setForm({ ...form, ["id"]: idUsuario });
       const response = await axios.put(`${baseUrl}/Usuario/`, form);
 
       if (response) {
         mesajeResultado('Se actualizo existosamente la usuario!', 'success');
+        navigate("/tblUsuario");
       } else {
+        setIsDisabled(false);
         mesajeResultado('Ocurrio un error al intentar actualizar la usuario!', 'warning');
       }
-
-      navigate("/tblUsuario");
     } catch (error) {
+      setIsDisabled(false);
       mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
 
@@ -159,11 +163,14 @@ const EditUsuario = () => {
 
   const handleDelUsuarioPermiso = (e, item) => {
     e.preventDefault();
+    setIsDisabledPermiso(true);
     delUsuarioPermiso(item.idUsuarioPermiso).then(
       data => {
         if (data.id > 0) {
+          setIsDisabledPermiso(false);
           mesajeResultado('Permiso anulado exitosamente!', 'success');
         } else {
+          setIsDisabledPermiso(false);
           mesajeResultado('Error al anular el permiso', 'warning');
         }
       }
@@ -299,9 +306,10 @@ const EditUsuario = () => {
                   <p className="formFieldErrorMessage">{errors.sucursal.message}</p>
                 ) : null}
             </div>
-            <button type="submit" className="btn btn-outline-primary">Guardar Usuario</button>
+            <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar Usuario</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblUsuario">Cancelar</Link>
           </form>
+
           <hr />
           <div className="mb-3">
             <label htmlFor="id_permiso">Permisos:</label>
@@ -316,6 +324,7 @@ const EditUsuario = () => {
             </select>
           </div>
           <button type="button" className="btn btn-primary btn-sm" onClick={handleAddPermiso}>Agregar permiso</button>
+          
           <table className="table table-striped">
             <thead>
               <tr>
@@ -331,6 +340,7 @@ const EditUsuario = () => {
                     <td>
                       <button
                         className="btn btn-danger btn-sm"
+                        disabled={isDisabledPermiso}
                         onClick={(e) => handleDelUsuarioPermiso(e, item)}
                       >
                         <i className='fa fa-trash'></i>

@@ -19,6 +19,7 @@ const EditCategoria = () => {
 
   const { id } = useParams()
 
+  const [isDisabled, setIsDisabled] = useState(false);
   const [form, setForm] = useState({
     nombre: "",
     descripcion: "",
@@ -55,6 +56,7 @@ const EditCategoria = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
+      setIsDisabled(true);
       const response = await axios.put(`${baseUrl}/categoria`, form);
       if (response) {
         mesajeResultado('Se actualizo existosamente la categoria!', 'success');
@@ -62,6 +64,7 @@ const EditCategoria = () => {
         mesajeResultado('Ocurrio un error al intentar actualizar la categoria!', 'warning');
       }
     }catch (error) {
+      setIsDisabled(false);
       mesajeResultado('Ocurrio un error al intentar guardar los datos, intenta mas tarde.', 'warning')
     }
     navigate("/tblCategoria");
@@ -139,7 +142,7 @@ const EditCategoria = () => {
                 ))}
               </select>
             </div>
-            <button type="submit" className="btn btn-outline-primary">Guardar</button>
+            <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
             <Link className="btn btn-outline-danger mx-2" to="/tblCategoria">Cancelar</Link>
 
           </form>

@@ -8,6 +8,7 @@ import clsx from "clsx";
 
 const AddCliente = () => {
     let navigate = useNavigate();
+    const [isDisabled, setIsDisabled] = useState(false);
     const [form, setForm] = useState({
         tipopersona: 1,
         tipo_documento: 1,
@@ -33,10 +34,13 @@ const AddCliente = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
+        setIsDisabled(true);
         const resultado = await PeticionPost('Persona', form);
 
         if (resultado) {
             navigate("/tblCliente");
+        } else {
+            setIsDisabled(false);
         }
     };
 
@@ -171,7 +175,7 @@ const AddCliente = () => {
                             </div>
                         </div>
 
-                        <button type="submit" className="btn btn-outline-primary">Guardar</button>
+                        <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
                         <Link className="btn btn-outline-danger mx-2" to="/tblCliente">Cancelar</Link>
                     </form>
                 </div>
