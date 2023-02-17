@@ -12,6 +12,7 @@ const TblArticulo = () => {
   const [filteredArticulo, setFilteredArticulo] = useState([])
 
   useEffect(() => {
+    //console.log("use efect once start");
     cargarArticulos();
   }, []);
 
@@ -102,6 +103,7 @@ const TblArticulo = () => {
   ]
 
   useEffect(() => {
+    //console.log("use efect articulo search...");
     const result = Articulo.filter((country) => {
       return country.nombre.toLowerCase().match(search.toLowerCase())
     })

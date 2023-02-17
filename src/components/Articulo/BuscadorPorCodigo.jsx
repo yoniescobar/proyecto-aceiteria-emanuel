@@ -182,6 +182,18 @@ const BuscadorPorCodigo = () => {
         )
         setArticulos([...editData]);
     };
+
+    const onclickAplyDescount = (e, prodId) => {
+        e.preventDefault();
+
+        const editData = articulos.map((item) =>
+            item.id === prodId
+                ? { ...item, montoDescuento: item.cantidad*item.montoDescuento }
+                : item
+            )
+            setArticulos([...editData]);
+    }
+
     const onChangeInputPV = (e, prodId) => {
         const { value } = e.target
         const editData = articulos.map((item) =>
@@ -191,6 +203,9 @@ const BuscadorPorCodigo = () => {
         )
         setArticulos([...editData]);
     };
+
+
+
     const handleAdd = (item) => {
         const editData = articulos;
         editData.unshift(item);
@@ -298,6 +313,9 @@ const BuscadorPorCodigo = () => {
         editData.splice(index, 1);
         setArticulos([...editData]);
     }
+
+
+    
     const logChange = (logChange) => {
         const exist = articulos.find(item => item.codigo === logChange.codigo);
         if (exist === undefined) {
@@ -427,6 +445,7 @@ const BuscadorPorCodigo = () => {
                                             <th>Cantidad</th>
                                             <th>Producto</th>
                                             <th>Precio venta</th>
+                                            <th>Descuento</th>
                                             <th>Subtotal</th>
                                             <th>Opciones</th>
                                         </tr>
@@ -458,6 +477,7 @@ const BuscadorPorCodigo = () => {
                                                             />
 
                                                         </td>
+                                                        <td>{numeroAQuetzales(item.montoDescuento)}</td>
                                                         <td>{numeroAQuetzales(item.cantidad * item.precio_venta)}</td>
                                                         <td>
                                                             <button
@@ -466,6 +486,12 @@ const BuscadorPorCodigo = () => {
                                                             >
                                                                 <i className='fa fa-trash'></i>
                                                             </button>
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                onClick={(e) => onclickAplyDescount(e, item.id)}
+                                                            >
+                                                                <i className='fa fa-money-bill'></i>
+                                                            </button>                                                            
                                                         </td>
                                                     </tr>
                                                 ))
