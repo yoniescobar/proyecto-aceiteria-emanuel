@@ -175,11 +175,19 @@ const BuscadorPorCodigo = () => {
             mesajeResultado('Cantidad no disponible, se agregará la existencia máxima', 'warning');
         }
 
-        const editData = articulos.map((item) =>
+        //CAMBIA CANTIDAD A VENDER
+        let editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
                 : item
         )
+        //CAMBIA DESCUENTO POR PRODUCTO
+        editData = editData.map((item) =>
+        item.id === prodId
+            ? { ...item, descuento: item.cantidad*item.montoDescuento }
+            : item
+        )
+
         setArticulos([...editData]);
     };
 
@@ -188,7 +196,7 @@ const BuscadorPorCodigo = () => {
 
         const editData = articulos.map((item) =>
             item.id === prodId
-                ? { ...item, montoDescuento: item.cantidad*item.montoDescuento }
+                ? { ...item, descuento: item.cantidad*item.montoDescuento }
                 : item
             )
             setArticulos([...editData]);
@@ -214,7 +222,7 @@ const BuscadorPorCodigo = () => {
     const totalCompra = () => {
         let total = 0;
         for (var i in articulos) {
-            total += +articulos[i].precio_venta * +articulos[i].cantidad;
+            total += (+articulos[i].precio_venta * +articulos[i].cantidad) - articulos[i].descuento;
         }
         setTotal(total);
     }
@@ -477,8 +485,15 @@ const BuscadorPorCodigo = () => {
                                                             />
 
                                                         </td>
-                                                        <td>{numeroAQuetzales(item.montoDescuento)}</td>
-                                                        <td>{numeroAQuetzales(item.cantidad * item.precio_venta)}</td>
+                                                        <td>
+                                                            {
+                                                                item.descuento==0 ? 
+                                                                    '--'
+                                                                :
+                                                                    numeroAQuetzales(item.descuento)
+                                                            }
+                                                        </td>
+                                                        <td>{numeroAQuetzales((item.cantidad * item.precio_venta) - item.descuento)}</td>
                                                         <td>
                                                             <button
                                                                 className="btn btn-danger"
