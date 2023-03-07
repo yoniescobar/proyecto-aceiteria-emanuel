@@ -88,9 +88,37 @@ const AddArticulo = () => {
 
   const onInputChange = (e) => {
     validarInputForm(e);
+    //CALCULA DESCUENTO
+    // if(e.target.name=='montoDescuento')
+    //   console.log("Calcula porcentaje a partir del monto");
+    // if(e.target.name=='porcentajeDescuento')
+    //   console.log("Calcula monto a partir del porcentaje");
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const onInputChangeTwo = (e) => {
+    //validarInputForm(e);
 
+    let newForm = form;
+
+    //CALCULA DESCUENTO
+    if(e.target.name=='montoDescuento'){
+      newForm.montoDescuento = e.target.value;
+      //setForm({ ...form, [e.target.name]: e.target.value });
+    }
+      
+    
+      console.log("Porcentaje de descuento: "+(e.target.value/form.precio_venta)*100);
+         
+    if(e.target.name=='porcentajeDescuento'){
+      newForm.porcentajeDescuento = e.target.value;
+      //setForm({ ...form, [e.target.name]: e.target.value });
+    }
+      
+    
+      console.log("monto de descuento: "+(e.target.value/100)*form.precio_venta);      
+    
+    setForm(...newForm);
+  };
   const onLostFocus = (e) => {
     validarInputForm(e);
     if (e.target.name === 'codigo') {
@@ -442,7 +470,7 @@ const AddArticulo = () => {
                   name="montoDescuento"
                   id="montoDescuento"
                   value={montoDescuento}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={(e) => onInputChangeTwo(e)}
                   required
                 />
                 
@@ -455,12 +483,10 @@ const AddArticulo = () => {
                   name="porcentajeDescuento"
                   id="porcentajeDescuento"
                   value={porcentajeDescuento}
-                  onChange={(e) => onInputChange(e)}
+                  onChange={(e) => onInputChangeTwo(e)}
                   required
                 />
-                
               </div>
-
             </div>
 
             <button type="button" onClick={handleClick} disabled={isDisabled} className="btn btn-outline-primary">Guardar Articulo</button>

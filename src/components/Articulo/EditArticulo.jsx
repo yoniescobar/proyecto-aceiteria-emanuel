@@ -32,12 +32,14 @@ const EditArticulo = () => {
     estado: 1,
     precio_compra: 0,
     precio_venta: 0,
-    presentacion: {id: 0}
+    presentacion: {id: 0}, 
+    montoDescuento:0, 
+    porcentajeDescuento:0
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stokminimo, marca, modelo, precio_venta, precio_compra } = form;
-
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stokminimo, marca, modelo, precio_venta, precio_compra, montoDescuento, porcentajeDescuento } = form;
+  
   const onInputChange = (e) => {
     validarInputForm(e);
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -415,6 +417,28 @@ const EditArticulo = () => {
                   <img class="img-preview" width={200} height={120} src={form.imagen} />
                 )}
               </div>
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="montoDescuento">Monto de descuento:</label>
+                <input
+                  type="text"
+                  name="montoDescuento"
+                  id="montoDescuento"
+                  value={montoDescuento}
+                  onChange={(e) => onInputChange(e)}
+                  required
+                />
+              </div> 
+              <div className="form-group col-12 col-sm-6">
+                <label htmlFor="porcentajeDescuento">Porcentaje de descuento:</label>
+                <input
+                  type="text"
+                  name="porcentajeDescuento"
+                  id="porcentajeDescuento"
+                  value={porcentajeDescuento}
+                  onChange={(e) => onInputChange(e)}
+                  required
+                />
+              </div>                           
             </div>
 
             <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>

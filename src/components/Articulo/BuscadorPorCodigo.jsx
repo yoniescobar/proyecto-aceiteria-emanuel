@@ -176,18 +176,26 @@ const BuscadorPorCodigo = () => {
         }
 
         //CAMBIA CANTIDAD A VENDER
-        let editData = articulos.map((item) =>
+        /*let editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
                 : item
         )
+        console.log();
         //CAMBIA DESCUENTO POR PRODUCTO
         editData = editData.map((item) =>
         item.id === prodId
             ? { ...item, descuento: item.cantidad*item.montoDescuento }
             : item
-        )
+        )*/
 
+        let editData = articulos;
+        editData.forEach(item => {
+            if(item.id === prodId)
+                item.cantidad = value;
+            if(item.descuento != 0)
+                item.descuento=item.cantidad*item.montoDescuento;            
+        });
         setArticulos([...editData]);
     };
 
@@ -327,6 +335,10 @@ const BuscadorPorCodigo = () => {
     const logChange = (logChange) => {
         const exist = articulos.find(item => item.codigo === logChange.codigo);
         if (exist === undefined) {
+            if(logChange.existencia <= 0){
+                mesajeResultado('No hay existencia disponible para éste producto', 'warning');
+                return;    
+            }
             prepareAdd(logChange);
         } else {
             mesajeResultado('Elemento ya agregado a la venta', 'warning');
@@ -474,7 +486,7 @@ const BuscadorPorCodigo = () => {
                                                                 max={item.existencia}
                                                             />
                                                         </td>
-                                                        <td>{item.descripcion}</td>
+                                                        <td>{item.nombre}</td>
                                                         <td>
                                                             <input
                                                                 onChange={(e) => onChangeInputPV(e, item.id)}
