@@ -104,6 +104,7 @@ const AddArticulo = () => {
     if(e.target.name=='montoDescuento'){
       newForm.montoDescuento = e.target.value;
       //setForm({ ...form, [e.target.name]: e.target.value });
+      // aqui me quede
     }
       
     
@@ -117,7 +118,7 @@ const AddArticulo = () => {
     
       console.log("monto de descuento: "+(e.target.value/100)*form.precio_venta);      
     
-    setForm(...newForm);
+    setForm(...newForm  );
   };
   const onLostFocus = (e) => {
     validarInputForm(e);
