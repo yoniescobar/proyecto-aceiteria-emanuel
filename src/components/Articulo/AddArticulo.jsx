@@ -9,7 +9,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 // import { subirImagen } from '../../utils/uploadImg';
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
-import { ListaEstado } from '../../Constantes/ListasSelect';
+import { ListaEstado, ListaTipoDescuento } from '../../Constantes/ListasSelect';
 
 const AddArticulo = () => {
   const mesajeResultado = (mensaje, clase) => {
@@ -43,8 +43,9 @@ const AddArticulo = () => {
     imagen: "",
     modelo: "",
     estado: 1,
-    montoDescuento:0,
-    porcentajeDescuento:0
+    montoDescuento: 0,
+    porcentajeDescuento: 0,
+    tipoDescuento: 3,
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
@@ -88,16 +89,11 @@ const AddArticulo = () => {
 
   const onInputChange = (e) => {
     validarInputForm(e);
-    //CALCULA DESCUENTO
-    // if(e.target.name=='montoDescuento')
-    //   console.log("Calcula porcentaje a partir del monto");
-    // if(e.target.name=='porcentajeDescuento')
-    //   console.log("Calcula monto a partir del porcentaje");
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
   const onInputChangeTwo = (e) => {
     //validarInputForm(e);
-
     let newForm = form;
 
     //CALCULA DESCUENTO
@@ -120,6 +116,7 @@ const AddArticulo = () => {
     
     setForm(...newForm  );
   };
+
   const onLostFocus = (e) => {
     validarInputForm(e);
     if (e.target.name === 'codigo') {
@@ -465,29 +462,51 @@ const AddArticulo = () => {
               </div>
 
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="montoDescuento">Monto de descuento:</label>
-                <input
-                  type="text"
-                  name="montoDescuento"
-                  id="montoDescuento"
-                  value={montoDescuento}
-                  onChange={(e) => onInputChangeTwo(e)}
-                  required
-                />
-                
+                <label htmlFor="estado">Tipo descuento(*):</label>
+                <select id="tipoDescuento" name="tipoDescuento" className="form-select appSelect" onChange={handleChange}>
+                  {ListaTipoDescuento.map((option) => (
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="form-group col-12 col-sm-6">
-                <label htmlFor="porcentajeDescuento">Porcentaje de descuento:</label>
-                <input
-                  type="text"
-                  name="porcentajeDescuento"
-                  id="porcentajeDescuento"
-                  value={porcentajeDescuento}
-                  onChange={(e) => onInputChangeTwo(e)}
-                  required
-                />
-              </div>
+              { form.tipoDescuento == 1 && (
+                  <div className="form-group col-12 col-sm-6">
+                    <label htmlFor="montoDescuento">Monto de descuento:</label>
+                    <input
+                      className={clsx(
+                        'form-control',
+                        'formField',
+                      )}
+                      type="number"
+                      name="montoDescuento"
+                      id="montoDescuento"
+                      value={montoDescuento}
+                      onChange={(e) => onInputChange(e)}
+                      required
+                    />
+                  </div>
+                )
+              }
+
+              { form.tipoDescuento == 2 && (
+                  <div className="form-group col-12 col-sm-6">
+                    <label htmlFor="porcentajeDescuento">Porcentaje de descuento:</label>
+                    <input
+                      className={clsx(
+                        'form-control',
+                        'formField',
+                      )}
+                      type="number"
+                      name="porcentajeDescuento"
+                      id="porcentajeDescuento"
+                      value={porcentajeDescuento}
+                      onChange={(e) => onInputChange(e)}
+                      required
+                    />
+                  </div>
+                )
+              }
             </div>
 
             <button type="button" onClick={handleClick} disabled={isDisabled} className="btn btn-outline-primary">Guardar Articulo</button>

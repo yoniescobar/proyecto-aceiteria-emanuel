@@ -19,3 +19,9 @@ export const ListaTipoCredito = [
     { id: 1, nombre: "Contado" },
     { id: 0, nombre: "Credito" },
 ];
+
+export const ListaTipoDescuento = [
+    { id: 3, nombre: "No aplica descuento" },
+    { id: 1, nombre: "Efectivo" },
+    { id: 2, nombre: "Porcentaje" },
+];
