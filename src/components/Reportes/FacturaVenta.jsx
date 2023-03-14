@@ -26,7 +26,8 @@ const FacturaVenta = () => {
             id: "",
             cantidad: 0,
             precio_venta: 0,
-            articulo: { nombre: "" }
+            descuento: 0,
+            articulo: { nombre: ""}
         }]
     }])
 
@@ -85,7 +86,8 @@ const FacturaVenta = () => {
                         <thead>
                             <th>Producto</th>
                             <th>Cantidad</th>
-                            <th>Precio</th>
+                            <th>Precio Q</th>
+                            <th>Descuento Q.</th>
                             <th>Subtotal</th>
                         </thead>
                         <tbody>
@@ -97,7 +99,8 @@ const FacturaVenta = () => {
                                     <tr key={item.id}>
                                         <td>{item.articulo.nombre}</td>
                                         <td>{item.cantidad}</td>
-                                        <td>{item.precio_venta}</td>
+                                        <td>{numeroAQuetzales(item.precio_venta)}</td>
+                                        <td>{numeroAQuetzales(item.descuento)}</td>
                                         <td>{numeroAQuetzales(item.precio_venta * item.cantidad)}</td>
                                     </tr>
                                 )
