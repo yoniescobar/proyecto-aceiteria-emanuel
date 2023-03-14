@@ -93,7 +93,7 @@ const FacturaVenta = () => {
                         <tbody>
                             {DataVentaRealizada[0].items.map((item, i) => {
                                 {
-                                    total = (total + (item.precio_venta * item.cantidad))
+                                    total = (total + ((item.precio_venta * item.cantidad) - item.descuento))
                                 }
                                 return (
                                     <tr key={item.id}>
@@ -101,7 +101,7 @@ const FacturaVenta = () => {
                                         <td>{item.cantidad}</td>
                                         <td>{numeroAQuetzales(item.precio_venta)}</td>
                                         <td>{numeroAQuetzales(item.descuento)}</td>
-                                        <td>{numeroAQuetzales(item.precio_venta * item.cantidad)}</td>
+                                        <td>{numeroAQuetzales((item.precio_venta * item.cantidad) - item.descuento)}</td>
                                     </tr>
                                 )
                             })

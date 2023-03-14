@@ -102,7 +102,7 @@ const Ticket = () => {
                             <tbody>
                                 {DataVentaRealizada[0].items.map((item, i) => {
                                     {
-                                        total = (total + (item.precio_venta * item.cantidad))
+                                        total = (total + ((item.precio_venta * item.cantidad) - item.descuento))
                                     }
                                     return (
                                         
@@ -113,7 +113,7 @@ const Ticket = () => {
                                                 <p>{numeroAQuetzales(item.precio_venta)}</p>
                                             </td>
                                             <td>{numeroAQuetzales(item.descuento)}</td>
-                                            <td style={{ verticalAlign: 'middle' }}>{numeroAQuetzales(item.precio_venta * item.cantidad)}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>{numeroAQuetzales((item.precio_venta * item.cantidad) - item.descuento)}</td>
                                         </tr>
                                     )
                                 })
