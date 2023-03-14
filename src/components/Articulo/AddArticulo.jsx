@@ -49,7 +49,7 @@ const AddArticulo = () => {
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stokminimo, marca, modelo, presentacion, precio_venta, precio_compra, montoDescuento, porcentajeDescuento } = form;
+  const { nombre, categoria: { id }, existencia, descripcion, imagen, codigo, stokminimo, marca, modelo, presentacion, precio_venta, precio_compra, montoDescuento, porcentajeDescuento, tipoDescuento } = form;
   const inputReference = useRef(null);
 
   useEffect(() => {
@@ -90,31 +90,6 @@ const AddArticulo = () => {
   const onInputChange = (e) => {
     validarInputForm(e);
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const onInputChangeTwo = (e) => {
-    //validarInputForm(e);
-    let newForm = form;
-
-    //CALCULA DESCUENTO
-    if(e.target.name=='montoDescuento'){
-      newForm.montoDescuento = e.target.value;
-      //setForm({ ...form, [e.target.name]: e.target.value });
-      // aqui me quede
-    }
-      
-    
-      console.log("Porcentaje de descuento: "+(e.target.value/form.precio_venta)*100);
-         
-    if(e.target.name=='porcentajeDescuento'){
-      newForm.porcentajeDescuento = e.target.value;
-      //setForm({ ...form, [e.target.name]: e.target.value });
-    }
-      
-    
-      console.log("monto de descuento: "+(e.target.value/100)*form.precio_venta);      
-    
-    setForm(...newForm  );
   };
 
   const onLostFocus = (e) => {
@@ -471,39 +446,46 @@ const AddArticulo = () => {
               </div>
 
               { form.tipoDescuento == 1 && (
-                  <div className="form-group col-12 col-sm-6">
-                    <label htmlFor="montoDescuento">Monto de descuento:</label>
-                    <input
-                      className={clsx(
-                        'form-control',
-                        'formField',
-                      )}
-                      type="number"
-                      name="montoDescuento"
-                      id="montoDescuento"
-                      value={montoDescuento}
-                      onChange={(e) => onInputChange(e)}
-                      required
-                    />
+                  <div className="form-group row col-12 col-sm-6">
+                    <label htmlFor="montoDescuento">Monto:</label>
+                    <div class="col-sm-6">
+                      <input
+                        className={clsx(
+                          'form-control',
+                          'formField',
+                        )}
+                        type="number"
+                        name="montoDescuento"
+                        id="montoDescuento"
+                        value={montoDescuento}
+                        onChange={(e) => onInputChange(e)}
+                        required
+                      />
+                    </div>
+                    <label htmlFor="montoDescuento" class="col-sm-3 col-form-label">GTQ. </label>
                   </div>
                 )
               }
 
               { form.tipoDescuento == 2 && (
-                  <div className="form-group col-12 col-sm-6">
-                    <label htmlFor="porcentajeDescuento">Porcentaje de descuento:</label>
-                    <input
-                      className={clsx(
-                        'form-control',
-                        'formField',
-                      )}
-                      type="number"
-                      name="porcentajeDescuento"
-                      id="porcentajeDescuento"
-                      value={porcentajeDescuento}
-                      onChange={(e) => onInputChange(e)}
-                      required
-                    />
+                  <div className="form-group row col-12 col-sm-6">
+                    <label htmlFor="porcentajeDescuento">Porcentaje:</label>
+                    
+                    <div class="col-sm-6">
+                      <input
+                        className={clsx(
+                          'form-control',
+                          'formField',
+                        )}
+                        type="number"
+                        name="porcentajeDescuento"
+                        id="porcentajeDescuento"
+                        value={porcentajeDescuento}
+                        onChange={(e) => onInputChange(e)}
+                        required
+                      />
+                    </div>
+                    <label htmlFor="montoDescuento" class="col-sm-3 col-form-label">%</label>
                   </div>
                 )
               }

@@ -4,7 +4,7 @@ import { PeticionGet, PeticionPut } from '../../Servicios/PeticionServicio'
 import { useValidatorForm } from "../../utils/hooks/useValidatorForm";
 import styles from "../../utils/hooks/validatorForm.css"
 import clsx from "clsx";
-import { ListaEstado } from '../../Constantes/ListasSelect';
+import { ListaEstado, ListaTipoDescuento } from '../../Constantes/ListasSelect';
 import { storage } from '../../Servicios/firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
@@ -34,11 +34,12 @@ const EditArticulo = () => {
     precio_venta: 0,
     presentacion: {id: 0}, 
     montoDescuento:0, 
-    porcentajeDescuento:0
+    porcentajeDescuento:0,
+    tipoDescuento: 3,
   })
 
   const { errors, validateForm, onBlurField } = useValidatorForm(form);
-  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stokminimo, marca, modelo, precio_venta, precio_compra, montoDescuento, porcentajeDescuento } = form;
+  const { id, codigo, nombre, categoria: { id: int }, existencia, descripcion, imagen, stokminimo, marca, modelo, precio_venta, precio_compra, montoDescuento, porcentajeDescuento, tipoDescuento } = form;
   
   const onInputChange = (e) => {
     validarInputForm(e);
@@ -417,28 +418,64 @@ const EditArticulo = () => {
                   <img class="img-preview" width={200} height={120} src={form.imagen} />
                 )}
               </div>
+
               <div className="form-group col-12 col-sm-6">
-                <label htmlFor="montoDescuento">Monto de descuento:</label>
-                <input
-                  type="text"
-                  name="montoDescuento"
-                  id="montoDescuento"
-                  value={montoDescuento}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                />
-              </div> 
-              <div className="form-group col-12 col-sm-6">
-                <label htmlFor="porcentajeDescuento">Porcentaje de descuento:</label>
-                <input
-                  type="text"
-                  name="porcentajeDescuento"
-                  id="porcentajeDescuento"
-                  value={porcentajeDescuento}
-                  onChange={(e) => onInputChange(e)}
-                  required
-                />
-              </div>                           
+                <label htmlFor="estado">Tipo descuento(*):</label>
+                <select id="tipoDescuento" 
+                  value={form.tipoDescuento}
+                  name="tipoDescuento" 
+                  className="form-select appSelect" 
+                  onChange={handleChange}>
+                  {ListaTipoDescuento.map((option) => (
+                    <option key={option.id} value={option.id} >{option.nombre}</option>
+                  ))}
+                </select>
+              </div>
+
+              { form.tipoDescuento == 1 && (
+                  <div className="form-group row col-12 col-sm-6">
+                    <label htmlFor="montoDescuento">Monto:</label>
+                    <div class="col-sm-6">
+                      <input
+                        className={clsx(
+                          'form-control',
+                          'formField',
+                        )}
+                        type="number"
+                        name="montoDescuento"
+                        id="montoDescuento"
+                        value={montoDescuento}
+                        onChange={(e) => onInputChange(e)}
+                        required
+                      />
+                    </div>
+                    <label htmlFor="montoDescuento" class="col-sm-3 col-form-label">GTQ. </label>
+                  </div>
+                )
+              }
+
+              { form.tipoDescuento == 2 && (
+                  <div className="form-group row col-12 col-sm-6">
+                    <label htmlFor="porcentajeDescuento">Porcentaje:</label>
+                    
+                    <div class="col-sm-6">
+                      <input
+                        className={clsx(
+                          'form-control',
+                          'formField',
+                        )}
+                        type="number"
+                        name="porcentajeDescuento"
+                        id="porcentajeDescuento"
+                        value={porcentajeDescuento}
+                        onChange={(e) => onInputChange(e)}
+                        required
+                      />
+                    </div>
+                    <label htmlFor="montoDescuento" class="col-sm-3 col-form-label">%</label>
+                  </div>
+                )
+              }                       
             </div>
 
             <button type="submit" disabled={isDisabled} className="btn btn-outline-primary">Guardar</button>
