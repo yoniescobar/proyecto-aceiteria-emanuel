@@ -201,8 +201,15 @@ const BuscadorPorCodigo = () => {
 
     const onclickAplyDescount = (e, prodId) => {
         e.preventDefault();
-
-        const editData = articulos.map((item) =>
+        const newArticulos = articulos;
+        for(const item of newArticulos){
+            if(item.id == prodId){
+                if(item.porcentajeDescuento > 0){
+                    item.montoDescuento = (item.precio_venta*item.porcentajeDescuento)/100;
+                }
+            };
+        }
+        const editData = newArticulos.map((item) =>
             item.id === prodId
                 ? { ...item, descuento: item.cantidad*item.montoDescuento }
                 : item
