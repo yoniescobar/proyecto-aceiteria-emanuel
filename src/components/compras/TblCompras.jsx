@@ -73,6 +73,7 @@ const TblCompras = () => {
                 if (data.id < 0)
                   this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning');
                 if (data.id > 0) {
+                  console.log(data.data[0].usuario.sucursal.nombre);
                   setSucursal(data.data[0].usuario.sucursal.nombre);
                   newItem.sucursal.id = data.data[0].usuario.sucursal.id;
                   setItem(newItem);

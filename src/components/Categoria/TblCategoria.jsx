@@ -16,7 +16,7 @@ const TblCategoria = () => {
   const [search, setSearch] = useState('')
   const [Categoria, setCategoria] = useState([])
   const [filteredCategoria, setFilteredCategoria] = useState([])
-
+  
   useEffect(() => {
     cargarCategoria();
   }, []);
@@ -27,8 +27,10 @@ const TblCategoria = () => {
 
     try {
       const response = await axios.get(`${baseUrl}/all`)
-      setCategoria(response.data.data)
-      setFilteredCategoria(response.data.data)
+      if(response.data !== ''){
+        setCategoria(response.data.data)
+        setFilteredCategoria(response.data.data)
+      }; 
     } catch (error) {
 
     }

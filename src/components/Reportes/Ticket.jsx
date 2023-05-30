@@ -24,6 +24,7 @@ const Ticket = () => {
             id: "",
             cantidad: 0,
             precio_venta: 0,
+            descuento: 0,
             articulo: { nombre: "" }
         }]
     }])
@@ -60,17 +61,17 @@ const Ticket = () => {
     }, []);
 
     return (
-        <div style={{ width: '85%', textAlign: 'center' }}>
+        <div style={{ width: '100%', textAlign: 'center' }}>
             <ReactToPrint
                 trigger={() => <button className="btn btn-sm btn-outline-secondary px-3 m-2">Imprimir</button>}
                 content={() => componentRef.current}
                 documentTitle='Ticket'
-                pageStyle='@page { size: 80mm 258mm; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 80px !important; } }'
+                pageStyle='@page { size: 80mm 258mm; margin: 0mm; } @media print { body { -webkit-print-color-adjust: exact; padding: 90px !important; } }'
             />
             <Link className="btn btn-sm btn-outline-danger px-3 " to="/ventasRealizadas"> cancelar</Link>
             <Link className="btn btn-sm btn-outline-primary px-3 " to="/ventas"> Nueva Venta</Link>
             <hr style={{ width: '50%', marginLeft: '25%' }}></hr>
-            <div style={{ width: '95%', marginLeft: '35%' }}>
+            <div style={{ width: '100%', marginLeft: '35%' }}>
                 <div ref={componentRef} >
                     <style type="text/css" media="print">{"\
                         @page {\ size: 80mm 258mm;\ }\
@@ -90,28 +91,29 @@ const Ticket = () => {
                         <span><label>Cliente:</label> {DataVentaRealizada[0].persona.nombre.toUpperCase()}</span><br></br>
                         <span><label>Telefono:</label> N/A</span>
                         <hr></hr>
-                        <table className='w-85 mx-auto table table-borderless table-sm' >
+                        <table className='w-100 mx-auto table table-borderless table-sm' >
                             <thead>
                                 {/* <th>Nombre</th> */}
                                 <th>Cant.</th>
                                 <th>Precio</th>
+                                <th>Desc.</th>
                                 <th>Subtotal</th>
                             </thead>
                             <tbody>
                                 {DataVentaRealizada[0].items.map((item, i) => {
                                     {
-                                        total = (total + (item.precio_venta * item.cantidad))
+                                        total = (total + ((item.precio_venta * item.cantidad) - item.descuento))
                                     }
                                     return (
                                         
                                         <tr key={item.id} >
-                                            {/* <td>{item.articulo.nombre}</td> */}
                                             <td style={{ verticalAlign: 'middle' }}>{item.cantidad}</td>
                                             <td>
                                                 {item.articulo.nombre}
                                                 <p>{numeroAQuetzales(item.precio_venta)}</p>
                                             </td>
-                                            <td style={{ verticalAlign: 'middle' }}>{numeroAQuetzales(item.precio_venta * item.cantidad)}</td>
+                                            <td>{numeroAQuetzales(item.descuento)}</td>
+                                            <td style={{ verticalAlign: 'middle' }}>{numeroAQuetzales((item.precio_venta * item.cantidad) - item.descuento)}</td>
                                         </tr>
                                     )
                                 })

@@ -176,13 +176,48 @@ const BuscadorPorCodigo = () => {
             mesajeResultado('Cantidad no disponible, se agregará la existencia máxima', 'warning');
         }
 
-        const editData = articulos.map((item) =>
+        //CAMBIA CANTIDAD A VENDER
+        /*let editData = articulos.map((item) =>
             item.id === prodId
                 ? { ...item, cantidad: value }
                 : item
         )
+        console.log();
+        //CAMBIA DESCUENTO POR PRODUCTO
+        editData = editData.map((item) =>
+        item.id === prodId
+            ? { ...item, descuento: item.cantidad*item.montoDescuento }
+            : item
+        )*/
+
+        let editData = articulos;
+        editData.forEach(item => {
+            if(item.id === prodId)
+                item.cantidad = value;
+            if(item.descuento != 0)
+                item.descuento=item.cantidad*item.montoDescuento;            
+        });
         setArticulos([...editData]);
     };
+
+    const onclickAplyDescount = (e, prodId) => {
+        e.preventDefault();
+        const newArticulos = articulos;
+        for(const item of newArticulos){
+            if(item.id == prodId){
+                if(item.porcentajeDescuento > 0){
+                    item.montoDescuento = (item.precio_venta*item.porcentajeDescuento)/100;
+                }
+            };
+        }
+        const editData = newArticulos.map((item) =>
+            item.id === prodId
+                ? { ...item, descuento: item.cantidad*item.montoDescuento }
+                : item
+            )
+            setArticulos([...editData]);
+    }
+
     const onChangeInputPV = (e, prodId) => {
         const { value } = e.target
         const editData = articulos.map((item) =>
@@ -192,6 +227,9 @@ const BuscadorPorCodigo = () => {
         )
         setArticulos([...editData]);
     };
+
+
+
     const handleAdd = (item) => {
         const editData = articulos;
         editData.unshift(item);
@@ -200,7 +238,7 @@ const BuscadorPorCodigo = () => {
     const totalCompra = () => {
         let total = 0;
         for (var i in articulos) {
-            total += +articulos[i].precio_venta * +articulos[i].cantidad;
+            total += (+articulos[i].precio_venta * +articulos[i].cantidad) - articulos[i].descuento;
         }
         setTotal(total);
     }
@@ -299,9 +337,16 @@ const BuscadorPorCodigo = () => {
         editData.splice(index, 1);
         setArticulos([...editData]);
     }
+
+
+    
     const logChange = (logChange) => {
         const exist = articulos.find(item => item.codigo === logChange.codigo);
         if (exist === undefined) {
+            if(logChange.existencia <= 0){
+                mesajeResultado('No hay existencia disponible para éste producto', 'warning');
+                return;    
+            }
             prepareAdd(logChange);
         } else {
             mesajeResultado('Elemento ya agregado a la venta', 'warning');
@@ -428,6 +473,7 @@ const BuscadorPorCodigo = () => {
                                             <th>Cantidad</th>
                                             <th>Producto</th>
                                             <th>Precio venta</th>
+                                            <th>Descuento</th>
                                             <th>Subtotal</th>
                                             <th>Opciones</th>
                                         </tr>
@@ -459,7 +505,15 @@ const BuscadorPorCodigo = () => {
                                                             />
 
                                                         </td>
-                                                        <td>{numeroAQuetzales(item.cantidad * item.precio_venta)}</td>
+                                                        <td>
+                                                            {
+                                                                item.descuento==0 ? 
+                                                                    '--'
+                                                                :
+                                                                    numeroAQuetzales(item.descuento)
+                                                            }
+                                                        </td>
+                                                        <td>{numeroAQuetzales((item.cantidad * item.precio_venta) - item.descuento)}</td>
                                                         <td>
                                                             <button
                                                                 className="btn btn-danger"
@@ -467,6 +521,12 @@ const BuscadorPorCodigo = () => {
                                                             >
                                                                 <i className='fa fa-trash'></i>
                                                             </button>
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                onClick={(e) => onclickAplyDescount(e, item.id)}
+                                                            >
+                                                                <i className='fa fa-money-bill'></i>
+                                                            </button>                                                            
                                                         </td>
                                                     </tr>
                                                 ))
