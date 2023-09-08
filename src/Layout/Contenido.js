@@ -32,7 +32,9 @@ import TblPresentacion from '../components/Presentacion/TblPresentacion'
 
 import TblVentas from '../components/ventas/TblVentas'
 import VentasRealizadas from '../components/ventas/VentasRealizadas'
-import Compras from '../components/compras/Compras'
+
+//CCOMPRAS
+import ComprasLista from '../components/compras/ComprasLista'
 // Reportes
 import FacturaVenta from '../components/Reportes/FacturaVenta'
 import Ticket from '../components/Reportes/Ticket'
@@ -95,9 +97,10 @@ export default class Contenido extends Component {
                       {/* VENTAS */}
                       <Route exact path='/Ventas' element={<TblVentas />}></Route>
                       <Route exact path='/creditos' element={<Creditos />}></Route>
+                      
                       {/* COMPRAS */}
                       <Route exact path='/compras' element={<TblCompras />}></Route>                      
-                      <Route exact path='/listadoCompras' element={<Compras />}></Route>                      
+                      <Route exact path='/listadoCompras' element={<ComprasLista />}></Route>
 
                       {/* //route reportes */}
                       <Route exact path='/VentasRealizadas' element={<VentasRealizadas />}></Route>

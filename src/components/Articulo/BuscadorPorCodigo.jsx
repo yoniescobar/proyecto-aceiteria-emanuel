@@ -146,6 +146,10 @@ const BuscadorPorCodigo = () => {
                         data => {
                             if (data.id > 0) {
                                 let item = data.data[0];
+                                if(item.existencia <= 0){
+                                    mesajeResultado('No hay existencia disponible para éste producto', 'warning');
+                                    return;    
+                                }
                                 prepareAdd(item);
                             } else {
                                 mesajeResultado('Producto no encontrado!', 'warning');

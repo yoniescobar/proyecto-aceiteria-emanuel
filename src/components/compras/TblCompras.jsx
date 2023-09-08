@@ -57,9 +57,17 @@ const TblCompras = () => {
 
 
   useEffect(() => {
+    cargaInicial();
+  }, []);
+
+  useEffect(() => {
+    totalCompra();
+  }, [articulos]);
+
+  const cargaInicial = () => {
     getProductosVenta().then(
       data => {
-        const newData = data.data.map(obj => ({ ...obj, label: obj.existencia + ' existencias de  ' + obj.nombre + ' - ' + numeroAQuetzales(obj.precio_compra), value: obj.id }));
+        const newData = data.data.map(obj => ({ ...obj, label: obj.nombre + ' - ' + numeroAQuetzales(obj.precio_compra), value: obj.id }));
         setOptions(newData);
         getProveedorByCode(0).then(
           data => {
@@ -73,7 +81,6 @@ const TblCompras = () => {
                 if (data.id < 0)
                   this.mesajeResultado('No tiene perfil asignado en el sistema.', 'warning');
                 if (data.id > 0) {
-                  console.log(data.data[0].usuario.sucursal.nombre);
                   setSucursal(data.data[0].usuario.sucursal.nombre);
                   newItem.sucursal.id = data.data[0].usuario.sucursal.id;
                   setItem(newItem);
@@ -87,12 +94,7 @@ const TblCompras = () => {
         )
       }
     );
-  }, []);
-
-  useEffect(() => {
-    totalCompra();
-  }, [articulos]);
-
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     if (code.replace(/\s/g, "") !== "") {
@@ -130,9 +132,6 @@ const TblCompras = () => {
     newItem.tipoComprobante = +e.value;
     setItem(newItem);
   }
-
-
-
   const prepareAdd = (item) => {
     item.cantidad = 1;
     item.descuento = 0;
@@ -141,13 +140,11 @@ const TblCompras = () => {
     }
     handleAdd(item);
   }
-
   const handleAdd = (item) => {
     const editData = articulos;
     editData.unshift(item);
     setArticulos([...editData]);
   }
-
   const mesajeResultado = (mensaje, clase) => {
     Swal.fire(
       mensaje,
@@ -164,17 +161,6 @@ const TblCompras = () => {
     )
     setArticulos([...editData]);
   };
-
-  // const onChangeInputPC = (e, prodId) => {
-  //   const { value } = e.target
-  //   const editData = articulos.map((item) =>
-  //       item.id === prodId
-  //           ? { ...item, precio_compra: value }
-  //           : item
-  //   )
-  //   setArticulos([...editData]);
-  // };
-
   const onclickDelItem = (e, itemId) => {
     e.preventDefault();
     const index = articulos.findIndex(item => {
@@ -232,6 +218,7 @@ const TblCompras = () => {
       ...init
     }));
     //window.location.reload();
+    cargaInicial();
   }
   const handleMakeSale = () => {
     const tempItem = { ...item };
@@ -241,10 +228,6 @@ const TblCompras = () => {
       if (tempItem.persona.id > 0) {       // && (tempItem.serie_doc !== '' && tempItem.serie_doc !== null) && (tempItem.numero_doc !== '' && tempItem.numero_doc !== null)
         tempItem.usuario.id = getIdusuario();
         setLoading(true);
-        console.log(tempItem);
-        //console.log(JSON.stringify(tempItem));
-        //tempItem.fechaingreso.toJSON = function(){ return moment(this).format(); }
-        //console.log(JSON.stringify(tempItem));
         setIngreso(tempItem).then(
           data => {
             if (data.id > 0) {

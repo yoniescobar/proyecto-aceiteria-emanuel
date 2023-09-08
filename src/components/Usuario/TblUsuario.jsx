@@ -130,8 +130,6 @@ const TblUsuario = () => {
         highlightOnHover
         actions={[
           <Link className="btn btn-sm btn-primary px-5" to="/addUsuario"> Agregar Usuario</Link>,
-         
-          
         ]}
         subHeader
         subHeaderComponent={
